@@ -20,7 +20,7 @@ namespace GenerativeSoundEngine
 
         // Init <logfile>.csv
         [Header("PATH")]
-        [SerializeField] string logFilePath = @"D:";
+        [SerializeField] string logFilePath = @"Logs";
         string startDate = DateTime.Now.ToString().Replace(" ", "-").Replace(".", "-").Replace(":", "-");
         string logFile;
         string logSeperator = ",";
@@ -41,7 +41,7 @@ namespace GenerativeSoundEngine
             Console.WriteLine(logFile);
 
             // Column name String
-            string[] headerArray = { "Timestamp", "Speed", "SteerAngle", "Reverse", "Indicator", "Engine" };
+            string[] headerArray = { "Timestamp", "Speed", "Steering", "Reverse", "Indicator", "Engine" };
             stringWrite = string.Join(logSeperator, headerArray) + ";" + System.Environment.NewLine;
 
             // Create and write logfile
@@ -56,10 +56,10 @@ namespace GenerativeSoundEngine
             string value =
                 DateTime.Now.ToString() + logSeperator +
                 collector.Speed.ToString("0.0000", CultureInfo.GetCultureInfo("en-US")) + logSeperator +
-                collector.SteerAngle.ToString("0.0000", CultureInfo.GetCultureInfo("en-US")) + logSeperator +
-                collector.Reverse.ToString() + logSeperator +
+                collector.Steering.ToString("0.0000", CultureInfo.GetCultureInfo("en-US")) + logSeperator +
+                collector.Reverse.ToString("0.0000", CultureInfo.GetCultureInfo("en-US")) + logSeperator +
                 collector.Indicator.ToString("0.0000", CultureInfo.GetCultureInfo("en-US")) + logSeperator +
-                collector.Engine.ToString() + logSeperator +
+                collector.Engine.ToString("0.0000", CultureInfo.GetCultureInfo("en-US")) + logSeperator +
                 ";" + System.Environment.NewLine;
 
             // Write to logfile

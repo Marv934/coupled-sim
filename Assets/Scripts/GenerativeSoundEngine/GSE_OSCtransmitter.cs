@@ -47,10 +47,10 @@ namespace GenerativeSoundEngine
         {
             var message = new OSCMessage(RootAddress);
             message.AddValue(OSCValue.Float(collector.Speed));
-            message.AddValue(OSCValue.Float(collector.SteerAngle));
-            message.AddValue(OSCValue.Bool(collector.Reverse));
+            message.AddValue(OSCValue.Float(collector.Steering));
+            message.AddValue(OSCValue.Float(collector.Reverse));
             message.AddValue(OSCValue.Float(collector.Indicator));
-            message.AddValue(OSCValue.Bool(collector.Engine));
+            message.AddValue(OSCValue.Float(collector.Engine));
             Transmitter.Send(message);
         }
 

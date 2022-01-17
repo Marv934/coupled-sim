@@ -302,7 +302,7 @@ MonoBehaviour:
   _AvatarPrefab: {fileID: 114552724408261780, guid: 849e6abc46b6346d0b8b1d058d7ead46,
     type: 3}
   _AvatarPrefabDriver:
-  - {fileID: 8938021727904404209, guid: 993bd910b90c88f4e8aab3fc68549c12, type: 3}
+  - {fileID: 8938021727904404209, guid: 531f8b770566dd84ca06ec2463f293f2, type: 3}
 --- !u!114 &301934535
 MonoBehaviour:
   m_ObjectHideFlags: 0

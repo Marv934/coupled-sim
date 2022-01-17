@@ -1184,9 +1184,9 @@ GameObject:
   - component: {fileID: 650018555379239884}
   - component: {fileID: 3454787565982020884}
   - component: {fileID: 1103068305145384009}
-  - component: {fileID: 3891258243202827173}
-  - component: {fileID: 6130368315491639826}
-  - component: {fileID: -315234882096823734}
+  - component: {fileID: -3248089486986803273}
+  - component: {fileID: 2386032604461959152}
+  - component: {fileID: -7730390022515479814}
   m_Layer: 9
   m_Name: GSE_DrivableSmartCommon
   m_TagString: ManualCar
@@ -1360,6 +1360,7 @@ MonoBehaviour:
   handbrake: 0
   allowDrift: 1
   speed: 0
+  maxSpeed: 60
   gasParticles: []
   allowBoost: 1
   maxBoost: 10
@@ -1530,7 +1531,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f21b587b2a8e7c4e9f55f86ff600bdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3891258243202827173
+--- !u!114 &-3248089486986803273
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1542,7 +1543,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2ecd52975e5ce34e85ed3732709fe11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6130368315491639826
+--- !u!114 &2386032604461959152
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1554,8 +1555,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7d9a1a8e5feac64681a2a14f951e196, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  logFilePath: 'D:'
---- !u!114 &-315234882096823734
+  logFilePath: Logs
+--- !u!114 &-7730390022515479814
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

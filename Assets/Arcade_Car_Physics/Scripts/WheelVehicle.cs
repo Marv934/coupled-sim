@@ -22,10 +22,12 @@ public interface IVehicle
 // Added for GSE
 public interface GSEVehicle
 {
+    float Steering { get; }
     float SteerAngle { get; }
     bool Reverse { get; }
     float Indicator { get;  }
     bool Engine { get; }
+    float MaxSpeed { get; }
 }
 
 namespace VehicleBehaviour {
@@ -42,11 +44,11 @@ namespace VehicleBehaviour {
 
         // Input names to read using GetAxis
         [SerializeField] string throttleInput = "Throttle";
-        [SerializeField] string brakeInput = "Brake";
+        [SerializeField] string brakeInput = "Break";
         [SerializeField] string turnInput = "Horizontal";
         [SerializeField] string jumpInput = "Jump";
-        [SerializeField] string driftInput = "Drift";
-	    [SerializeField] string boostInput = "Boost";
+        [SerializeField] string driftInput = "Fire1";
+	    [SerializeField] string boostInput = "Fire2";
         [SerializeField] string blinkersLeftInput = "blinker_left";
         [SerializeField] string blinkersRightInput = "blinker_right";
         [SerializeField] string blinkersClearInput = "blinker_clear";
@@ -100,7 +102,7 @@ namespace VehicleBehaviour {
         public float DiffGearing { get { return diffGearing; } set { diffGearing = value; } }
 
         // Basicaly how hard it brakes
-        [SerializeField] float brakeForce = 1500.0f;
+        [SerializeField] float brakeForce = 1250.0f;
         public float BrakeForce { get { return brakeForce; } set { brakeForce = value; } }
 
         // Max steering hangle, usualy higher for drift car
@@ -120,7 +122,7 @@ namespace VehicleBehaviour {
 
         // How hard do you want to drift?
         [Range(0.0f, 2f)]
-        [SerializeField] float driftIntensity = 1f;
+        [SerializeField] float driftIntensity = 0.5f;
         public float DriftIntensity { get { return driftIntensity; } set { driftIntensity = Mathf.Clamp(value, 0.0f, 2.0f); }}
 
         // Reset Values
@@ -159,6 +161,13 @@ namespace VehicleBehaviour {
         // Use this to read the current car speed (you'll need this to make a speedometer)
         [SerializeField] float speed = 0.0f;
         public float Speed { get{ return speed; } }
+
+        // Added for GSE - Start
+
+        [SerializeField] float maxSpeed = 60.0f;
+        public float MaxSpeed { get { return maxSpeed; } }
+
+        // Added for GSE - End
 
         [Header("Particles")]
         // Exhaust fumes
@@ -207,7 +216,7 @@ namespace VehicleBehaviour {
 
         // Added for GSE - Start
         // Blinkers
-        float indicator = 0.0f;
+        float indicator = 0.5f;
         public float Indicator { get { return indicator; } }
 
         // Engine Start/Stop
@@ -301,14 +310,14 @@ namespace VehicleBehaviour {
                     {
                         blinkers.StartLeftBlinkers();
                         // Added for GSE - Start
-                        indicator = -1.0f;
+                        indicator = 0.0f;
                         // Added for GSE - End
                     }
                     else
                     {
                         blinkers.Stop();
                         // Added for GSE - Start
-                        indicator = 0.0f;
+                        indicator = 0.5f;
                         // Added for GSE - End
                     }
                 }
@@ -325,7 +334,7 @@ namespace VehicleBehaviour {
                     {
                         blinkers.Stop();
                         // Added for GSE - Start
-                        indicator = 0.0f;
+                        indicator = 0.5f;
                         // Added for GSE - End
                     }
                 }
@@ -333,7 +342,7 @@ namespace VehicleBehaviour {
                 {
                     blinkers.Stop();
                     // Added for GSE - Start
-                    indicator = 0.0f;
+                    indicator = 0.5f;
                     // Added for GSE - End
                 }
             }
@@ -344,19 +353,14 @@ namespace VehicleBehaviour {
         public float steeringWheelMul = -2;
         // Update everything
         void FixedUpdate () {
-            // Mesure current speed
             // Added for GSE - Start
-            //if (isPlayer)
-            //{
-            //    if (engine)
-            //    {
-            //        speed = transform.InverseTransformDirection(_rb.velocity).z * 3.6f; // All as was
-            //    } else if (!engine)
-            //    {
-            //        speed = 0.0f;
-            //    }
-            //}
+
+            // max out velocity
+            _rb.velocity = Vector3.ClampMagnitude(_rb.velocity, maxSpeed / 3.6f);
+
             // Added for GSE - End
+            // Mesure current speed
+
             speed = transform.InverseTransformDirection(_rb.velocity).z * 3.6f;
 
             // Get all the inputs!
@@ -364,16 +368,6 @@ namespace VehicleBehaviour {
                 // Accelerate & brake
                 if (throttleInput != "" && throttleInput != null)
                 {
-                    // Added for GSE - Start
-                    //if (engine)
-                    //{
-                    //    throttle = GetInput(throttleInput) * (reverse ? -1f : 1); // All as was
-                    //}
-                    //else if (!engine)
-                    //{
-                    //    throttle = (reverse ? -1f : 1);
-                    //}
-                    // Added for GSE - End
                     throttle = GetInput(throttleInput) * (reverse ? -1f : 1);
                 }
                 //breaking = Mathf.Clamp01(GetInput(brakeInput));

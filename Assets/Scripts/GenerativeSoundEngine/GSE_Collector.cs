@@ -1,6 +1,7 @@
 ﻿/*
  * This code is part of Generative Sound Engine
  */
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,10 +13,10 @@ namespace GenerativeSoundEngine
     public interface GSE_Data
     {
         float Speed { get; }
-        float SteerAngle { get; }
-        bool Reverse { get; }
+        float Steering { get; }
+        float Reverse { get; }
         float Indicator { get; }
-        bool Engine { get; }
+        float Engine { get; }
     }
 
     // Requiered Components
@@ -31,20 +32,20 @@ namespace GenerativeSoundEngine
         public float Speed { get { return speed; } }
 
         // SteerAngle
-        float steerAngle = 30.0f;
-        public float SteerAngle { get { return steerAngle; } }
+        float steering = 0.0f;
+        public float Steering { get { return steering; } }
 
         // Reverse
-        bool reverse = false;
-        public bool Reverse { get { return reverse; } }
+        float reverse = 0.0f;
+        public float Reverse { get { return reverse; } }
 
         // Blinker
-        float indicator = 0.0f;
+        float indicator = 0.5f;
         public float Indicator { get { return indicator; } }
 
         // Engine
-        bool engine = false;
-        public bool Engine { get { return engine; } }
+        float engine = 0.0f;
+        public float Engine { get { return engine; } }
 
         // Init Interfaces from other Classes
 
@@ -69,20 +70,20 @@ namespace GenerativeSoundEngine
 
             // Update Interface members
 
-            // Speed
-            speed = Vehicle.Speed;
+            // Speed - normiert
+            speed = Math.Abs(Vehicle.Speed) / Vehicle_GSE.MaxSpeed;
 
-            // SteerAngle
-            steerAngle = Vehicle_GSE.SteerAngle;
+            // SteerAngle - normiert
+            steering = Vehicle_GSE.Steering/(2*Vehicle_GSE.SteerAngle) + 0.5f;
 
             // Reverse
-            reverse = Vehicle_GSE.Reverse;
+            reverse = Vehicle_GSE.Reverse ? 1.0f : 0.0f;
 
             // Blinker
             indicator = Vehicle_GSE.Indicator;
 
             // Engine
-            engine = Vehicle_GSE.Engine;
+            engine = Vehicle_GSE.Engine ? 1.0f : 0.0f;
 
         }
     }
