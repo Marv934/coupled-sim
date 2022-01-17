@@ -9,6 +9,7 @@ Assets/Scripts/GenerativeSoundEngine/*
 ## Changed Files:
 
 Assets/Arcade_Car_Physics/Scripts/WheelVehicle
+Assets/Scripts/LevelManager/LevelNames
 
 ## Addes Assets:
 extOSC
