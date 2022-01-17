@@ -10,6 +10,9 @@ Assets/Scripts/GenerativeSoundEngine/*
 
 Assets/Arcade_Car_Physics/Scripts/WheelVehicle
 
+## Addes Assets:
+extOSC
+
 ## Inputs Added
 
 engine_start_stop - Button "p" - toggles Handbreake, sets breakforce to 1

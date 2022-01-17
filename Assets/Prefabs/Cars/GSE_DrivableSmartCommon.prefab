@@ -1186,6 +1186,7 @@ GameObject:
   - component: {fileID: 1103068305145384009}
   - component: {fileID: 3891258243202827173}
   - component: {fileID: 6130368315491639826}
+  - component: {fileID: -315234882096823734}
   m_Layer: 9
   m_Name: GSE_DrivableSmartCommon
   m_TagString: ManualCar
@@ -1554,6 +1555,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   logFilePath: 'D:'
+--- !u!114 &-315234882096823734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1787876385652902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e1a8f3efa433e649ac6f381dceec7b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Transmitter: {fileID: 0}
+  RemoteHost: 127.0.0.1
+  RemotePort: 7711
+  RootAddress: /GSE
 --- !u!1 &1819827312411906
 GameObject:
   m_ObjectHideFlags: 0
@@ -8079,9 +8096,9 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1448032191394478388}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &8595803345552135824 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7156813555140538276, guid: dbbb24367dd809f40a8b370b699c7028,
+--- !u!1 &8595803345551730976 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7156813555140677652, guid: dbbb24367dd809f40a8b370b699c7028,
     type: 3}
   m_PrefabInstance: {fileID: 1448032191394478388}
   m_PrefabAsset: {fileID: 0}
@@ -8091,9 +8108,9 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1448032191394478388}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &8595803345551730976 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7156813555140677652, guid: dbbb24367dd809f40a8b370b699c7028,
+--- !u!4 &8595803345552084968 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7156813555140589276, guid: dbbb24367dd809f40a8b370b699c7028,
     type: 3}
   m_PrefabInstance: {fileID: 1448032191394478388}
   m_PrefabAsset: {fileID: 0}
@@ -8217,15 +8234,15 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1448032191394478388}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &8595803345552109102 stripped
+--- !u!4 &8595803345552135824 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 7156813555140564762, guid: dbbb24367dd809f40a8b370b699c7028,
+  m_CorrespondingSourceObject: {fileID: 7156813555140538276, guid: dbbb24367dd809f40a8b370b699c7028,
     type: 3}
   m_PrefabInstance: {fileID: 1448032191394478388}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &8595803345552084968 stripped
+--- !u!4 &8595803345552109102 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 7156813555140589276, guid: dbbb24367dd809f40a8b370b699c7028,
+  m_CorrespondingSourceObject: {fileID: 7156813555140564762, guid: dbbb24367dd809f40a8b370b699c7028,
     type: 3}
   m_PrefabInstance: {fileID: 1448032191394478388}
   m_PrefabAsset: {fileID: 0}
