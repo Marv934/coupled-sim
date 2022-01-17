@@ -16,11 +16,21 @@ public interface IVehicle
 {
     bool Handbrake { get; }
     float Speed { get; }
+
+ }
+
+// Added for GSE
+public interface GSEVehicle
+{
+    float SteerAngle { get; }
+    bool Reverse { get; }
+    float Indicator { get;  }
+    bool Engine { get; }
 }
 
 namespace VehicleBehaviour {
     [RequireComponent(typeof(Rigidbody))]
-    public class WheelVehicle : MonoBehaviour, IVehicle {
+    public class WheelVehicle : MonoBehaviour, IVehicle, GSEVehicle {
         
         [Header("Inputs")]
     #if MULTIOSCONTROLS
@@ -40,6 +50,9 @@ namespace VehicleBehaviour {
         [SerializeField] string blinkersLeftInput = "blinker_left";
         [SerializeField] string blinkersRightInput = "blinker_right";
         [SerializeField] string blinkersClearInput = "blinker_clear";
+        // Added for GSE - Start
+        [SerializeField] string EngineStartStop = "engine_start_stop";
+        // Added for GSE - Stop
         
         /* 
          *  Turn input curve: x real input, y value used
@@ -192,6 +205,17 @@ namespace VehicleBehaviour {
         Rigidbody _rb;
         WheelCollider[] wheels;
 
+        // Added for GSE - Start
+        // Blinkers
+        float indicator = 0.0f;
+        public float Indicator { get { return indicator; } }
+
+        // Engine Start/Stop
+        bool engine = false;
+        public bool Engine { get { return engine; } }
+
+        // Added for GSE - End
+
         // Init rigidbody, center of mass, wheels and more
         void Start() {
 #if MULTIOSCONTROLS
@@ -222,6 +246,9 @@ namespace VehicleBehaviour {
         }
 
         bool reverse = false;
+        // Added for GSE - Start
+        public bool Reverse { get { return reverse; } }
+        // Added for GSE - End
 
         // Visual feedbacks and boost regen
         void Update()
@@ -241,6 +268,25 @@ namespace VehicleBehaviour {
             // Get all the inputs!
             if (isPlayer)
             {
+                // Added for GSE - Start
+                if (Input.GetButtonDown("engine_start_stop"))
+                {
+                    if (engine)
+                    {
+                        engine = false;
+
+                        // set Handbrake to true
+                        handbrake = true;
+                    } else if (!engine)
+                    {
+                        engine = true;
+
+                        // set Handbrake to false
+                        handbrake = false;
+                    }
+                }
+                // Added for GSE - End
+
                 if (Input.GetButtonDown("forward"))
                 {
                     reverse = false;
@@ -254,10 +300,16 @@ namespace VehicleBehaviour {
                     if (blinkers.State != BlinkerState.Left)
                     {
                         blinkers.StartLeftBlinkers();
+                        // Added for GSE - Start
+                        indicator = -1.0f;
+                        // Added for GSE - End
                     }
                     else
                     {
                         blinkers.Stop();
+                        // Added for GSE - Start
+                        indicator = 0.0f;
+                        // Added for GSE - End
                     }
                 }
                 else if (Input.GetButtonDown("blinker_right"))
@@ -265,15 +317,24 @@ namespace VehicleBehaviour {
                     if (blinkers.State != BlinkerState.Right)
                     {
                         blinkers.StartRightBlinkers();
+                        // Added for GSE - Start
+                        indicator = 1.0f;
+                        // Added for GSE - End
                     }
                     else
                     {
                         blinkers.Stop();
+                        // Added for GSE - Start
+                        indicator = 0.0f;
+                        // Added for GSE - End
                     }
                 }
                 else if (Input.GetButtonDown("blinker_clear"))
                 {
                     blinkers.Stop();
+                    // Added for GSE - Start
+                    indicator = 0.0f;
+                    // Added for GSE - End
                 }
             }
         }
@@ -284,6 +345,18 @@ namespace VehicleBehaviour {
         // Update everything
         void FixedUpdate () {
             // Mesure current speed
+            // Added for GSE - Start
+            //if (isPlayer)
+            //{
+            //    if (engine)
+            //    {
+            //        speed = transform.InverseTransformDirection(_rb.velocity).z * 3.6f; // All as was
+            //    } else if (!engine)
+            //    {
+            //        speed = 0.0f;
+            //    }
+            //}
+            // Added for GSE - End
             speed = transform.InverseTransformDirection(_rb.velocity).z * 3.6f;
 
             // Get all the inputs!
@@ -291,9 +364,29 @@ namespace VehicleBehaviour {
                 // Accelerate & brake
                 if (throttleInput != "" && throttleInput != null)
                 {
-                    throttle = GetInput(throttleInput) * (reverse?-1f:1);
+                    // Added for GSE - Start
+                    //if (engine)
+                    //{
+                    //    throttle = GetInput(throttleInput) * (reverse ? -1f : 1); // All as was
+                    //}
+                    //else if (!engine)
+                    //{
+                    //    throttle = (reverse ? -1f : 1);
+                    //}
+                    // Added for GSE - End
+                    throttle = GetInput(throttleInput) * (reverse ? -1f : 1);
                 }
-                breaking = Mathf.Clamp01(GetInput(brakeInput));
+                //breaking = Mathf.Clamp01(GetInput(brakeInput));
+                
+                // Added for GSE - Start
+                if (engine)
+                {
+                    breaking = Mathf.Clamp01(GetInput(brakeInput));
+                } else if (!engine)
+                {
+                    breaking = 1.0f;
+                }
+                // Added for GSE - End
 
                 // Turn
                 steering = turnInputCurve.Evaluate(GetInput(turnInput)) * steerAngle;
