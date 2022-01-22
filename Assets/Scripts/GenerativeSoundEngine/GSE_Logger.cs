@@ -21,7 +21,7 @@ namespace GenerativeSoundEngine
         // Init <logfile>.csv
         [Header("PATH")]
         [SerializeField] string logFilePath = @"Logs";
-        string startDate = DateTime.Now.ToString().Replace(" ", "-").Replace(".", "-").Replace(":", "-");
+        DateTime startDate = DateTime.Now; 
         string logFile;
         string logSeperator = ",";
         string stringWrite;
@@ -37,7 +37,7 @@ namespace GenerativeSoundEngine
             collector = GetComponent<GSE_Collector>();
 
             // Create logfile
-            logFile = logFilePath + "/GSE_LOG_" + startDate + ".csv";
+            logFile = logFilePath + "/GSE_LOG_" + startDate.ToString().Replace(" ", "-").Replace(".", "-").Replace(":", "-") + ".csv";
             Console.WriteLine(logFile);
 
             // Column name String
@@ -46,15 +46,17 @@ namespace GenerativeSoundEngine
 
             // Create and write logfile
             File.WriteAllText(logFile, stringWrite);
+
         }
 
         // Update is called once per frame
         void Update()
         {
 
+            TimeSpan timePassed = DateTime.Now - startDate;
             // Value String Array
             string value =
-                DateTime.Now.ToString() + logSeperator +
+                timePassed.ToString() + logSeperator +
                 collector.Speed.ToString("0.0000", CultureInfo.GetCultureInfo("en-US")) + logSeperator +
                 collector.Steering.ToString("0.0000", CultureInfo.GetCultureInfo("en-US")) + logSeperator +
                 collector.Reverse.ToString("0.0000", CultureInfo.GetCultureInfo("en-US")) + logSeperator +

@@ -54865,7 +54865,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2038542038}
-  - component: {fileID: 1199998435}
   - component: {fileID: 1199998434}
   m_Layer: 19
   m_Name: Smart
@@ -54888,23 +54887,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.612, y: 1.4875, z: 2.698}
   m_Center: {x: 0.508, y: 1.4125, z: 0.648}
---- !u!54 &1199998435
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 54537133333842760, guid: da683897532d07e498ed7953213955f1,
-    type: 3}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1199998432}
-  serializedVersion: 2
-  m_Mass: 800
-  m_Drag: 0.1
-  m_AngularDrag: 0.1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 4
-  m_CollisionDetection: 0
 --- !u!1 &1201143275
 GameObject:
   m_ObjectHideFlags: 0
@@ -83521,7 +83503,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!108 &1575794929
 Light:
   m_ObjectHideFlags: 0
@@ -83529,7 +83511,7 @@ Light:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1575794928}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
@@ -106884,7 +106866,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1199998432}
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 78.78, y: -0.45, z: 3.4}
+  m_LocalPosition: {x: 78.78, y: -0.45, z: 3.31}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1208168214}
