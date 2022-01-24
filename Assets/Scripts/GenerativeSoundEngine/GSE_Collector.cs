@@ -62,39 +62,8 @@ namespace GenerativeSoundEngine
         private IVehicle Vehicle;
         private GSEVehicle Vehicle_GSE;
 
-        // Rigidbody 
-        public Vector3 center;
-        public Rigidbody rb;
-
-        // Collidision Calculation
-        void CollisionCalculator(out float proximity, out float proximityAngle)
-        {
-            // get rigidbody center
-            rb = GetComponent<Rigidbody>();
-            center = rb.position;
-
-            proximity = 0.0f;
-            proximityAngle = 0.0f;
-
-            // Collect Colliders
-            Collider[] Colliders = Physics.OverlapSphere(center, 10);
-
-            // get nearest Collider
-            float dist_clostest = 11.0f;
-            foreach (var Collider in Colliders)
-            {
-                proximityAngle = proximityAngle + 1.0f;
-                Vector3 closestPoint = Collider.ClosestPoint(center);
-                float dist_current = Vector3.Distance(center, closestPoint);
-                if ((dist_current < dist_clostest) && (dist_current > 0.0f))
-                {
-                    dist_clostest = dist_current;
-                }
-            }
-            //
-            proximity = dist_clostest;
-            //proximityAngle = 10.0f;
-        }
+        // GSE Collision
+        private GSE_Collision Collision_GSE;
 
         // Start is called before the first frame update
         void Start()
@@ -103,6 +72,8 @@ namespace GenerativeSoundEngine
             // Get Components from other Classes
             Vehicle = GetComponent<VehicleBehaviour.WheelVehicle>();
             Vehicle_GSE = GetComponent<VehicleBehaviour.WheelVehicle>();
+
+            Collision_GSE = GetComponentsInChildren<GSE_Collision>()[0];
 
         }
 
@@ -128,7 +99,8 @@ namespace GenerativeSoundEngine
             engine = Vehicle_GSE.Engine ? 1.0f : 0.0f;
 
             // Proximity
-            CollisionCalculator(out proximity, out proximityAngle);
+            proximityAngle = Collision_GSE.ProximityAngle;
+            proximity = Collision_GSE.Proximity;
 
         }
     }

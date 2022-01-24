@@ -1,26 +1,90 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
-public class GSE_Collision : MonoBehaviour
+namespace GenerativeSoundEngine
 {
-
-    Collider m_ObjectCollider;
-
-    // Start is called before the first frame update
-    void Start()
+    public interface GSE_Proximity
     {
-        //Fetch the GameObject's Collider (make sure they have a Collider component)
-        m_ObjectCollider = GetComponent<Collider>();
-        //Here the GameObject's Collider is not a trigger
-        //m_ObjectCollider.isTrigger = false;
-        //Output whether the Collider is a trigger type Collider or not
-        Debug.Log("Trigger On : " + m_ObjectCollider.isTrigger);
+        float Proximity { get; }
+        float ProximityAngle { get; }
     }
-
-    // Update is called once per frame
-    void Update()
+    
+    public class GSE_Collision : MonoBehaviour
     {
-        
+        struct CollidersListEntry
+        {
+            public Collider collider;
+            public float proximity;
+            public float proximityAngle;
+        }
+
+        // Proximity
+        float proximity = 1.0f;
+        public float Proximity { get { return proximity; } }
+
+        float proximityAngle = 1.0f;
+        public float ProximityAngle { get { return proximityAngle; } }
+
+        // Collider
+        Collider ProximityCollider;
+
+        // Collided Objects
+        List<CollidersListEntry> Colliders = new List<CollidersListEntry>();
+
+        // Start is called before the first frame update
+        void Start()
+        {
+            ProximityCollider = GetComponent<Collider>();
+
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+            // Proximity
+            //proximityAngle = (float)Colliders.Count;
+
+            List<CollidersListEntry> Colliders_sorted = Colliders.OrderBy(Entry => Entry.proximity).ToList();
+            if (Colliders_sorted.Count != 0)
+            {
+                proximity = Colliders_sorted[0].proximity;
+                proximityAngle = Colliders_sorted[0].proximityAngle;
+            }
+            else
+            {
+                proximity = 100.0f;
+            }
+        }
+
+        void OnTriggerEnter(Collider other)
+        {
+            CollidersListEntry ListEntry;
+            ListEntry.collider = other;
+            Vector3 closestPoint = other.ClosestPoint(ProximityCollider.bounds.center);
+            ListEntry.proximity = Vector3.Distance(closestPoint, ProximityCollider.bounds.center);
+            ListEntry.proximityAngle = Vector3.Angle(closestPoint, transform.forward); ;
+
+            Colliders.Add(ListEntry);
+        }
+
+        void OnTriggerExit(Collider other)
+        {
+            Colliders.RemoveAll(Entry => Entry.collider == other);
+        }
+
+        void OnTriggerStay(Collider other)
+        {
+            int index = Colliders.FindIndex(Entry => Entry.collider == other);
+
+            CollidersListEntry ListEntry;
+            ListEntry.collider = other;
+            Vector3 closestPoint = other.ClosestPoint(ProximityCollider.bounds.center);
+            ListEntry.proximity = Vector3.Distance(closestPoint, ProximityCollider.bounds.center);
+            ListEntry.proximityAngle = Vector3.Angle(closestPoint, transform.forward);
+
+            Colliders[index] = ListEntry;
+        }
     }
 }
