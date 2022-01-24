@@ -41,7 +41,7 @@ namespace GenerativeSoundEngine
             Console.WriteLine(logFile);
 
             // Column name String
-            string[] headerArray = { "Timestamp", "Speed", "Steering", "Reverse", "Indicator", "Engine" };
+            string[] headerArray = { "Timestamp", "Speed", "Steering", "Reverse", "Indicator", "Engine", "Proximity", "ProximityAngle" };
             stringWrite = string.Join(logSeperator, headerArray) + ";" + System.Environment.NewLine;
 
             // Create and write logfile
@@ -62,6 +62,8 @@ namespace GenerativeSoundEngine
                 collector.Reverse.ToString("0.0000", CultureInfo.GetCultureInfo("en-US")) + logSeperator +
                 collector.Indicator.ToString("0.0000", CultureInfo.GetCultureInfo("en-US")) + logSeperator +
                 collector.Engine.ToString("0.0000", CultureInfo.GetCultureInfo("en-US")) + logSeperator +
+                collector.Proximity.ToString("0.0000", CultureInfo.GetCultureInfo("en-US")) + logSeperator +
+                collector.ProximityAngle.ToString("0.0000", CultureInfo.GetCultureInfo("en-US")) +
                 ";" + System.Environment.NewLine;
 
             // Write to logfile

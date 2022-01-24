@@ -223,6 +223,9 @@ namespace VehicleBehaviour {
         bool engine = false;
         public bool Engine { get { return engine; } }
 
+        public GenerativeSoundEngine.GSE_AI_Test GSE_AI_Test = new GenerativeSoundEngine.GSE_AI_Test();
+        public DateTime startDate;
+
         // Added for GSE - End
 
         // Init rigidbody, center of mass, wheels and more
@@ -252,11 +255,17 @@ namespace VehicleBehaviour {
             {
                 wheel.motorTorque = 0.0001f;
             }
+
+            // Added for GSE AI-Test - Start
+            startDate = DateTime.Now;
+            // Added for GSE AI-Test - End
+
         }
 
         bool reverse = false;
         // Added for GSE - Start
         public bool Reverse { get { return reverse; } }
+
         // Added for GSE - End
 
         // Visual feedbacks and boost regen
@@ -345,6 +354,23 @@ namespace VehicleBehaviour {
                     indicator = 0.5f;
                     // Added for GSE - End
                 }
+            // Added for GSE - AI-Test - Start
+            }
+            else if (!isPlayer)
+            {
+
+                GSE_AI_Test.Timer(startDate, DateTime.Now);
+
+                // Engine Start/Stop
+                GSE_AI_Test.CheckEngine(out engine, out handbrake);
+
+                // Blinker Left
+                GSE_AI_Test.CheckBlinkers(blinkers, out indicator);
+
+                // Reverse
+                GSE_AI_Test.CheckReverse(out reverse);
+
+                // Added for GSE - AI-Test - End
             }
         }
 
@@ -384,6 +410,24 @@ namespace VehicleBehaviour {
 
                 // Turn
                 steering = turnInputCurve.Evaluate(GetInput(turnInput)) * steerAngle;
+            
+            // Added for GSE - AI-Test - Start
+            } else if (!isPlayer)
+            {
+                // Accelerate & brake
+                // - throttle
+                GSE_AI_Test.CheckThrottle(out throttle);
+
+                // - breaking
+                GSE_AI_Test.CheckBreaking(out breaking);
+
+                // Steering
+                GSE_AI_Test.CheckSteering(out steering);
+
+                // Speed
+                GSE_AI_Test.CheckSpeed(out speed, _rb);
+
+                // Added for GSE - AI-Test - End
             }
 
             steeringWheelAngle = Mathf.Lerp(steeringWheelAngle, steering * steeringWheelMul, steerSpeed);

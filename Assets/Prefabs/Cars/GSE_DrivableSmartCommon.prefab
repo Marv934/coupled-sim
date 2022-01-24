@@ -1180,7 +1180,6 @@ GameObject:
   - component: {fileID: 772200647187876941}
   - component: {fileID: 65347742212538414}
   - component: {fileID: 8938021727904404209}
-  - component: {fileID: 7713759469045616529}
   - component: {fileID: 650018555379239884}
   - component: {fileID: 3454787565982020884}
   - component: {fileID: 1103068305145384009}
@@ -1242,7 +1241,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c241727a8fc83048b56bdd0b450f8fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPlayer: 1
+  isPlayer: 0
   throttleInput: Throttle
   brakeInput: Break
   turnInput: Horizontal
@@ -1456,32 +1455,6 @@ MonoBehaviour:
   - {fileID: 2590204308891740255}
   - {fileID: 8414590981671948444}
   _carBlinkers: {fileID: 114087306401717236}
---- !u!114 &7713759469045616529
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1787876385652902}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b100b64279042ff46b83465c27e51ad0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  state: 0
-  jerk: 2
-  turn_rate_degree: 360
-  speed: 0
-  acceleration: 0
-  t: 0
-  HasPitch: 1
-  model: {fileID: 4031069173782525989}
-  braking: 0
-  reset: 0
-  WaitInputX: 0
-  WaitTrialX: 0
-  WaitTrialZ: 0
-  target: {fileID: 0}
 --- !u!114 &650018555379239884
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1543,6 +1516,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2ecd52975e5ce34e85ed3732709fe11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  center: {x: 0, y: 0, z: 0}
+  rb: {fileID: 0}
 --- !u!114 &2386032604461959152
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8097,9 +8072,9 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1448032191394478388}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &8595803345551730976 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7156813555140677652, guid: dbbb24367dd809f40a8b370b699c7028,
+--- !u!4 &8595803345552135824 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7156813555140538276, guid: dbbb24367dd809f40a8b370b699c7028,
     type: 3}
   m_PrefabInstance: {fileID: 1448032191394478388}
   m_PrefabAsset: {fileID: 0}
@@ -8109,9 +8084,9 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1448032191394478388}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &8595803345552084968 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7156813555140589276, guid: dbbb24367dd809f40a8b370b699c7028,
+--- !u!1 &8595803345551730976 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7156813555140677652, guid: dbbb24367dd809f40a8b370b699c7028,
     type: 3}
   m_PrefabInstance: {fileID: 1448032191394478388}
   m_PrefabAsset: {fileID: 0}
@@ -8235,15 +8210,15 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1448032191394478388}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &8595803345552135824 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7156813555140538276, guid: dbbb24367dd809f40a8b370b699c7028,
-    type: 3}
-  m_PrefabInstance: {fileID: 1448032191394478388}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8595803345552109102 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7156813555140564762, guid: dbbb24367dd809f40a8b370b699c7028,
+    type: 3}
+  m_PrefabInstance: {fileID: 1448032191394478388}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8595803345552084968 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7156813555140589276, guid: dbbb24367dd809f40a8b370b699c7028,
     type: 3}
   m_PrefabInstance: {fileID: 1448032191394478388}
   m_PrefabAsset: {fileID: 0}
