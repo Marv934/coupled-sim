@@ -30,30 +30,30 @@ namespace GenerativeSoundEngine
         // Init Interface members
 
         // Speed
-        float speed = 0.0f;
+        [SerializeField] float speed = 0.0f;
         public float Speed { get { return speed; } }
 
         // SteerAngle
-        float steering = 0.0f;
+        [SerializeField] float steering = 0.0f;
         public float Steering { get { return steering; } }
 
         // Reverse
-        float reverse = 0.0f;
+        [SerializeField] float reverse = 0.0f;
         public float Reverse { get { return reverse; } }
 
         // Blinker
-        float indicator = 0.5f;
+        [SerializeField] float indicator = 0.5f;
         public float Indicator { get { return indicator; } }
 
         // Engine
-        float engine = 0.0f;
+        [SerializeField] float engine = 0.0f;
         public float Engine { get { return engine; } }
 
         // Proximity
-        float proximity = 1.1f;
+        [SerializeField] float proximity = 1.1f;
         public float Proximity { get { return proximity; } }
 
-        float proximityAngle = 0.0f;
+        [SerializeField] float proximityAngle = 0.0f;
         public float ProximityAngle { get { return proximityAngle; } }
 
         // Init Interfaces from other Classes
