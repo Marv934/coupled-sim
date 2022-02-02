@@ -14,7 +14,6 @@ namespace GenerativeSoundEngine
     {
 
         // Collider
-        // Collider BlindSpotAssistant;
         Collider CarCollider;
 
         // Tracked Colliders

@@ -6063,7 +6063,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3987334469669658348}
   - component: {fileID: 3305590002208347194}
-  - component: {fileID: 4152528248302566074}
+  - component: {fileID: 278260909399602743}
   m_Layer: 9
   m_Name: CollisionAssistant
   m_TagString: Untagged
@@ -6096,9 +6096,9 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.5, y: 0.1, z: 2.73}
-  m_Center: {x: 0, y: 0.6, z: 2.73}
---- !u!114 &4152528248302566074
+  m_Size: {x: 2, y: 0.1, z: 60}
+  m_Center: {x: 0, y: 0.6, z: 31.365}
+--- !u!114 &278260909399602743
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6107,7 +6107,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6011997851113235421}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4d2f1417aa46504fab63c376f88d458, type: 3}
+  m_Script: {fileID: 11500000, guid: 2074302d9e2462d4a8964dd943a00c54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   proximity: 10

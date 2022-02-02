@@ -4,13 +4,13 @@ using UnityEngine;
 
 namespace GenerativeSoundEngine
 {
-    public interface GSE_ParkingProximity
+    public interface GSE_CollisionProximity
     {
         float Proximity { get; }
         float ProximityAngle { get; }
     }
 
-    public class GSE_ParkingAssistant : MonoBehaviour, GSE_ParkingProximity
+    public class GSE_CollisionAssistant : MonoBehaviour, GSE_CollisionProximity
     {
 
         // Collider
@@ -39,7 +39,6 @@ namespace GenerativeSoundEngine
                     CarCollider = Element;
                 }
             }
-            
 
             CarCollector = GetComponentInParent<GSE_Collector>();
         }
@@ -52,44 +51,13 @@ namespace GenerativeSoundEngine
             Vector3 CarCenter = CarCollider.bounds.center;
             CarCenter.y = 0;
 
-            // Get Direction
-            Vector3 CarDirect;
-            if ( CarCollector.Reverse == 0)
-            {
-                CarDirect = Vector3.forward;
-            } else
-            {
-                CarDirect = Vector3.back;
-            }
-            CarDirect.y = 0;
-
-            // tracked Angle:
-            float trackedAngleStart;
-            float trackedAngleStop;
-            //if ( CarCollector.Reverse == 0 )
-            //{ // Forward direction
-                if (CarCollector.Steering < 0.4f)
-                { // steered to Left
-                    trackedAngleStart = -30.0f;
-                    trackedAngleStop = 150.0f;
-                } else if (CarCollector.Steering > 0.6f)
-                { // steered to right
-                    trackedAngleStart = -150.0f;
-                    trackedAngleStop = 30.0f;
-                } else
-                { // not steered
-                    trackedAngleStart = -30.0f;
-                    trackedAngleStop = 30.0f;
-                }
-
             // Set Distance far away
-            float DistClosest = 10.0f;
+            float DistClosest = 70.0f;
             float AnglClosest = 0.0f;
 
             // Check all tracked Colliders
             foreach (Collider Element in Tracked)
             {
-
                 // Calculate Closest Point on Element to CarCenter
                 Vector3 ColliderHitPoint = Element.ClosestPointOnBounds(CarCenter);
                 ColliderHitPoint.y = 0;
@@ -100,14 +68,16 @@ namespace GenerativeSoundEngine
 
                 // Calculate Distance and Angle
                 float Distance = Vector3.Distance(ColliderHitPoint, CarHitPoint);
-                float Angle = Vector3.SignedAngle(transform.InverseTransformPoint(ColliderHitPoint), CarDirect, Vector3.up);
+                float Angle = Vector3.SignedAngle(transform.InverseTransformPoint(ColliderHitPoint), Vector3.forward, Vector3.up);
 
-                if ( ( (Angle > trackedAngleStart) && (Angle < trackedAngleStop) )  && (Distance < DistClosest) )
+                if ( (CarCollector.Reverse == 0) && (Distance < (CarCollector.Speed * 60) ) && (Distance < DistClosest) )              
                 {
+                    // Assign Values
                     DistClosest = Distance;
-                    AnglClosest = Vector3.SignedAngle(transform.InverseTransformPoint(ColliderHitPoint), Vector3.forward, Vector3.up);
+                    AnglClosest = Angle;
                 }
             }
+            // Assign Values
             proximity = DistClosest;
             proximityAngle = AnglClosest;
         }
