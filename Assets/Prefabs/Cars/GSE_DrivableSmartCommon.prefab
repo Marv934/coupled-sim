@@ -1183,8 +1183,7 @@ GameObject:
   - component: {fileID: 650018555379239884}
   - component: {fileID: 3454787565982020884}
   - component: {fileID: 1103068305145384009}
-  - component: {fileID: -3248089486986803273}
-  - component: {fileID: 2386032604461959152}
+  - component: {fileID: 4618407919549857774}
   - component: {fileID: -7730390022515479814}
   m_Layer: 9
   m_Name: GSE_DrivableSmartCommon
@@ -1503,7 +1502,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f21b587b2a8e7c4e9f55f86ff600bdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-3248089486986803273
+--- !u!114 &4618407919549857774
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1512,29 +1511,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1787876385652902}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2ecd52975e5ce34e85ed3732709fe11, type: 3}
+  m_Script: {fileID: 11500000, guid: bb49e9f9e18ccf9429fd04e0968e337b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0
-  steering: 0
-  reverse: 0
-  indicator: 0.5
-  engine: 0
-  proximity: 1.1
-  proximityAngle: 0
---- !u!114 &2386032604461959152
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1787876385652902}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7d9a1a8e5feac64681a2a14f951e196, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  logFilePath: Logs
+  ParkingAssistentMaxSpeed: 10
 --- !u!114 &-7730390022515479814
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3188,7 +3168,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5551619988244121399}
   - component: {fileID: 3138585315188274966}
-  - component: {fileID: 6893615763174371244}
   m_Layer: 9
   m_Name: CollisionDetection
   m_TagString: Untagged
@@ -3226,18 +3205,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.5, y: 0.1, z: 2.73}
   m_Center: {x: 0, y: 0.6, z: 0}
---- !u!114 &6893615763174371244
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1787190828205494616}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb49e9f9e18ccf9429fd04e0968e337b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1871276347343848077
 GameObject:
   m_ObjectHideFlags: 0

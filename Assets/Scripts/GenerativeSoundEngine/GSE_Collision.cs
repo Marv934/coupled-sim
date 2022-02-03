@@ -1,42 +1,98 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 
 namespace GenerativeSoundEngine
 {
-    public interface GSE_Proximity
+    public class GSE_Collision : MonoBehaviour
     {
-        float Proximity { get; }
-        float ProximityAngle { get; }
-    }
-    
-    public class GSE_Collision : MonoBehaviour, GSE_Proximity
-    {
+        // Set Collision type Variants
+        [Header("Parking Assistant, static")]
+        [SerializeField] float ParkingAssistentMaxSpeed = 10.0f;
+        [SerializeField] float ParkingAssistentMaxDistance = 1.0f;
 
-        // Init Interface to GSE_ParkingAssistant
-        private GSE_ParkingAssistant ParkingProximity;
+        [Header("Collision Assistant, times maxSpeed")]
+        [SerializeField] float CollisionAssistantMaxDistance = 0.5f;
 
-        // Proximity
-        float proximity = 1.0f;
-        public float Proximity { get { return proximity; } }
+        [Header("Blind Spot Assistant, static")]
+        [SerializeField] float BlindSpotAssistantMaxDistance = 10.0f;
 
-        float proximityAngle = 1.0f;
-        public float ProximityAngle { get { return proximityAngle; } }
+        // Init WheelVehicle
+        private IVehicle IVehicle;
+        private GSEVehicle GSEVehicle;
+
+        // Init Parking Assistant
+        GSE_ParkingAssistant ParkingAssistant;
+        // Init Collision Assistant
+        GSE_CollisionAssistant CollisionAssistant;
+        // Init Blind Spot Assistant
+        GSE_BlindSpotAssistant BlindSpotAssistant;
+
+        // Init OSC Transmitter
+        GSE_OSCtransmitter OSCtransmitter;
 
         // Start is called before the first frame update
         void Start()
         {
-            // Get ParkingAssistant Components
-            ParkingProximity = GetComponentInChildren<GSE_ParkingAssistant>();
+            // Get WheelVehicle Interface
+            IVehicle = GetComponent<VehicleBehaviour.WheelVehicle>();
+            GSEVehicle = GetComponent<VehicleBehaviour.WheelVehicle>();
+
+            // Get Parking Assistant
+            ParkingAssistant = GetComponentInChildren<GSE_ParkingAssistant>();
+            // Get Collision Assistant
+            CollisionAssistant = GetComponentInChildren<GSE_CollisionAssistant>();
+            // Get Blind Spot Assistant
+            BlindSpotAssistant = GetComponentInChildren<GSE_BlindSpotAssistant>();
+
+            // Get OSC Transmitter
+            OSCtransmitter = GetComponent<GSE_OSCtransmitter>();
         }
 
         // Update is called once per frame
         void Update()
         {
-            proximity = ParkingProximity.Proximity;
-            proximityAngle = ParkingProximity.ProximityAngle;
+            // Check if Collision or Parking Assistant
+            // Check Blind Spot Assistant
+            if (GSEVehicle.Indicator != 0)
+            {
+                var BlindSpot = BlindSpotAssistant.BlindSpotUpdate();
 
+                if (BlindSpot.Item1 < BlindSpotAssistantMaxDistance)
+                {
+                    OSCtransmitter.Collision("BlindSpot", BlindSpot.Item1, BlindSpot.Item2);
+                }
+                else
+                {
+                    OSCtransmitter.Collision("None", 0.0f, 0.0f);
+                }
+            } else if (IVehicle.Speed < ParkingAssistentMaxSpeed)
+            {
+                // Check Parking Assistant
+                var Parking = ParkingAssistant.ParkingUpdate();
+
+                if (Parking.Item1 < ParkingAssistentMaxDistance)
+                {
+                    OSCtransmitter.Collision("Parking", Parking.Item1, Parking.Item2);
+                }
+                else
+                {
+                    OSCtransmitter.Collision("None", 0.0f, 0.0f);
+                }
+            } else
+            {
+                // Check Collision Assistant
+                var Collision = CollisionAssistant.CollisionUpdate();
+
+                if (Collision.Item1 < GSEVehicle.MaxSpeed * CollisionAssistantMaxDistance)
+                {
+                    OSCtransmitter.Collision("Collision", Collision.Item1, Collision.Item2);
+                } else
+                {
+                    OSCtransmitter.Collision("None", 0.0f, 0.0f);
+                }
+            }
         }
     }
+
 }

@@ -1,6 +1,9 @@
 ﻿/*
  * This code is part of Arcade Car Physics for Unity by Saarg (2018)
  * 
+ * This Version is Changed by Marv924 (2022) as part of Generative Sound Engine for Coupled Sim in Unity
+ * Developped as part of the Sonic Interaction Design Seminar at Audiokomminikation Group, TU Berlin
+ * 
  * This is distributed under the MIT Licence (see LICENSE.md for details)
  */
 using System;
@@ -16,14 +19,13 @@ public interface IVehicle
 {
     bool Handbrake { get; }
     float Speed { get; }
-
  }
 
 // Added for GSE
 public interface GSEVehicle
 {
     float Steering { get; }
-    float SteerAngle { get; }
+    //float SteerAngle { get; }
     bool Reverse { get; }
     float Indicator { get;  }
     bool Engine { get; }
@@ -52,9 +54,10 @@ namespace VehicleBehaviour {
         [SerializeField] string blinkersLeftInput = "blinker_left";
         [SerializeField] string blinkersRightInput = "blinker_right";
         [SerializeField] string blinkersClearInput = "blinker_clear";
-        // Added for GSE - Start
+        
+        // Start/Stop Button added for GSE - Start
         [SerializeField] string EngineStartStop = "engine_start_stop";
-        // Added for GSE - Stop
+        // Start/Stop Button added for GSE - Stop
         
         /* 
          *  Turn input curve: x real input, y value used
@@ -162,12 +165,12 @@ namespace VehicleBehaviour {
         [SerializeField] float speed = 0.0f;
         public float Speed { get{ return speed; } }
 
-        // Added for GSE - Start
+        // maxSpeed added for GSE - Start
 
         [SerializeField] float maxSpeed = 60.0f;
         public float MaxSpeed { get { return maxSpeed; } }
 
-        // Added for GSE - End
+        // maxSpeed added for GSE - End
 
         [Header("Particles")]
         // Exhaust fumes
@@ -226,6 +229,7 @@ namespace VehicleBehaviour {
         public GenerativeSoundEngine.GSE_AI_Test GSE_AI_Test = new GenerativeSoundEngine.GSE_AI_Test();
         public DateTime startDate;
 
+        GenerativeSoundEngine.GSE_OSCtransmitter OSCtransmitter;
         // Added for GSE - End
 
         // Init rigidbody, center of mass, wheels and more
@@ -256,9 +260,11 @@ namespace VehicleBehaviour {
                 wheel.motorTorque = 0.0001f;
             }
 
-            // Added for GSE AI-Test - Start
+            // Added for GSE - Start
             startDate = DateTime.Now;
-            // Added for GSE AI-Test - End
+
+            OSCtransmitter = GetComponent<GenerativeSoundEngine.GSE_OSCtransmitter>();
+            // Added for GSE - End
 
         }
 
@@ -293,11 +299,17 @@ namespace VehicleBehaviour {
                     {
                         engine = false;
 
+                        // Send OSCMessage
+                        OSCtransmitter.EngineStart();
+
                         // set Handbrake to true
                         handbrake = true;
                     } else if (!engine)
                     {
                         engine = true;
+
+                        // Send OSCMessage
+                        OSCtransmitter.EngineStop();
 
                         // set Handbrake to false
                         handbrake = false;
@@ -308,9 +320,11 @@ namespace VehicleBehaviour {
                 if (Input.GetButtonDown("forward"))
                 {
                     reverse = false;
+                    OSCtransmitter.Forward();
                 } else if (Input.GetButtonDown("reverse"))
                 {
                     reverse = true;
+                    OSCtransmitter.Reverse();
                 }
 
                 if (Input.GetButtonDown("blinker_left"))
@@ -319,14 +333,16 @@ namespace VehicleBehaviour {
                     {
                         blinkers.StartLeftBlinkers();
                         // Added for GSE - Start
-                        indicator = 0.0f;
+                        indicator = -1.0f;
+                        OSCtransmitter.IndicatorStartLeft();
                         // Added for GSE - End
                     }
                     else
                     {
                         blinkers.Stop();
                         // Added for GSE - Start
-                        indicator = 0.5f;
+                        indicator = 0.0f;
+                        OSCtransmitter.IndicatorStop();
                         // Added for GSE - End
                     }
                 }
@@ -337,13 +353,15 @@ namespace VehicleBehaviour {
                         blinkers.StartRightBlinkers();
                         // Added for GSE - Start
                         indicator = 1.0f;
+                        OSCtransmitter.IndicatorStartRight();
                         // Added for GSE - End
                     }
                     else
                     {
                         blinkers.Stop();
                         // Added for GSE - Start
-                        indicator = 0.5f;
+                        indicator = 0.0f;
+                        OSCtransmitter.IndicatorStop();
                         // Added for GSE - End
                     }
                 }
@@ -351,7 +369,8 @@ namespace VehicleBehaviour {
                 {
                     blinkers.Stop();
                     // Added for GSE - Start
-                    indicator = 0.5f;
+                    indicator = 0.0f;
+                    OSCtransmitter.IndicatorStop();
                     // Added for GSE - End
                 }
             // Added for GSE - AI-Test - Start

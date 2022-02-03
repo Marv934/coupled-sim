@@ -1,16 +1,24 @@
-﻿using System.Collections;
+﻿/*
+ * This code is part of Generative Sound Engine for Coupled Sim in Unity by Marv934 (2022)
+ * Developped as part of the Sonic Interaction Design Seminar at Audiokomminikation Group, TU Berlin
+ * 
+ * This is distributed under the MIT Licence (see LICENSE.md for details)
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace GenerativeSoundEngine
 {
-    public interface GSE_ParkingProximity
-    {
-        float Proximity { get; }
-        float ProximityAngle { get; }
-    }
 
-    public class GSE_ParkingAssistant : MonoBehaviour, GSE_ParkingProximity
+//    public interface GSE_ParkingProximity
+//    {
+//        float Proximity { get; }
+//        float ProximityAngle { get; }
+//    }
+
+    public class GSE_ParkingAssistant : MonoBehaviour //, GSE_ParkingProximity
     {
 
         // Collider
@@ -19,14 +27,14 @@ namespace GenerativeSoundEngine
         // Tracked Colliders
         List<Collider> Tracked = new List<Collider>();
 
-        [SerializeField] float proximity = 10.0f;
-        public float Proximity { get { return proximity; } }
+        [SerializeField] float proximity = float.MaxValue;
+        //public float Proximity { get { return proximity; } }
 
         [SerializeField] float proximityAngle = 0.0f;
-        public float ProximityAngle { get { return proximityAngle; } }
+        //public float ProximityAngle { get { return proximityAngle; } }
 
         // GSE Collector
-        private GSE_Data CarCollector;
+        private GSEVehicle CarCollector;
 
         // Start is called before the first frame update
         void Start()
@@ -41,11 +49,11 @@ namespace GenerativeSoundEngine
             }
             
 
-            CarCollector = GetComponentInParent<GSE_Collector>();
+            CarCollector = GetComponentInParent<VehicleBehaviour.WheelVehicle>();
         }
 
-        // Update is called once per frame
-        void Update()
+        // Method Called for Parking Assistant
+        public (float DistClosest, float AngleClosest) ParkingUpdate()
         {
 
             // Get CarCenter
@@ -54,7 +62,7 @@ namespace GenerativeSoundEngine
 
             // Get Direction
             Vector3 CarDirect;
-            if ( CarCollector.Reverse == 0)
+            if ( !CarCollector.Reverse )
             {
                 CarDirect = Vector3.forward;
             } else
@@ -68,11 +76,11 @@ namespace GenerativeSoundEngine
             float trackedAngleStop;
             //if ( CarCollector.Reverse == 0 )
             //{ // Forward direction
-                if (CarCollector.Steering < 0.4f)
+                if (CarCollector.Steering < -5.0)
                 { // steered to Left
                     trackedAngleStart = -30.0f;
                     trackedAngleStop = 150.0f;
-                } else if (CarCollector.Steering > 0.6f)
+                } else if (CarCollector.Steering > 5.0f)
                 { // steered to right
                     trackedAngleStart = -150.0f;
                     trackedAngleStop = 30.0f;
@@ -83,7 +91,7 @@ namespace GenerativeSoundEngine
                 }
 
             // Set Distance far away
-            float DistClosest = 10.0f;
+            float DistClosest = float.MaxValue;
             float AnglClosest = 0.0f;
 
             // Check all tracked Colliders
@@ -108,6 +116,9 @@ namespace GenerativeSoundEngine
                     AnglClosest = Vector3.SignedAngle(transform.InverseTransformPoint(ColliderHitPoint), Vector3.forward, Vector3.up);
                 }
             }
+
+            // Return Value
+            return (DistClosest, AnglClosest);
             proximity = DistClosest;
             proximityAngle = AnglClosest;
         }

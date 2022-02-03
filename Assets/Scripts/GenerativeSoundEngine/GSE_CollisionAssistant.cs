@@ -1,16 +1,24 @@
-﻿using System.Collections;
+﻿/*
+ * This code is part of Generative Sound Engine for Coupled Sim in Unity by Marv934 (2022)
+ * Developped as part of the Sonic Interaction Design Seminar at Audiokomminikation Group, TU Berlin
+ * 
+ * This is distributed under the MIT Licence (see LICENSE.md for details)
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace GenerativeSoundEngine
 {
-    public interface GSE_CollisionProximity
-    {
-        float Proximity { get; }
-        float ProximityAngle { get; }
-    }
 
-    public class GSE_CollisionAssistant : MonoBehaviour, GSE_CollisionProximity
+//    public interface GSE_CollisionProximity
+//    {
+//        float Proximity { get; }
+//        float ProximityAngle { get; }
+//    }
+
+    public class GSE_CollisionAssistant : MonoBehaviour //, GSE_CollisionProximity
     {
 
         // Collider
@@ -19,14 +27,15 @@ namespace GenerativeSoundEngine
         // Tracked Colliders
         List<Collider> Tracked = new List<Collider>();
 
-        [SerializeField] float proximity = 10.0f;
-        public float Proximity { get { return proximity; } }
+        [SerializeField] float proximity = float.MaxValue;
+        //public float Proximity { get { return proximity; } }
 
         [SerializeField] float proximityAngle = 0.0f;
-        public float ProximityAngle { get { return proximityAngle; } }
+        //public float ProximityAngle { get { return proximityAngle; } }
 
         // GSE Collector
-        private GSE_Data CarCollector;
+        private IVehicle IVehicle;
+        private GSEVehicle GSEVehicle;
 
         // Start is called before the first frame update
         void Start()
@@ -40,11 +49,12 @@ namespace GenerativeSoundEngine
                 }
             }
 
-            CarCollector = GetComponentInParent<GSE_Collector>();
+            IVehicle = GetComponentInParent<VehicleBehaviour.WheelVehicle>();
+            GSEVehicle = GetComponentInParent<VehicleBehaviour.WheelVehicle>();
         }
 
-        // Update is called once per frame
-        void Update()
+        // Method Called for Collision Assistant
+        public (float DistClosest, float AngleClosest) CollisionUpdate()
         {
 
             // Get CarCenter
@@ -52,7 +62,7 @@ namespace GenerativeSoundEngine
             CarCenter.y = 0;
 
             // Set Distance far away
-            float DistClosest = 70.0f;
+            float DistClosest = float.MaxValue;
             float AnglClosest = 0.0f;
 
             // Check all tracked Colliders
@@ -70,14 +80,15 @@ namespace GenerativeSoundEngine
                 float Distance = Vector3.Distance(ColliderHitPoint, CarHitPoint);
                 float Angle = Vector3.SignedAngle(transform.InverseTransformPoint(ColliderHitPoint), Vector3.forward, Vector3.up);
 
-                if ( (CarCollector.Reverse == 0) && (Distance < (CarCollector.Speed * 60) ) && (Distance < DistClosest) )              
+                if ( (!GSEVehicle.Reverse) && (Distance < (IVehicle.Speed) ) && (Distance < DistClosest) )              
                 {
                     // Assign Values
                     DistClosest = Distance;
                     AnglClosest = Angle;
                 }
             }
-            // Assign Values
+            // Return Value
+            return (DistClosest, AnglClosest);
             proximity = DistClosest;
             proximityAngle = AnglClosest;
         }
