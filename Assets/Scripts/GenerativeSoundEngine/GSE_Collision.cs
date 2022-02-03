@@ -31,6 +31,9 @@ namespace GenerativeSoundEngine
         // Init OSC Transmitter
         GSE_OSCtransmitter OSCtransmitter;
 
+        // update Counter
+        private int updateCounter = 0;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -50,21 +53,24 @@ namespace GenerativeSoundEngine
         }
 
         // Update is called once per frame
-        void Update()
+        void FixedUpdate()
         {
-            // Check if Collision or Parking Assistant
-            // Check Blind Spot Assistant
-            if (GSEVehicle.Indicator != 0)
+            updateCounter = updateCounter + 1;
+            if (updateCounter == 5)
+            {
+                // Check if Collision or Parking Assistant
+                // Check Blind Spot Assistant
+                if (GSEVehicle.Indicator != 0)
             {
                 var BlindSpot = BlindSpotAssistant.BlindSpotUpdate();
 
                 if (BlindSpot.Item1 < BlindSpotAssistantMaxDistance)
                 {
-                    OSCtransmitter.Collision("BlindSpot", BlindSpot.Item1, BlindSpot.Item2);
+                    OSCtransmitter.Collision(3, BlindSpot.Item1, BlindSpot.Item2);
                 }
                 else
                 {
-                    OSCtransmitter.Collision("None", 0.0f, 0.0f);
+                    OSCtransmitter.Collision(0, 0.0f, 0.0f);
                 }
             } else if (IVehicle.Speed < ParkingAssistentMaxSpeed)
             {
@@ -73,11 +79,11 @@ namespace GenerativeSoundEngine
 
                 if (Parking.Item1 < ParkingAssistentMaxDistance)
                 {
-                    OSCtransmitter.Collision("Parking", Parking.Item1, Parking.Item2);
+                    OSCtransmitter.Collision(1, Parking.Item1, Parking.Item2);
                 }
                 else
                 {
-                    OSCtransmitter.Collision("None", 0.0f, 0.0f);
+                    OSCtransmitter.Collision(0, 0.0f, 0.0f);
                 }
             } else
             {
@@ -86,11 +92,13 @@ namespace GenerativeSoundEngine
 
                 if (Collision.Item1 < GSEVehicle.MaxSpeed * CollisionAssistantMaxDistance)
                 {
-                    OSCtransmitter.Collision("Collision", Collision.Item1, Collision.Item2);
+                    OSCtransmitter.Collision(2, Collision.Item1, Collision.Item2);
                 } else
                 {
-                    OSCtransmitter.Collision("None", 0.0f, 0.0f);
+                    OSCtransmitter.Collision(0, 0.0f, 0.0f);
                 }
+            }
+                updateCounter = 0;
             }
         }
     }

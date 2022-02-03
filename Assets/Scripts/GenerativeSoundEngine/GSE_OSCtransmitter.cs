@@ -29,6 +29,8 @@ namespace GenerativeSoundEngine
         private GSEVehicle GSEVehicle;
         private IVehicle IVehicle;
 
+        // update Counter
+        private int updateCounter = 0;
         #region Unity Methods
 
         // Start is called before the first frame update
@@ -52,17 +54,24 @@ namespace GenerativeSoundEngine
         }
 
         // Update is called once per frame
-        void Update()
+        void FixedUpdate()
         {
+            updateCounter = updateCounter + 1;
+            if (updateCounter == 5)
+            {
+                var Speed = new OSCMessage(RootAddress + "/Speed", OSCValue.Float(IVehicle.Speed));
+                Transmitter.Send(Speed);
+
+                // Steering
+                var Steering = new OSCMessage(RootAddress + "/Steering", OSCValue.Float(GSEVehicle.Steering));
+                Transmitter.Send(Steering);
+
+                updateCounter = 0;
+            }
             // Continusly send Values
 
             // Speed
-            var Speed = new OSCMessage(RootAddress + "/Speed", OSCValue.Float(IVehicle.Speed));
-            Transmitter.Send(Speed);
 
-            // Steering
-            var Steering = new OSCMessage(RootAddress + "/Steering", OSCValue.Float(GSEVehicle.Steering));
-            Transmitter.Send(Steering);
         }
 
         // Method to Send Engine Start
@@ -122,10 +131,10 @@ namespace GenerativeSoundEngine
         }
 
         // Method to Send Collision Warning
-        public void Collision(string type, float Distance, float Angle)
+        public void Collision(int type, float Distance, float Angle)
         {
             // Create Message
-            var Collision = new OSCMessage(RootAddress + "/Collision", OSCValue.String(type), OSCValue.Float(Distance), OSCValue.Float(Angle));
+            var Collision = new OSCMessage(RootAddress + "/Collision", OSCValue.Int(type), OSCValue.Float(Distance), OSCValue.Float(Angle));
             Transmitter.Send(Collision);
         }
 

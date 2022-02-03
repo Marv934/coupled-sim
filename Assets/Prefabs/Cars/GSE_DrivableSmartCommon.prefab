@@ -1515,6 +1515,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ParkingAssistentMaxSpeed: 10
+  ParkingAssistentMaxDistance: 1
+  CollisionAssistantMaxDistance: 0.5
+  BlindSpotAssistantMaxDistance: 10
 --- !u!114 &-7730390022515479814
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1528,7 +1531,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Transmitter: {fileID: 0}
-  RemoteHost: 127.0.0.1
+  RemoteHost: 192.168.0.2
   RemotePort: 7711
   RootAddress: /GSE
 --- !u!1 &1819827312411906
