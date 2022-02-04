@@ -31,27 +31,22 @@ float MaxSpeed | Maximum Speed; Default 60 or according to *[SerializeField] max
 
 #### Description
 Tracks all non Trigger Colliders in Colliders.
-When Indicator is set in Collider direction it stores Distance and Angle of nearest Collider in Interface
 
-#### Interface GSE_BlindSpotProximity
+#### Public Methods
 
-Property | Description
--|-
-Proximity | Distance of Collider
-Angle | Angle of Collider
+**public (float DistClosest, float AngleClosest) BlindSpotUpdate()**:
+Returns Angle and Distance of nearest Object in Direction of Indicator, if set.
+
 
 ### <a id="GSE_BlindSpotAssistant">GSE_CollisionAssistant</a>
 
 #### Description
 Tracks all non Trigger Colliders in Colliders.
-When Distance is less than Speed it stores Distance and Angle of nearest Collider in Interface
 
-#### Interface GSE_BlindSpotProximity
+#### Public Methods
 
-Property | Description
--|-
-Proximity | Distance of Collider
-Angle | Angle of Collider
+**public (float DistClosest, float AngleClosest) CollisionUpdate()**:
+Returns Angle and Distance of nearest Object when Distance is less than Speed
 
 ### <a id="GSE_BlindSpotAssistant">GSE_ParkingAssistant</a>
 
@@ -59,12 +54,35 @@ Angle | Angle of Collider
 Tracks all non Trigger Colliders in Colliders.
 When Steering Angle and Direction fits the Collider Angle it stores Distance and Angle of nearest Collider in Interface
 
-#### Interface GSE_BlindSpotProximity
+#### Public Methods
+
+**public (float DistClosest, float AngleClosest) ParkingUpdate()**: Returns Angle and Distance of nearest Object in Steering Direction. Tracked Angles are:
+- Steered to Left (SteeringAngle < -5°): Tracked between -30° and 150°
+- Steered to Right (SteeringAngle > 5°): Tracked between -150° and 30°
+- Not Steered (-5° <= SteeringAngle <= 5°): Tracked between -30° and 30°
+
+### <a id="GSE_Collision">GSE_Collision</a>
+
+#### Description
+Collects Angles and Distances from [GSE_ParkingAssistant](#GSE_BlindSpotAssistant)[GSE_BlindSpotAssistant](#GSE_CollisionAssistant)[GSE_CollisionAssistant](#GSE_ParkingAssistant) and Calls [GSE_OSCtransmitter](#GSE_OSCRtransmitter).
+
+**On Fixed Update**: Every 5th Fixed Update step (10 per second) collects Angles and Distances from Assistant scripts and Calls [OSCtransmitter.Collision](#GSE_OSCRtransmitter)
+
+Collision Type | OSC Message Values
+-|-
+None | 0, 0, 0
+Parking | 1, Distance, Angle
+Collision | 2, Distance, Angle
+BlindSpot | 3, Distance, Angle
+
+#### Properties
 
 Property | Description
 -|-
-Proximity | Distance of Collider
-Angle | Angle of Collider
+float ParkingAssistentMaxSpeed | Below this Speed the Parking Assistant is active, above the Collision Assistant is active
+float ParkingAssistentMaxDistance | Max Distance transmittet by Parking Assistant
+float CollisionAssistantMaxDistance | Max Distance transmittet by Collision Assistant. This Value is multyplied by Speed
+float BlindSpotAssistantMaxDistance | Max Distance transmittet by BlindSpot Assistant
 
 ### <a id="GSE_OSCtransmitter">GSE_OSCtransmitter</a>
 
@@ -74,7 +92,7 @@ Class to Transmitt OSC Messages to the Sound Engine.
 
 **On Start:** Create Transmitter and send start Message "Start transmitting parameters!"
 
-**On Update:** Send Data from [WheelVehicle](#WheelVehicle) to transmitter
+**On FixedUpdate:** Every 5th Fixed Update step (10 per Second) Send Data from [WheelVehicle](#WheelVehicle) to transmitter
 
 Variable | OSC Adsress
 -|-
@@ -92,14 +110,28 @@ RootAddress | OSC Root Address
 
 #### Public Methods
 
-Method | Description
-- | -
-EngineStart | Sends *True* to OSC Addresss *\<RootAddress\>/Engine*
-EngineStop | Sends *False* to OSC Addresss *\<RootAddress\>/Engine*
-IndicatorStartLeft | Sends *True*, *-1* to OSC Address *\<RootAddress\>/Indicator*
-IndicatorStartRight | Sends *True*, *1* to OSC Address *\<RootAddress\>/Indicator*
-IndicatorStop | Sends *False*, *0* to OSC Address *\<RootAddress\>/Indicator*
-Reverse | Sends *True* to OSC Address *\<RootAddress\>/Reverse*
-Forward | Sends *False* to OSC Address *\<RootAddress\>/Reverse*
+**public void EngineStart()**: Sends *True* to OSC Addresss *\<RootAddress\>/Engine*
+
+**public void EngineStop()**: Sends *False* to OSC Addresss *\<RootAddress\>/Engine*
+
+**public void IndicatorStartLeft()**: Sends *True*, *-1* to OSC Address *\<RootAddress\>/Indicator*
+
+**public void IndicatorStartRight()** Sends *True*, *1* to OSC Address *\<RootAddress\>/Indicator*
+
+**public void IndicatorStop()**: Sends *False*, *0* to OSC Address *\<RootAddress\>/Indicator*
+
+**public void Reverse()**: Sends *True* to OSC Address *\<RootAddress\>/Reverse*
+
+**public void Forward()**: Sends *False* to OSC Address *\<RootAddress\>/Reverse*
+
+**public void Collision(int type, float Distance, float Angle)**: Sends [*type*, *Distance*, *Angle*](#GSE_Collision) to OSC Address *\<RootAddress\>/Reverse*
+
+**public void Warning(float prio)**: Sends *Prio* to OSC Adress *\RootAddress\>Warning*
+
+**public void Info(float prio)**: Sends *Prio* to OSC Adress *\RootAddress\>Info*
+
+### <a id="GSE_InfoWaypoint">GSE_InfoWaypoint</a>
+
+### <a id="GSE_WarningWaypoint">GSE_WarningWaypoint</a>
 
 ### <a id="GSE_AI_Test">GSE_AI_Test</a>

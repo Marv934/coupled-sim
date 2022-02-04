@@ -12,13 +12,7 @@ using UnityEngine;
 namespace GenerativeSoundEngine
 {
 
-//    public interface GSE_BlindSpotProximity
-//    {
-//        float Proximity { get; }
-//        float ProximityAngle { get; }
-//    }
-
-    public class GSE_BlindSpotAssistant : MonoBehaviour //, GSE_BlindSpotProximity
+    public class GSE_BlindSpotAssistant : MonoBehaviour
     {
 
         // Collider
@@ -28,10 +22,8 @@ namespace GenerativeSoundEngine
         List<Collider> Tracked = new List<Collider>();
 
         [SerializeField] float proximity = float.MaxValue;
-        //public float Proximity { get { return proximity; } }
 
         [SerializeField] float proximityAngle = 0.0f;
-        //public float ProximityAngle { get { return proximityAngle; } }
 
         // GSE Collector
         private GSEVehicle CarCollector;
@@ -51,7 +43,7 @@ namespace GenerativeSoundEngine
             CarCollector = GetComponentInParent<VehicleBehaviour.WheelVehicle>();
         }
 
-        // Update is called once per frame
+        // public Method
         public (float DistClosest, float AngleClosest) BlindSpotUpdate()
         {
 

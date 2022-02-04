@@ -12,14 +12,7 @@ using UnityEngine;
 namespace GenerativeSoundEngine
 {
 
-//    public interface GSE_CollisionProximity
-//    {
-//        float Proximity { get; }
-//        float ProximityAngle { get; }
-//    }
-
-    public class GSE_CollisionAssistant : MonoBehaviour //, GSE_CollisionProximity
-    {
+    public class GSE_CollisionAssistant : MonoBehaviour
 
         // Collider
         Collider CarCollider;
@@ -28,10 +21,8 @@ namespace GenerativeSoundEngine
         List<Collider> Tracked = new List<Collider>();
 
         [SerializeField] float proximity = float.MaxValue;
-        //public float Proximity { get { return proximity; } }
 
         [SerializeField] float proximityAngle = 0.0f;
-        //public float ProximityAngle { get { return proximityAngle; } }
 
         // GSE Collector
         private IVehicle IVehicle;

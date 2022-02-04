@@ -58,7 +58,6 @@ namespace GenerativeSoundEngine
             updateCounter = updateCounter + 1;
             if (updateCounter == 5)
             {
-                // Check if Collision or Parking Assistant
                 // Check Blind Spot Assistant
                 if (GSEVehicle.Indicator != 0)
             {
@@ -72,6 +71,7 @@ namespace GenerativeSoundEngine
                 {
                     OSCtransmitter.Collision(0, 0.0f, 0.0f);
                 }
+                // Check if Collision or Parking Assistant
             } else if (IVehicle.Speed < ParkingAssistentMaxSpeed)
             {
                 // Check Parking Assistant

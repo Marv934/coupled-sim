@@ -12,12 +12,6 @@ using UnityEngine;
 namespace GenerativeSoundEngine
 {
 
-//    public interface GSE_ParkingProximity
-//    {
-//        float Proximity { get; }
-//        float ProximityAngle { get; }
-//    }
-
     public class GSE_ParkingAssistant : MonoBehaviour //, GSE_ParkingProximity
     {
 
@@ -28,10 +22,8 @@ namespace GenerativeSoundEngine
         List<Collider> Tracked = new List<Collider>();
 
         [SerializeField] float proximity = float.MaxValue;
-        //public float Proximity { get { return proximity; } }
 
         [SerializeField] float proximityAngle = 0.0f;
-        //public float ProximityAngle { get { return proximityAngle; } }
 
         // GSE Collector
         private GSEVehicle CarCollector;
@@ -74,21 +66,21 @@ namespace GenerativeSoundEngine
             // tracked Angle:
             float trackedAngleStart;
             float trackedAngleStop;
-            //if ( CarCollector.Reverse == 0 )
-            //{ // Forward direction
-                if (CarCollector.Steering < -5.0)
-                { // steered to Left
-                    trackedAngleStart = -30.0f;
-                    trackedAngleStop = 150.0f;
-                } else if (CarCollector.Steering > 5.0f)
-                { // steered to right
-                    trackedAngleStart = -150.0f;
-                    trackedAngleStop = 30.0f;
-                } else
-                { // not steered
-                    trackedAngleStart = -30.0f;
-                    trackedAngleStop = 30.0f;
-                }
+            
+            // Get Tracking Angle
+            if (CarCollector.Steering < -5.0)
+            { // steered to Left
+                trackedAngleStart = -30.0f;
+                trackedAngleStop = 150.0f;
+            } else if (CarCollector.Steering > 5.0f)
+            { // steered to right
+                trackedAngleStart = -150.0f;
+                trackedAngleStop = 30.0f;
+            } else
+            { // not steered
+            trackedAngleStart = -30.0f;
+            trackedAngleStop = 30.0f;
+            }
 
             // Set Distance far away
             float DistClosest = float.MaxValue;
