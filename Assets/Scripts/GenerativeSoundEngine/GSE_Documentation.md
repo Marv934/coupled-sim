@@ -2,6 +2,9 @@
 
 Documentation for all Classes Added for the Generative Sound Engine
 
+## Issues
+I Had to remove *_driverBuffer.AddRange(_playerSystem.Cars);* in WorldLogger.cs
+
 ## Classes
 
 ### <a id="WheelVehicle">WheelVehicle</a>

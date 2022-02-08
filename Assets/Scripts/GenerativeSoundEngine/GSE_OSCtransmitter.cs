@@ -23,6 +23,10 @@ namespace GenerativeSoundEngine
         [SerializeField] public int RemotePort = 7711;
         [SerializeField] public string RootAddress = "/GSE";
 
+        [Header("Every <SendRate> Fixed Update Sends OSC Message")]
+        [SerializeField] public int SendRate = 5;
+
+
         #endregion
 
         // Init WheelVehicle
@@ -57,7 +61,7 @@ namespace GenerativeSoundEngine
         void FixedUpdate()
         {
             updateCounter = updateCounter + 1;
-            if (updateCounter == 5)
+            if (updateCounter == SendRate)
             {
                 var Speed = new OSCMessage(RootAddress + "/Speed", OSCValue.Float(IVehicle.Speed));
                 Transmitter.Send(Speed);

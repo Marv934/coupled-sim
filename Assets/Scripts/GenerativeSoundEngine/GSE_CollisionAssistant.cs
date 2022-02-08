@@ -13,7 +13,7 @@ namespace GenerativeSoundEngine
 {
 
     public class GSE_CollisionAssistant : MonoBehaviour
-
+    { 
         // Collider
         Collider CarCollider;
 

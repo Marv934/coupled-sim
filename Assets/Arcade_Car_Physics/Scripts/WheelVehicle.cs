@@ -27,9 +27,10 @@ public interface GSEVehicle
     float Steering { get; }
     //float SteerAngle { get; }
     bool Reverse { get; }
-    float Indicator { get;  }
+    float Indicator { get; }
     bool Engine { get; }
     float MaxSpeed { get; }
+    float Throttle { get; }
 }
 
 namespace VehicleBehaviour {
@@ -219,7 +220,7 @@ namespace VehicleBehaviour {
 
         // Added for GSE - Start
         // Blinkers
-        float indicator = 0.5f;
+        float indicator = 0.0f;
         public float Indicator { get { return indicator; } }
 
         // Engine Start/Stop
@@ -230,6 +231,7 @@ namespace VehicleBehaviour {
         public DateTime startDate;
 
         GenerativeSoundEngine.GSE_OSCtransmitter OSCtransmitter;
+        GenerativeSoundEngine.GSE_Dashboard Dashboard;
         // Added for GSE - End
 
         // Init rigidbody, center of mass, wheels and more
@@ -264,6 +266,7 @@ namespace VehicleBehaviour {
             startDate = DateTime.Now;
 
             OSCtransmitter = GetComponent<GenerativeSoundEngine.GSE_OSCtransmitter>();
+            Dashboard = GetComponentInChildren<GenerativeSoundEngine.GSE_Dashboard>();
             // Added for GSE - End
 
         }
@@ -302,6 +305,9 @@ namespace VehicleBehaviour {
                         // Send OSCMessage
                         OSCtransmitter.EngineStart();
 
+                        // Set Dashboard
+                        Dashboard.DisplayEngineStart();
+
                         // set Handbrake to true
                         handbrake = true;
                     } else if (!engine)
@@ -310,6 +316,9 @@ namespace VehicleBehaviour {
 
                         // Send OSCMessage
                         OSCtransmitter.EngineStop();
+
+                        // Set Dashboard
+                        Dashboard.DisplayEngineStop();
 
                         // set Handbrake to false
                         handbrake = false;

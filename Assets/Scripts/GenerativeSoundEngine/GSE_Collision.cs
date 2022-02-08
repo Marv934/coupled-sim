@@ -13,9 +13,13 @@ namespace GenerativeSoundEngine
 
         [Header("Collision Assistant, times maxSpeed")]
         [SerializeField] float CollisionAssistantMaxDistance = 0.5f;
+        [SerializeField] float CollisionAssistantMinSpeed = 10.0f;
 
         [Header("Blind Spot Assistant, static")]
         [SerializeField] float BlindSpotAssistantMaxDistance = 10.0f;
+
+        [Header("Every <SendRate> Fixed Update Sends OSC Message")]
+        [SerializeField] public int SendRate = 5;
 
         // Init WheelVehicle
         private IVehicle IVehicle;
@@ -30,6 +34,9 @@ namespace GenerativeSoundEngine
 
         // Init OSC Transmitter
         GSE_OSCtransmitter OSCtransmitter;
+
+        // Init Dashboard
+        GSE_Dashboard Dashboard;
 
         // update Counter
         private int updateCounter = 0;
@@ -50,54 +57,55 @@ namespace GenerativeSoundEngine
 
             // Get OSC Transmitter
             OSCtransmitter = GetComponent<GSE_OSCtransmitter>();
+
+            // Get Dashboard
+            Dashboard = GetComponentInChildren<GSE_Dashboard>();
         }
 
         // Update is called once per frame
         void FixedUpdate()
         {
             updateCounter = updateCounter + 1;
-            if (updateCounter == 5)
-            {
-                // Check Blind Spot Assistant
-                if (GSEVehicle.Indicator != 0)
+            if (updateCounter == SendRate)
             {
                 var BlindSpot = BlindSpotAssistant.BlindSpotUpdate();
-
-                if (BlindSpot.Item1 < BlindSpotAssistantMaxDistance)
-                {
-                    OSCtransmitter.Collision(3, BlindSpot.Item1, BlindSpot.Item2);
-                }
-                else
-                {
-                    OSCtransmitter.Collision(0, 0.0f, 0.0f);
-                }
-                // Check if Collision or Parking Assistant
-            } else if (IVehicle.Speed < ParkingAssistentMaxSpeed)
-            {
-                // Check Parking Assistant
                 var Parking = ParkingAssistant.ParkingUpdate();
-
-                if (Parking.Item1 < ParkingAssistentMaxDistance)
-                {
-                    OSCtransmitter.Collision(1, Parking.Item1, Parking.Item2);
-                }
-                else
-                {
-                    OSCtransmitter.Collision(0, 0.0f, 0.0f);
-                }
-            } else
-            {
-                // Check Collision Assistant
                 var Collision = CollisionAssistant.CollisionUpdate();
 
-                if (Collision.Item1 < GSEVehicle.MaxSpeed * CollisionAssistantMaxDistance)
+                // Check Blind Spot Assistant
+                if (GSEVehicle.Indicator != 0 && BlindSpot.Item1 < BlindSpotAssistantMaxDistance)
+                {
+                    OSCtransmitter.Collision(3, BlindSpot.Item1, BlindSpot.Item2);
+
+                    Dashboard.DisplayCollisionWarning(false);
+                    Dashboard.DisplayParkingWarning(false);
+                    Dashboard.DisplayBlindSpotWarning(true, BlindSpot.Item2);
+
+                } // Check Parking Assistant
+                else if (IVehicle.Speed < ParkingAssistentMaxSpeed && Parking.Item1 < ParkingAssistentMaxDistance)
+                {
+                    OSCtransmitter.Collision(1, Parking.Item1, Parking.Item2);
+
+                    Dashboard.DisplayBlindSpotWarning(false, 0.0f);
+                    Dashboard.DisplayCollisionWarning(false);
+                    Dashboard.DisplayParkingWarning(true);
+                } // Check Collision Assistant
+                else if (IVehicle.Speed > CollisionAssistantMinSpeed && Collision.Item1 < GSEVehicle.MaxSpeed * CollisionAssistantMaxDistance)
                 {
                     OSCtransmitter.Collision(2, Collision.Item1, Collision.Item2);
-                } else
+
+                    Dashboard.DisplayBlindSpotWarning(false, 0.0f);
+                    Dashboard.DisplayParkingWarning(false);
+                    Dashboard.DisplayCollisionWarning(true);
+                } 
+                else
                 {
                     OSCtransmitter.Collision(0, 0.0f, 0.0f);
+
+                    Dashboard.DisplayCollisionWarning(false);
+                    Dashboard.DisplayParkingWarning(false);
+                    Dashboard.DisplayBlindSpotWarning(false, 0.0f);
                 }
-            }
                 updateCounter = 0;
             }
         }
