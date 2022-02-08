@@ -1,4 +1,4 @@
-﻿/*
+/*
  * This code is part of Generative Sound Engine for Coupled Sim in Unity by Marv934 (2022)
  * Developped as part of the Sonic Interaction Design Seminar at Audiokomminikation Group, TU Berlin
  * 
@@ -13,6 +13,7 @@ namespace GenerativeSoundEngine
 {
 
     public class GSE_CollisionAssistant : MonoBehaviour
+    { 
 
         // Collider
         Collider CarCollider;
@@ -80,8 +81,8 @@ namespace GenerativeSoundEngine
             }
             // Return Value
             return (DistClosest, AnglClosest);
-            proximity = DistClosest;
-            proximityAngle = AnglClosest;
+            //proximity = DistClosest;
+            //proximityAngle = AnglClosest;
         }
 
         void OnTriggerEnter(Collider other)

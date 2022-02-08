@@ -70,17 +70,18 @@ namespace GenerativeSoundEngine
                 float Distance = Vector3.Distance(ColliderHitPoint, CarHitPoint);
                 float Angle = Vector3.SignedAngle(transform.InverseTransformPoint(ColliderHitPoint), Vector3.forward, Vector3.up);
 
-                if ( ( ( ( CarCollector.Indicator < -0.1f ) && ( Angle > 0 ) ) || ( ( CarCollector.Indicator > 0.1f ) && (Angle < 0 ) ) ) & (Distance < DistClosest) )              
+                //if ( ( ( ( CarCollector.Indicator < -0.1f ) && ( Angle > 0 ) ) || ( ( CarCollector.Indicator > 0.1f ) && (Angle < 0 ) ) ) & (Distance < DistClosest) )
+                if ( (Angle > 0) || (Angle < 0) & (Distance < DistClosest))
                 {
-                    // Assign Values
+                        // Assign Values
                     DistClosest = Distance;
                     AnglClosest = Angle;
                 }
             }
             // Return Value
             return (DistClosest, AnglClosest);
-            proximity = DistClosest;
-            proximityAngle = AnglClosest;
+            //proximity = DistClosest;
+            //proximityAngle = AnglClosest;
         }
 
         void OnTriggerEnter(Collider other)

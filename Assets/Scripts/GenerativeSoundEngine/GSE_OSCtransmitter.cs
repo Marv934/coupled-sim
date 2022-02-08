@@ -1,4 +1,4 @@
-﻿/*
+/*
  * This code is part of Generative Sound Engine for Coupled Sim in Unity by Marv934 and zeyuyang42 (2022)
  * Developped as part of the Sonic Interaction Design Seminar at Audiokomminikation Group, TU Berlin
  * 
@@ -11,7 +11,7 @@ using extOSC;
 
 namespace GenerativeSoundEngine
 {
-    [RequireComponent(typeof(VehicleBehaviour.WheelVehicle))]
+    //[RequireComponent(typeof(VehicleBehaviour.WheelVehicle))]
 
     public class GSE_OSCtransmitter : MonoBehaviour
     {
@@ -24,13 +24,6 @@ namespace GenerativeSoundEngine
         [SerializeField] public string RootAddress = "/GSE";
 
         #endregion
-
-        // Init WheelVehicle
-        private GSEVehicle GSEVehicle;
-        private IVehicle IVehicle;
-
-        // update Counter
-        private int updateCounter = 0;
         #region Unity Methods
 
         // Start is called before the first frame update
@@ -43,36 +36,10 @@ namespace GenerativeSoundEngine
             Transmitter.RemoteHost = RemoteHost;
             Transmitter.RemotePort = RemotePort;
             
-            // send initial OSC Message
-            var message = new OSCMessage(RootAddress);
-            message.AddValue(OSCValue.String("Start transmitting parameters!"));
-            Transmitter.Send(message);
-
-            // Get WheelVehicle Interface
-            GSEVehicle = GetComponent<VehicleBehaviour.WheelVehicle>();
-            IVehicle = GetComponent<VehicleBehaviour.WheelVehicle>();
         }
 
-        // Update is called once per frame
-        void FixedUpdate()
-        {
-            updateCounter = updateCounter + 1;
-            if (updateCounter == 5)
-            {
-                var Speed = new OSCMessage(RootAddress + "/Speed", OSCValue.Float(IVehicle.Speed));
-                Transmitter.Send(Speed);
-
-                // Steering
-                var Steering = new OSCMessage(RootAddress + "/Steering", OSCValue.Float(GSEVehicle.Steering));
-                Transmitter.Send(Steering);
-
-                updateCounter = 0;
-            }
-            // Continusly send Values
-
-            // Speed
-
-        }
+        #endregion
+        #region OSC-transmitting Methods
 
         // Method to Send Engine Start
         public void EngineStart()
@@ -88,6 +55,20 @@ namespace GenerativeSoundEngine
             // Create Message
             var Engine = new OSCMessage(RootAddress + "/Engine", OSCValue.Bool(false));
             Transmitter.Send(Engine);
+        }
+
+        public void Speed(float speed)
+        {
+            // Create Message
+            var Speed = new OSCMessage(RootAddress + "/Speed", OSCValue.Float(speed));
+            Transmitter.Send(Speed);
+        }
+
+        public void Steering(float steering)
+        {
+            // Create Message
+            var Steering = new OSCMessage(RootAddress + "/Steering", OSCValue.Float(steering));
+            Transmitter.Send(Steering);
         }
 
         // Method to Send Indicator Start Left
@@ -130,11 +111,27 @@ namespace GenerativeSoundEngine
             Transmitter.Send(Reverse);
         }
 
-        // Method to Send Collision Warning
-        public void Collision(int type, float Distance, float Angle)
+        // Method to Send Collision Type
+        public void CollisionType(int type)
         {
             // Create Message
-            var Collision = new OSCMessage(RootAddress + "/Collision", OSCValue.Int(type), OSCValue.Float(Distance), OSCValue.Float(Angle));
+            var Collision = new OSCMessage(RootAddress + "/CollisionType", OSCValue.Int(type));
+            Transmitter.Send(Collision);
+        }
+
+        // Method to Send Collision Distance
+        public void CollisionDistance(float Distance)
+        {
+            // Create Message
+            var Collision = new OSCMessage(RootAddress + "/CollisionDistance", OSCValue.Float(Distance));
+            Transmitter.Send(Collision);
+        }
+
+        // Method to Send Collision Angle
+        public void CollisionAngle(float Angle)
+        {
+            // Create Message
+            var Collision = new OSCMessage(RootAddress + "/CollisionAngle", OSCValue.Float(Angle));
             Transmitter.Send(Collision);
         }
 
@@ -152,6 +149,48 @@ namespace GenerativeSoundEngine
             // Create Message
             var Info = new OSCMessage(RootAddress + "/Info", OSCValue.Float(prio));
             Transmitter.Send(Info);
+        }
+
+        public void TirenessLevel(float level)
+        {
+            // Create Message
+            var TirenessLevel = new OSCMessage(RootAddress + "/TirenessLevel", OSCValue.Float(level));
+            Transmitter.Send(TirenessLevel);
+        }
+
+        public void StressLevel(float level)
+        {
+            // Create Message
+            var StressLevel = new OSCMessage(RootAddress + "/StressLevel", OSCValue.Float(level));
+            Transmitter.Send(StressLevel);
+        }
+
+        public void Telephone(bool statue)
+        {
+            // Create Message
+            var Telephone = new OSCMessage(RootAddress + "/Telephone", OSCValue.Bool(statue));
+            Transmitter.Send(Telephone);
+        }
+
+        public void Music(bool statue)
+        {
+            // Create Message
+            var Music = new OSCMessage(RootAddress + "/Music", OSCValue.Bool(statue));
+            Transmitter.Send(Music);
+        }
+
+        public void Conversation(bool statue)
+        {
+            // Create Message
+            var Conversation = new OSCMessage(RootAddress + "/Conversation", OSCValue.Bool(statue));
+            Transmitter.Send(Conversation);
+        }
+
+        public void AutoDrive(bool statue)
+        {
+            // Create Message
+            var AutoDrive = new OSCMessage(RootAddress + "/AutoDrive", OSCValue.Bool(statue));
+            Transmitter.Send(AutoDrive);
         }
         #endregion
     }

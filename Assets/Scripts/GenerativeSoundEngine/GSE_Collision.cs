@@ -16,6 +16,7 @@ namespace GenerativeSoundEngine
 
         [Header("Blind Spot Assistant, static")]
         [SerializeField] float BlindSpotAssistantMaxDistance = 10.0f;
+        [SerializeField] float ExitMinimumSpeed = 0.2f;
 
         // Init WheelVehicle
         private IVehicle IVehicle;
@@ -33,6 +34,7 @@ namespace GenerativeSoundEngine
 
         // update Counter
         private int updateCounter = 0;
+        private int updateStep = 5;
 
         // Start is called before the first frame update
         void Start()
@@ -55,52 +57,50 @@ namespace GenerativeSoundEngine
         // Update is called once per frame
         void FixedUpdate()
         {
-            updateCounter = updateCounter + 1;
-            if (updateCounter == 5)
+            updateCounter++;
+            if (updateCounter == updateStep)
             {
                 // Check Blind Spot Assistant
-                if (GSEVehicle.Indicator != 0)
-            {
-                var BlindSpot = BlindSpotAssistant.BlindSpotUpdate();
+                if (GSEVehicle.Indicator != 0 || Mathf.Abs(IVehicle.Speed) < ExitMinimumSpeed) 
+                {
+                    var BlindSpot = BlindSpotAssistant.BlindSpotUpdate();
+                    if (BlindSpot.Item1 < BlindSpotAssistantMaxDistance)
+                    {
+                        UpdateCollisionDetection(3, BlindSpot.Item1, BlindSpot.Item2);
+                    }
+                    else
+                    {
+                        UpdateCollisionDetection(0, 0.0f, 0.0f);
+                    }
+                } else if (GSEVehicle.ParkAssistant)
+                {
+                    // Check Parking Assistant
+                    var Parking = ParkingAssistant.ParkingUpdate();
+                    UpdateCollisionDetection(1, Parking.Item1, Parking.Item2);
+                } else 
+                {
+                    // Check Collision Assistant
+                    var Collision = CollisionAssistant.CollisionUpdate();
 
-                if (BlindSpot.Item1 < BlindSpotAssistantMaxDistance)
-                {
-                    OSCtransmitter.Collision(3, BlindSpot.Item1, BlindSpot.Item2);
+                    if (Collision.Item1 < GSEVehicle.MaxSpeed * CollisionAssistantMaxDistance)
+                    {
+                        UpdateCollisionDetection(2, Collision.Item1, Collision.Item2);
+                    } else
+                    {
+                        UpdateCollisionDetection(0, 0.0f, 0.0f);
+                    }
                 }
-                else
-                {
-                    OSCtransmitter.Collision(0, 0.0f, 0.0f);
-                }
-                // Check if Collision or Parking Assistant
-            } else if (IVehicle.Speed < ParkingAssistentMaxSpeed)
-            {
-                // Check Parking Assistant
-                var Parking = ParkingAssistant.ParkingUpdate();
-
-                if (Parking.Item1 < ParkingAssistentMaxDistance)
-                {
-                    OSCtransmitter.Collision(1, Parking.Item1, Parking.Item2);
-                }
-                else
-                {
-                    OSCtransmitter.Collision(0, 0.0f, 0.0f);
-                }
-            } else
-            {
-                // Check Collision Assistant
-                var Collision = CollisionAssistant.CollisionUpdate();
-
-                if (Collision.Item1 < GSEVehicle.MaxSpeed * CollisionAssistantMaxDistance)
-                {
-                    OSCtransmitter.Collision(2, Collision.Item1, Collision.Item2);
-                } else
-                {
-                    OSCtransmitter.Collision(0, 0.0f, 0.0f);
-                }
-            }
                 updateCounter = 0;
             }
         }
+
+        public void UpdateCollisionDetection(int Type, float Distance, float Angle)
+        {
+            OSCtransmitter.CollisionType(Type);
+            OSCtransmitter.CollisionDistance(Distance);
+            OSCtransmitter.CollisionAngle(Angle);
+        }
+
     }
 
 }
