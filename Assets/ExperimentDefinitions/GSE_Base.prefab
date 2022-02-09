@@ -819,8 +819,7 @@ MonoBehaviour:
     AutonomousPath: {fileID: 0}
     AutonomousIsYielding: 0
   PointsOfInterest: []
-  CarSpawners:
-  - {fileID: 8156635355818172248}
+  CarSpawners: []
   AIPedestrians:
     AIPedestrians:
     - Pedestrian: {fileID: 5389107165215350902}
