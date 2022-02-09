@@ -109,6 +109,31 @@ namespace GenerativeSoundEngine
             OSCtransmitter.CollisionType(Type);
             OSCtransmitter.CollisionDistance(Distance);
             OSCtransmitter.CollisionAngle(Angle);
+
+            if (Type == 1)
+            {
+                Dashboard.DisplayParkingWarning(true);
+                Dashboard.DisplayCollisionWanrning(false);
+                Dashboard.DisplayBlindSplotWarning(false);
+            }
+            else if (Type == 2)
+            {
+                Dashboard.DisplayParkingWarning(false);
+                Dashboard.DisplayCollisionWanrning(true);
+                Dashboard.DisplayBlindSplotWarning(false);
+            }
+            else if (Type == 3)
+            {
+                Dashboard.DisplayParkingWarning(false);
+                Dashboard.DisplayCollisionWanrning(false);
+                Dashboard.DisplayBlindSplotWarning(true);
+            }
+            else
+            {
+                Dashboard.DisplayParkingWarning(false);
+                Dashboard.DisplayCollisionWanrning(false);
+                Dashboard.DisplayBlindSplotWarning(false);
+            }
         }
 
     }
