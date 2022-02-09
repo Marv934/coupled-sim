@@ -7,16 +7,22 @@ namespace GenerativeSoundEngine
 {
     public class GSE_PedestrianTriggerStart : MonoBehaviour
     {
-        bool destroy = true;
 
-        WaypointProgressTracker _AIPedestrian;
+        bool triggered = false;
+
+        Animator _AIPedestrian;
 
         GSE_Collision Collision;
 
         // Start is called before the first frame update
         void Start()
         {
-            _AIPedestrian = GetComponentInParent<WaypointProgressTracker>();
+            _AIPedestrian = GetComponentInParent<Animator>();         
+        }
+
+        void Update()
+        {
+            _AIPedestrian.enabled = triggered;
         }
 
         void OnTriggerEnter(Collider other)
@@ -25,12 +31,7 @@ namespace GenerativeSoundEngine
 
             if ( Collision != null)
             {
-                //_AIPedestrian.Trigger();
-
-                if (destroy)
-                {
-                    Destroy(this.gameObject);
-                }
+                triggered = true;
             }
         }
     }

@@ -7,8 +7,6 @@ public class AIPedestrian : MonoBehaviour
     float _startYPosition;
     WaypointCircuit _circuit;
 
-    bool triggered = false;
-
     public void Init(WaypointCircuit circuit)
     {
         enabled = true;
@@ -21,8 +19,6 @@ public class AIPedestrian : MonoBehaviour
 
     private void Update()
     {
-        //if (triggered)
-        //{ 
             var steer = Quaternion.LookRotation(_tracker.target.position - transform.position, Vector3.up).eulerAngles;
             var rot = transform.eulerAngles;
             rot.y = steer.y;
@@ -30,15 +26,5 @@ public class AIPedestrian : MonoBehaviour
             var pos = transform.position;
             pos.y = _startYPosition;
             transform.position = pos;
-        //}
     }
-
-//    public void Trigger()
-//    {
-//        triggered = true;
-//
-//        _tracker.enabled = true;
-//        _tracker.Init(_circuit);
-//        _startYPosition = transform.position.y;
-//    }
 }

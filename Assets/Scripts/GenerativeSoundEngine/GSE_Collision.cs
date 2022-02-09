@@ -113,26 +113,26 @@ namespace GenerativeSoundEngine
             if (Type == 1)
             {
                 Dashboard.DisplayParkingWarning(true);
-                Dashboard.DisplayCollisionWanrning(false);
-                Dashboard.DisplayBlindSplotWarning(false);
+                Dashboard.DisplayCollisionWarning(false);
+                Dashboard.DisplayBlindSpotWarning(false, Angle);
             }
             else if (Type == 2)
             {
                 Dashboard.DisplayParkingWarning(false);
-                Dashboard.DisplayCollisionWanrning(true);
-                Dashboard.DisplayBlindSplotWarning(false);
+                Dashboard.DisplayCollisionWarning(true);
+                Dashboard.DisplayBlindSpotWarning(false, Angle);
             }
             else if (Type == 3)
             {
                 Dashboard.DisplayParkingWarning(false);
-                Dashboard.DisplayCollisionWanrning(false);
-                Dashboard.DisplayBlindSplotWarning(true);
+                Dashboard.DisplayCollisionWarning(false);
+                Dashboard.DisplayBlindSpotWarning(true, Angle);
             }
             else
             {
                 Dashboard.DisplayParkingWarning(false);
-                Dashboard.DisplayCollisionWanrning(false);
-                Dashboard.DisplayBlindSplotWarning(false);
+                Dashboard.DisplayCollisionWarning(false);
+                Dashboard.DisplayBlindSpotWarning(false, Angle);
             }
         }
 
