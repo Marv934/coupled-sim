@@ -19,7 +19,7 @@ public interface IVehicle
 {
     bool Handbrake { get; }
     float Speed { get; }
- }
+}
 
 // Added for GSE
 public interface GSEVehicle
@@ -29,6 +29,7 @@ public interface GSEVehicle
     bool Reverse { get; }
     float Indicator { get; }
     bool Engine { get; }
+    bool ParkAssistant { get; }
     float MaxSpeed { get; }
     float Throttle { get; }
 }
@@ -58,8 +59,9 @@ namespace VehicleBehaviour {
         
         // Start/Stop Button added for GSE - Start
         [SerializeField] string EngineStartStop = "engine_start_stop";
+        [SerializeField] string ParkAssistantStartStop = "park_assistant_start_stop";
         // Start/Stop Button added for GSE - Stop
-        
+
         /* 
          *  Turn input curve: x real input, y value used
          *  My advice (-1, -1) tangent x, (0, 0) tangent 0 and (1, 1) tangent x
@@ -227,6 +229,9 @@ namespace VehicleBehaviour {
         bool engine = false;
         public bool Engine { get { return engine; } }
 
+        bool parkassistant = false;
+        public bool ParkAssistant { get { return parkassistant; } }
+
         public GenerativeSoundEngine.GSE_AI_Test GSE_AI_Test = new GenerativeSoundEngine.GSE_AI_Test();
         public DateTime startDate;
 
@@ -296,6 +301,7 @@ namespace VehicleBehaviour {
             if (isPlayer)
             {
                 // Added for GSE - Start
+                // Engine Start/Stop
                 if (Input.GetButtonDown("engine_start_stop"))
                 {
                     if (engine)
@@ -324,6 +330,12 @@ namespace VehicleBehaviour {
                         handbrake = false;
                     }
                 }
+                // Park Assistant Start/Stop
+                if (Input.GetButtonDown("park_assistant_start_stop"))
+                {
+                    parkassistant = parkassistant != true;
+                }
+
                 // Added for GSE - End
 
                 if (Input.GetButtonDown("forward"))
@@ -342,7 +354,7 @@ namespace VehicleBehaviour {
                     {
                         blinkers.StartLeftBlinkers();
                         // Added for GSE - Start
-                        indicator = -1.0f;
+                        /// = -1.0f;
                         OSCtransmitter.IndicatorStartLeft();
                         // Added for GSE - End
                     }

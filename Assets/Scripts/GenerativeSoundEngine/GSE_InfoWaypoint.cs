@@ -22,7 +22,7 @@ namespace GenerativeSoundEngine
 
         }
 
-        void OnTriggerEnter(Collider other)
+        void OnTriggerEnter(Collider other) //is it possible that AI-car causes the Trigger?
         {
             // Get OSC Transmitter
             OSCtransmitter = other.gameObject.GetComponent<GSE_OSCtransmitter>();

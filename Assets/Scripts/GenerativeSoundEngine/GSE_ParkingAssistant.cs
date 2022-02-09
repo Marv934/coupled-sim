@@ -111,8 +111,8 @@ namespace GenerativeSoundEngine
 
             // Return Value
             return (DistClosest, AnglClosest);
-            proximity = DistClosest;
-            proximityAngle = AnglClosest;
+            //proximity = DistClosest;
+            //proximityAngle = AnglClosest;
         }
 
         void OnTriggerEnter(Collider other)
