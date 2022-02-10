@@ -14,7 +14,8 @@ public class CameraCounter : MonoBehaviour {
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R))
+        // Reset Camera changed from "R" to "M"
+        if (Input.GetKeyDown(KeyCode.F1))
         {
             UnityEngine.XR.InputTracking.Recenter();
         }
