@@ -1195,8 +1195,8 @@ MonoBehaviour:
     m_RotationOrder: 4
   diffGearing: 4
   brakeForce: 1250
-  steerAngle: 30
-  steerSpeed: 0.2
+  steerAngle: 50
+  steerSpeed: 0.603
   jumpVel: 1.3
   driftIntensity: 0.5
   centerOfMass: {fileID: 4738049399399977107}
@@ -1363,11 +1363,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ParkingAssistentMaxSpeed: 10
   ParkingAssistentMaxDistance: 1
-  CollisionAssistantMaxDistance: 0.5
+  CollisionAssistantMaxDistance: 0.1
   CollisionAssistantMinSpeed: 10
   BlindSpotAssistantMaxDistance: 10
   ExitMinimumSpeed: 0.2
-  SendRate: 5
+  ParkingAssistantState: 0
+  CollisionAssistantState: 0
+  BlindSpotAssistantState: 0
 --- !u!114 &-7730390022515479814
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1382,7 +1384,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Transmitter: {fileID: 0}
   RemoteHost: 192.168.0.2
-  RemotePort: 7711
+  RemotePort: 7710
   RootAddress: /GSE
   SendRate: 5
 --- !u!114 &2964490818359184327
@@ -7852,7 +7854,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7eb8d503e07ac1449fd82eb6a83d563, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PositionY: 0
 --- !u!1 &7961354977247051831
 GameObject:
   m_ObjectHideFlags: 0

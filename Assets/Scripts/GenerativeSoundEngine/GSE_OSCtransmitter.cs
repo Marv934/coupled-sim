@@ -8,6 +8,8 @@ using System;
 using UnityEngine;
 using System.Globalization;
 using extOSC;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace GenerativeSoundEngine
 {
@@ -27,6 +29,9 @@ namespace GenerativeSoundEngine
         [SerializeField] public int SendRate = 5;
 
 
+        // Init Dashboard
+        GSE_Dashboard Dashboard;
+
         #endregion
         #region Unity Methods
 
@@ -39,26 +44,56 @@ namespace GenerativeSoundEngine
             // Set remote host and port
             Transmitter.RemoteHost = RemoteHost;
             Transmitter.RemotePort = RemotePort;
-            
+
+            // Get Dashboard
+            Dashboard = GetComponentInChildren<GSE_Dashboard>();
+
         }
 
         #endregion
         #region OSC-transmitting Methods
 
+        // Wait for SWUpdate
+        IEnumerator WaitForService(float Seconds)
+        {
+
+            yield return new WaitForSeconds(Seconds);
+
+            Service(1.0f);
+            Dashboard.DisplayServiceInfo(true);
+
+        }
+
         // Method to Send Engine Start
         public void EngineStart()
         {
             // Create Message
-            var Engine = new OSCMessage(RootAddress + "/Engine", OSCValue.Bool(true));
+            var Engine = new OSCMessage(RootAddress + "/ShutDown", OSCValue.Bool(true));
             Transmitter.Send(Engine);
+
+            StartCoroutine(WaitForService(2.0f));
+        }
+
+        // Wait for SWUpdate
+        IEnumerator WaitForSWUpdate (float Seconds)
+        {
+
+            yield return new WaitForSeconds(Seconds);
+
+            SWUpdate(1.0f);
+
+            Dashboard.DisplaySWUpdateInfo(true);
+
         }
 
         // Method to Send Engine Stop
         public void EngineStop()
         {
             // Create Message
-            var Engine = new OSCMessage(RootAddress + "/Engine", OSCValue.Bool(false));
+            var Engine = new OSCMessage(RootAddress + "/StartUp", OSCValue.Bool(false));
             Transmitter.Send(Engine);
+
+            StartCoroutine(WaitForSWUpdate(2.0f));
         }
 
         public void Speed(float speed)
@@ -115,6 +150,30 @@ namespace GenerativeSoundEngine
             Transmitter.Send(Reverse);
         }
 
+        // Method to Send Parking Trigger 
+        public void ParkingTrigger(bool trigger)
+        {
+            // Create Message
+            var ParkingTrigger = new OSCMessage(RootAddress + "/ParkingTrigger", OSCValue.Bool(trigger));
+            Transmitter.Send(ParkingTrigger);
+        }
+
+        // Method to Send Parking Trigger 
+        public void CollisionTriggerOn()
+        {
+            // Create Message
+            var CollisionTrigger = new OSCMessage(RootAddress + "/CollisionTriggerOn", OSCValue.Bool(true));
+            Transmitter.Send(CollisionTrigger);
+        }
+
+        // Method to Send Parking Trigger 
+        public void CollisionTriggerOff()
+        {
+            // Create Message
+            var CollisionTrigger = new OSCMessage(RootAddress + "/CollisionTriggerOff", OSCValue.Bool(true));
+            Transmitter.Send(CollisionTrigger);
+        }
+
         // Method to Send Collision Type
         public void CollisionType(int type)
         {
@@ -147,12 +206,52 @@ namespace GenerativeSoundEngine
             Transmitter.Send(Warning);
         }
 
+        // Method to Send Warning
+        public void TirePressureWarning(float prio)
+        {
+            // Create Message
+            var Warning = new OSCMessage(RootAddress + "/TirePressure", OSCValue.Float(prio));
+            Transmitter.Send(Warning);
+        }
+
+        // Method to Send Warning
+        public void BatteryWarning(float prio)
+        {
+            // Create Message
+            var Warning = new OSCMessage(RootAddress + "/Battery", OSCValue.Float(prio));
+            Transmitter.Send(Warning);
+        }
+
         // Method to Send Info
         public void Info(float prio)
         {
             // Create Message
             var Info = new OSCMessage(RootAddress + "/Info", OSCValue.Float(prio));
             Transmitter.Send(Info);
+        }
+
+        // Method to Send Info
+        public void TextMessage(float prio)
+        {
+            // Create Message
+            var TextMessage = new OSCMessage(RootAddress + "/TextMessage", OSCValue.Float(prio));
+            Transmitter.Send(TextMessage);
+        }
+
+        // Method to Send Info
+        public void Service(float prio)
+        {
+            // Create Message
+            var Service = new OSCMessage(RootAddress + "/Service", OSCValue.Float(prio));
+            Transmitter.Send(Service);
+        }
+
+        // Method to Send Info
+        public void SWUpdate(float prio)
+        {
+            // Create Message
+            var SWUpdate = new OSCMessage(RootAddress + "/SWUpdate", OSCValue.Float(prio));
+            Transmitter.Send(SWUpdate);
         }
 
         public void TirenessLevel(float level)

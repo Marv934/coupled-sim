@@ -35,7 +35,7 @@ namespace GenerativeSoundEngine
 
             if ( OSCtransmitter != null )
             {
-                OSCtransmitter.Warning(Priority);
+                OSCtransmitter.TirePressureWarning(Priority);
 
                 Dashboard.DisplayTirePressureWarning(true);
 

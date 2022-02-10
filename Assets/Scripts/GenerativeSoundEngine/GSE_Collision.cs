@@ -26,7 +26,7 @@ namespace GenerativeSoundEngine
         [Header("Every <SendRate> Fixed Update Sends OSC Message")]
         // update Counter
         private int updateCounter = 0;
-        [SerializeField] static private int updateStep = 5;
+        [SerializeField] static private int updateStep = 1;
 
         // Init WheelVehicle
         private IVehicle IVehicle;
@@ -78,34 +78,44 @@ namespace GenerativeSoundEngine
         // Update is called once per frame
         void FixedUpdate()
         {
-            updateCounter++;
+            //updateCounter++;
 
             // Call Parking Assistant
-            var Parking = ParkingAssistant.ParkingUpdate();
+            //var Parking = ParkingAssistant.ParkingUpdate();
 
             // Call Collision Assistant
             var Collision = CollisionAssistant.CollisionUpdate();
 
-            if (updateCounter == updateStep)
-            {
+            //if (updateCounter == updateStep)
+            //{
                 // Check for Parking Assistant
-                if ( Mathf.Abs(IVehicle.Speed) < ParkingAssistentMaxSpeed && Mathf.Abs(IVehicle.Speed) > 0.001f && !CollisionAssistantState && !BlindSpotAssistantState && Parking.Item1 < ParkingAssistentMaxDistance)
-                {
+                //if ( Mathf.Abs(IVehicle.Speed) < ParkingAssistentMaxSpeed && Mathf.Abs(IVehicle.Speed) > 0.001f && !CollisionAssistantState && !BlindSpotAssistantState && Parking.Item1 < ParkingAssistentMaxDistance)
+                //{
                     // trigger Parking Assistant
-                    UpdateCollisionDetection(1, Parking.Item1, Parking.Item2);
-
-                    ParkingAssistantState = true;
-                    CoolDown = CoolDownSteps;
-
-                    Dashboard.DisplayParkingWarning(true);
-                }
+                //    UpdateCollisionDetection(1, Parking.Item1, Parking.Item2);
+                //
+                //    if (!ParkingAssistantState)
+                //    {
+                //      OSCtransmitter.ParkingTrigger(true);
+                //    }
+                //    ParkingAssistantState = true;
+                //    CoolDown = CoolDownSteps;
+                //
+                //    Dashboard.DisplayParkingWarning(true);
+                //}
                 // Check Collision Assistant
-                else if ( Mathf.Abs(IVehicle.Speed) > CollisionAssistantMinSpeed && !ParkingAssistantState && !BlindSpotAssistantState && Collision.Item1 < GSEVehicle.MaxSpeed * CollisionAssistantMaxDistance )
+                //else
+                if ( Mathf.Abs(IVehicle.Speed) > CollisionAssistantMinSpeed && !ParkingAssistantState && !BlindSpotAssistantState && Collision.Item1 < GSEVehicle.MaxSpeed * CollisionAssistantMaxDistance )
                 {
                     // trigger Collision Assistant
 
                     UpdateCollisionDetection(2, Collision.Item1, Collision.Item2);
-                    
+
+                    if (!CollisionAssistantState)
+                    {
+                        OSCtransmitter.CollisionTriggerOn();
+                    }
+
                     CollisionAssistantState = true;
                     CoolDown = CoolDownSteps;
 
@@ -117,34 +127,60 @@ namespace GenerativeSoundEngine
                 //    BlindSpotAssistantState = true;
                 //    CoolDown = CoolDownSteps;
                 //}
+                //else if ( CoolDown == 1 )
+                //{
+                //    if (ParkingAssistantState)
+                //    {
+                //        OSCtransmitter.ParkingTrigger(false);
+                //        ParkingAssistantState = false;
+                //    }
+                //    if (CollisionAssistantState)
+                //    {
+                //        OSCtransmitter.CollisionTriggerOff();
+                //        CollisionAssistantState = false;
+                //    }
+                //    CoolDown -= CoolDown;
+                //}
                 else if ( CoolDown == 0 )
                 {
-                    UpdateCollisionDetection(0, 0.0f, 0.0f);
+                    //UpdateCollisionDetection(0, 0.0f, 0.0f);
+                    //
+                    //if (ParkingAssistantState)
+                    //{
+                    //    OSCtransmitter.ParkingTrigger(false);
+                    //    //ParkingAssistantState = false;
+                    //}
+                    if (CollisionAssistantState)
+                    {
+                        OSCtransmitter.CollisionTriggerOff();
+                        CollisionAssistantState = false;
+                        Dashboard.DisplayCollisionWarning(false);
+                    }
 
-                    ParkingAssistantState = false;
-                    CollisionAssistantState = false;
-                    BlindSpotAssistantState = false;
+                    //ParkingAssistantState = false;
+                    //CollisionAssistantState = false;
+                    //BlindSpotAssistantState = false;
 
-                    Dashboard.DisplayParkingWarning(false);
-                    Dashboard.DisplayCollisionWarning(false);
-                    Dashboard.DisplayBlindSpotWarning(false, 0.0f);
+                    //Dashboard.DisplayParkingWarning(false);
+                    //Dashboard.DisplayCollisionWarning(false);
+                    //Dashboard.DisplayBlindSpotWarning(false, 0.0f);
                 }
                 else
                 {
-                    CoolDown -= CoolDown;
+                    CoolDown = CoolDown -1;
 
-                    if (ParkingAssistantState && Parking.Item1 < ParkingAssistentMaxDistance)
-                    {
-                        UpdateCollisionDetection(1, Parking.Item1, Parking.Item2);
-                    }
-                    else if ( CollisionAssistantState && Collision.Item1 < GSEVehicle.MaxSpeed * CollisionAssistantMaxDistance )
-                    {
-                        UpdateCollisionDetection(2, Collision.Item1, Collision.Item2);
-                    }
-                    else
-                    {
-                        UpdateCollisionDetection(0, 0.0f, 0.0f);
-                    }
+                    //if (ParkingAssistantState && Parking.Item1 < ParkingAssistentMaxDistance)
+                    //{
+                    //    UpdateCollisionDetection(1, Parking.Item1, Parking.Item2);
+                    //}
+                    //else if ( CollisionAssistantState && Collision.Item1 < GSEVehicle.MaxSpeed * CollisionAssistantMaxDistance )
+                    //{
+                    //    UpdateCollisionDetection(2, Collision.Item1, Collision.Item2);
+                    //}
+                    //else
+                    //{
+                    //    UpdateCollisionDetection(0, 0.0f, 0.0f);
+                    //}
                 }
 
 
@@ -191,8 +227,14 @@ namespace GenerativeSoundEngine
                 //        UpdateCollisionDetection(0, 0.0f, 0.0f);
                 //    }
                 //}
-                updateCounter = 0;
-            }
+
+                //if ( CoolDown > 0 )
+                //{
+                //    CoolDown -= CoolDown;
+                //}
+
+                //updateCounter = 0;
+            //}
         }
 
         public void UpdateCollisionDetection(int Type, float Distance, float Angle)
@@ -201,24 +243,31 @@ namespace GenerativeSoundEngine
             OSCtransmitter.CollisionDistance(Distance);
             OSCtransmitter.CollisionAngle(Angle);
 
-        //    if (Type == 1)
-        //    {
+            //if (Type == 1)
+            //{
+            //    OSCtransmitter.CollisionTrigger(false);
         //        Dashboard.DisplayParkingWarning(true);
         //        Dashboard.DisplayCollisionWarning(false);
         //        Dashboard.DisplayBlindSpotWarning(false, Angle);
-        //    }
-        //    else if (Type == 2)
-        //    {
+            //}
+            //else if (Type == 2)
+            //{
+            //    OSCtransmitter.CollisionTrigger(true);
         //        Dashboard.DisplayParkingWarning(false);
         //        Dashboard.DisplayCollisionWarning(true);
         //        Dashboard.DisplayBlindSpotWarning(false, Angle);
-        //    }
+            //} 
+            //else
+            //{
+            //    OSCtransmitter.CollisionTrigger(false);
+            //}
         //    else if (Type == 3)
         //    {
         //        Dashboard.DisplayParkingWarning(false);
         //        Dashboard.DisplayCollisionWarning(false);
         //        Dashboard.DisplayBlindSpotWarning(true, Angle);
         //    }
+        
         }
 
     }

@@ -35,7 +35,7 @@ namespace GenerativeSoundEngine
 
             if ( OSCtransmitter != null )
             {
-                OSCtransmitter.Info(Priority);
+                OSCtransmitter.Service(Priority);
 
                 Dashboard.DisplayServiceInfo(true);
 

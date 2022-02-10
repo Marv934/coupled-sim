@@ -35,7 +35,7 @@ namespace GenerativeSoundEngine
 
             if ( OSCtransmitter != null )
             {
-                OSCtransmitter.Info(Priority);
+                OSCtransmitter.TextMessage(Priority);
 
                 Dashboard.DisplaySMSInfo(true);
 

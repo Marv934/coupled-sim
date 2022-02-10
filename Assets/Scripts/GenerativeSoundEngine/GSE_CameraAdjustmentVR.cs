@@ -21,11 +21,11 @@ namespace GenerativeSoundEngine
         void Update()
         {
             //transform.position = transform.position + new Vector3(0, PositionY, 0);
-            if (Input.GetKey(KeyCode.F11))
+            if (Input.GetKey(KeyCode.Keypad2))
             {
                 transform.position = transform.position - new Vector3(0.0f, 0.001f, 0.0f);
             } 
-            if (Input.GetKey(KeyCode.F12))
+            if (Input.GetKey(KeyCode.Keypad8))
             {
                 transform.position = transform.position + new Vector3(0.0f, 0.001f, 0.0f);
             }
