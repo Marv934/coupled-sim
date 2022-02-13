@@ -4,9 +4,12 @@ using UnityEngine;
 
 namespace GenerativeSoundEngine
 {
-    public class GSE_SWUpdateWaypoint : MonoBehaviour
+    public class GSE_WaypointTrigger : MonoBehaviour
     {
-        // Set Warning Prio
+        // Set Name
+        [SerializeField] string Name;
+
+        // Set Prio
         [SerializeField] float Priority = 1.0f;
 
         // Set Destroyed
@@ -35,9 +38,9 @@ namespace GenerativeSoundEngine
 
             if ( OSCtransmitter != null )
             {
-                OSCtransmitter.SWUpdate(Priority);
+                OSCtransmitter.FloatTrigger(Name, Priority);
 
-                Dashboard.DisplaySWUpdateInfo(true);
+                Dashboard.DisplayTirePressureWarning(true);
 
                 if (destroy)
                 {

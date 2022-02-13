@@ -53,6 +53,22 @@ namespace GenerativeSoundEngine
         #endregion
         #region OSC-transmitting Methods
 
+        // Send OSC Bool Trigger Message
+        public void BoolTrigger(string Name, bool state)
+        {
+            // Create Message
+            var Message = new OSCMessage(RootAddress + "/" + Name, OSCValue.Bool(state));
+            Transmitter.Send(Message);
+        }
+
+        // Send OSC Float Trigger Message
+        public void FloatTrigger(string Name, float prio)
+        {
+            // Create Message
+            var Message = new OSCMessage(RootAddress + "/" + Name, OSCValue.Float(prio));
+            Transmitter.Send(Message);
+        }
+
         // Wait for SWUpdate
         IEnumerator WaitForService(float Seconds)
         {
@@ -158,22 +174,6 @@ namespace GenerativeSoundEngine
             Transmitter.Send(ParkingTrigger);
         }
 
-        // Method to Send Parking Trigger 
-        public void CollisionTriggerOn()
-        {
-            // Create Message
-            var CollisionTrigger = new OSCMessage(RootAddress + "/CollisionTriggerOn", OSCValue.Bool(true));
-            Transmitter.Send(CollisionTrigger);
-        }
-
-        // Method to Send Parking Trigger 
-        public void CollisionTriggerOff()
-        {
-            // Create Message
-            var CollisionTrigger = new OSCMessage(RootAddress + "/CollisionTriggerOff", OSCValue.Bool(true));
-            Transmitter.Send(CollisionTrigger);
-        }
-
         // Method to Send Collision Type
         public void CollisionType(int type)
         {
@@ -204,30 +204,6 @@ namespace GenerativeSoundEngine
             // Create Message
             var Warning = new OSCMessage(RootAddress + "/Warning", OSCValue.Float(prio));
             Transmitter.Send(Warning);
-        }
-
-        // Method to Send Warning
-        public void TirePressureWarning(float prio)
-        {
-            // Create Message
-            var Warning = new OSCMessage(RootAddress + "/TirePressure", OSCValue.Float(prio));
-            Transmitter.Send(Warning);
-        }
-
-        // Method to Send Warning
-        public void BatteryWarning(float prio)
-        {
-            // Create Message
-            var Warning = new OSCMessage(RootAddress + "/Battery", OSCValue.Float(prio));
-            Transmitter.Send(Warning);
-        }
-
-        // Method to Send Info
-        public void Info(float prio)
-        {
-            // Create Message
-            var Info = new OSCMessage(RootAddress + "/Info", OSCValue.Float(prio));
-            Transmitter.Send(Info);
         }
 
         // Method to Send Info
