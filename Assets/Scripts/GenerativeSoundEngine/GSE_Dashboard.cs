@@ -342,8 +342,8 @@ namespace GenerativeSoundEngine
         public void DisplayEngineStart()
         {
             // Startup Engine
-            ShutdownInfoState = true;
-            ShutdownInfo.SetActive(true);
+            ShutdownInfoState = false;
+            ShutdownInfo.SetActive(false);
 
             OverwriteWarning();
             OverwriteInfo();
@@ -352,8 +352,8 @@ namespace GenerativeSoundEngine
         public void DisplayEngineStop()
         {
             // Shutdown Engine
-            ShutdownInfoState = false;
-            ShutdownInfo.SetActive(false);
+            ShutdownInfoState = true;
+            ShutdownInfo.SetActive(true);
         }
 
         public void DisplayCollisionWarning(bool State)

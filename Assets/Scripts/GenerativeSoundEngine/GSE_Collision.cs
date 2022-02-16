@@ -26,7 +26,7 @@ namespace GenerativeSoundEngine
         [Header("Every <SendRate> Fixed Update Sends OSC Message")]
         // update Counter
         private int updateCounter = 0;
-        [SerializeField] static private int updateStep = 1;
+        [SerializeField] static private int updateStep = 6;
 
         // Init WheelVehicle
         private IVehicle IVehicle;
@@ -45,9 +45,9 @@ namespace GenerativeSoundEngine
         GSE_Dashboard Dashboard;
 
         // States
-        [SerializeField] bool ParkingAssistantState = false;
-        [SerializeField] bool CollisionAssistantState = false;
-        [SerializeField] bool BlindSpotAssistantState = false;
+        [SerializeField] public bool ParkingAssistantState = false;
+        [SerializeField] public bool CollisionAssistantState = false;
+        [SerializeField] public bool BlindSpotAssistantState = false;
 
         // CoolDown
         int CoolDownSteps = Convert.ToInt32(Mathf.Round(CoolDownTimer * 50 / updateStep));
@@ -78,35 +78,6 @@ namespace GenerativeSoundEngine
         // Update is called once per frame
         void FixedUpdate()
         {
-
-            // Enable Parking Assistant by Button
-            if (Input.GetKey(KeyCode.B))
-            {
-                if (ParkingAssistantState)
-                {
-                    ParkingAssistantState = false;
-                } else
-                {
-                    ParkingAssistantState = true;
-                    CollisionAssistantState = false;
-                    BlindSpotAssistantState = false;
-                }
-            }
-            
-            // Enable Collision Assistant by Button
-            if (Input.GetKey(KeyCode.C))
-            {
-                if (CollisionAssistantState)
-                {
-                    CollisionAssistantState = false;
-                }
-                else
-                {
-                    ParkingAssistantState = false;
-                    CollisionAssistantState = true;
-                    BlindSpotAssistantState = false;
-                }
-            }
 
             if (CollisionAssistantState)
             {
@@ -140,6 +111,12 @@ namespace GenerativeSoundEngine
                 {
                     CollisionCoolDown = CollisionCoolDown - 1;
                 }
+
+                if (updateCounter == updateStep)
+                {
+                    OSCtransmitter.FloatTrigger("CollisionDistance", Collision.Item1);
+                    OSCtransmitter.FloatTrigger("CollisionAngle", Collision.Item2);
+                }
             }
             else if (CollisionCoolDown > 0)
             {
@@ -168,7 +145,7 @@ namespace GenerativeSoundEngine
                         Dashboard.DisplayParkingWarning(true);
                     }
 
-                    CollisionCoolDown = CoolDownSteps;
+                    ParkingCoolDown = CoolDownSteps;
                 }
                 else if (ParkingCoolDown == 1)
                 {
@@ -182,6 +159,12 @@ namespace GenerativeSoundEngine
                 {
                     ParkingCoolDown = ParkingCoolDown - 1;
                 }
+
+                if (updateCounter == updateStep)
+                {
+                    OSCtransmitter.FloatTrigger("CollisionDistance", Parking.Item1);
+                    OSCtransmitter.FloatTrigger("CollisionAngle", Parking.Item2);
+                }
             }
             else if (ParkingCoolDown > 0)
             {
@@ -191,15 +174,14 @@ namespace GenerativeSoundEngine
 
                 ParkingCoolDown = 0;
             }
-
-            //updateCounter++;
-        }
-
-        public void UpdateCollisionDetection(int Type, float Distance, float Angle)
-        {
-            OSCtransmitter.CollisionType(Type);
-            OSCtransmitter.CollisionDistance(Distance);
-            OSCtransmitter.CollisionAngle(Angle);
+            if (updateCounter == updateStep)
+            {
+                updateCounter = 0;
+            }
+            else
+            {
+                updateCounter = updateCounter +1;
+            }
         }
     }
 }

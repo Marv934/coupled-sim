@@ -69,49 +69,6 @@ namespace GenerativeSoundEngine
             Transmitter.Send(Message);
         }
 
-        // Wait for SWUpdate
-        IEnumerator WaitForService(float Seconds)
-        {
-
-            yield return new WaitForSeconds(Seconds);
-
-            Service(1.0f);
-            Dashboard.DisplayServiceInfo(true);
-
-        }
-
-        // Method to Send Engine Start
-        public void EngineStart()
-        {
-            // Create Message
-            var Engine = new OSCMessage(RootAddress + "/ShutDown", OSCValue.Bool(true));
-            Transmitter.Send(Engine);
-
-            StartCoroutine(WaitForService(2.0f));
-        }
-
-        // Wait for SWUpdate
-        IEnumerator WaitForSWUpdate (float Seconds)
-        {
-
-            yield return new WaitForSeconds(Seconds);
-
-            SWUpdate(1.0f);
-
-            Dashboard.DisplaySWUpdateInfo(true);
-
-        }
-
-        // Method to Send Engine Stop
-        public void EngineStop()
-        {
-            // Create Message
-            var Engine = new OSCMessage(RootAddress + "/StartUp", OSCValue.Bool(false));
-            Transmitter.Send(Engine);
-
-            StartCoroutine(WaitForSWUpdate(2.0f));
-        }
-
         public void Speed(float speed)
         {
             // Create Message
@@ -166,38 +123,6 @@ namespace GenerativeSoundEngine
             Transmitter.Send(Reverse);
         }
 
-        // Method to Send Parking Trigger 
-        public void ParkingTrigger(bool trigger)
-        {
-            // Create Message
-            var ParkingTrigger = new OSCMessage(RootAddress + "/ParkingTrigger", OSCValue.Bool(trigger));
-            Transmitter.Send(ParkingTrigger);
-        }
-
-        // Method to Send Collision Type
-        public void CollisionType(int type)
-        {
-            // Create Message
-            var Collision = new OSCMessage(RootAddress + "/CollisionType", OSCValue.Int(type));
-            Transmitter.Send(Collision);
-        }
-
-        // Method to Send Collision Distance
-        public void CollisionDistance(float Distance)
-        {
-            // Create Message
-            var Collision = new OSCMessage(RootAddress + "/CollisionDistance", OSCValue.Float(Distance));
-            Transmitter.Send(Collision);
-        }
-
-        // Method to Send Collision Angle
-        public void CollisionAngle(float Angle)
-        {
-            // Create Message
-            var Collision = new OSCMessage(RootAddress + "/CollisionAngle", OSCValue.Float(Angle));
-            Transmitter.Send(Collision);
-        }
-
         // Method to Send Warning
         public void Warning(float prio)
         {
@@ -212,22 +137,6 @@ namespace GenerativeSoundEngine
             // Create Message
             var TextMessage = new OSCMessage(RootAddress + "/TextMessage", OSCValue.Float(prio));
             Transmitter.Send(TextMessage);
-        }
-
-        // Method to Send Info
-        public void Service(float prio)
-        {
-            // Create Message
-            var Service = new OSCMessage(RootAddress + "/Service", OSCValue.Float(prio));
-            Transmitter.Send(Service);
-        }
-
-        // Method to Send Info
-        public void SWUpdate(float prio)
-        {
-            // Create Message
-            var SWUpdate = new OSCMessage(RootAddress + "/SWUpdate", OSCValue.Float(prio));
-            Transmitter.Send(SWUpdate);
         }
 
         public void TirenessLevel(float level)

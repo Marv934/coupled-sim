@@ -227,7 +227,7 @@ namespace VehicleBehaviour {
 
         // Engine Start/Stop
         bool engine = false;
-        public bool Engine { get { return engine; } }
+        public bool Engine { get { return engine; } set { engine = value; } }
 
         bool parkassistant = false;
         public bool ParkAssistant { get { return parkassistant; } }
@@ -301,35 +301,7 @@ namespace VehicleBehaviour {
             if (isPlayer)
             {
                 // Added for GSE - Start
-                // Engine Start/Stop
-                if (Input.GetButtonDown("engine_start_stop"))
-                {
-                    if (engine)
-                    {
-                        engine = false;
-
-                        // Send OSCMessage
-                        OSCtransmitter.EngineStart();
-
-                        // Set Dashboard
-                        Dashboard.DisplayEngineStart();
-
-                        // set Handbrake to true
-                        handbrake = true;
-                    } else if (!engine)
-                    {
-                        engine = true;
-
-                        // Send OSCMessage
-                        OSCtransmitter.EngineStop();
-
-                        // Set Dashboard
-                        Dashboard.DisplayEngineStop();
-
-                        // set Handbrake to false
-                        handbrake = false;
-                    }
-                }
+                
                 // Park Assistant Start/Stop
                 if (Input.GetButtonDown("park_assistant_start_stop"))
                 {
