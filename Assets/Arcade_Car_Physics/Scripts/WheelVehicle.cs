@@ -327,7 +327,7 @@ namespace VehicleBehaviour {
                         blinkers.StartLeftBlinkers();
                         // Added for GSE - Start
                         /// = -1.0f;
-                        OSCtransmitter.IndicatorStartLeft();
+                        OSCtransmitter.BoolTrigger("BlinkerOn", true);
                         // Added for GSE - End
                     }
                     else
@@ -335,7 +335,7 @@ namespace VehicleBehaviour {
                         blinkers.Stop();
                         // Added for GSE - Start
                         indicator = 0.0f;
-                        OSCtransmitter.IndicatorStop();
+                        OSCtransmitter.BoolTrigger("BlinkerOff", true);
                         // Added for GSE - End
                     }
                 }
@@ -346,7 +346,7 @@ namespace VehicleBehaviour {
                         blinkers.StartRightBlinkers();
                         // Added for GSE - Start
                         indicator = 1.0f;
-                        OSCtransmitter.IndicatorStartRight();
+                        OSCtransmitter.BoolTrigger("BlinkerOn", true);
                         // Added for GSE - End
                     }
                     else
@@ -354,7 +354,7 @@ namespace VehicleBehaviour {
                         blinkers.Stop();
                         // Added for GSE - Start
                         indicator = 0.0f;
-                        OSCtransmitter.IndicatorStop();
+                        OSCtransmitter.BoolTrigger("BlinkerOff", true);
                         // Added for GSE - End
                     }
                 }
@@ -363,7 +363,7 @@ namespace VehicleBehaviour {
                     blinkers.Stop();
                     // Added for GSE - Start
                     indicator = 0.0f;
-                    OSCtransmitter.IndicatorStop();
+                    OSCtransmitter.BoolTrigger("BlinkerOff", true);
                     // Added for GSE - End
                 }
             // Added for GSE - AI-Test - Start
@@ -421,8 +421,12 @@ namespace VehicleBehaviour {
                 // Added for GSE - End
 
                 // Turn
+                Debug.Log("turnInput: " + GetInput(turnInput));
+
                 steering = turnInputCurve.Evaluate(GetInput(turnInput)) * steerAngle;
-            
+
+                Debug.Log("Steering: " + steering);
+
             // Added for GSE - AI-Test - Start
             } else if (!isPlayer)
             {

@@ -21,7 +21,7 @@ namespace GenerativeSoundEngine
         [SerializeField] float ExitMinimumSpeed = 0.2f;
 
         [Header("CoolDownTimer in Seconds")]
-        [SerializeField] static float CoolDownTimer = 5.0f;
+        [SerializeField] static float CoolDownTimer = 10.0f;
 
         [Header("Every <SendRate> Fixed Update Sends OSC Message")]
         // update Counter
@@ -114,7 +114,7 @@ namespace GenerativeSoundEngine
 
                 if (updateCounter == updateStep)
                 {
-                    OSCtransmitter.FloatTrigger("CollisionDistance", Collision.Item1);
+                    OSCtransmitter.FloatTrigger("CollisionDistance", Collision.Item1/CollisionAssistantMaxDistance);
                     OSCtransmitter.FloatTrigger("CollisionAngle", Collision.Item2);
                 }
             }
@@ -162,7 +162,7 @@ namespace GenerativeSoundEngine
 
                 if (updateCounter == updateStep)
                 {
-                    OSCtransmitter.FloatTrigger("CollisionDistance", Parking.Item1);
+                    OSCtransmitter.FloatTrigger("CollisionDistance", Parking.Item1/ParkingAssistentMaxDistance);
                     OSCtransmitter.FloatTrigger("CollisionAngle", Parking.Item2);
                 }
             }

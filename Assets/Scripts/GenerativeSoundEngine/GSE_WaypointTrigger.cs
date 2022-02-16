@@ -10,7 +10,12 @@ namespace GenerativeSoundEngine
         [SerializeField] string Name;
 
         // Set Prio
+        [SerializeField] bool sendPrio = false;
         [SerializeField] float Priority = 1.0f;
+
+        // Set Bool
+        [SerializeField] bool sendBool = false;
+        [SerializeField] bool Bool = true;
 
         // Set Destroyed
         [Header("Destroy on Trigger - true, Not destroy on Trigger - false")]
@@ -38,9 +43,15 @@ namespace GenerativeSoundEngine
 
             if ( OSCtransmitter != null )
             {
-                OSCtransmitter.FloatTrigger(Name, Priority);
 
-                Dashboard.DisplayTirePressureWarning(true);
+                if (sendBool)
+                {
+                    OSCtransmitter.BoolTrigger(Name, Bool);
+                }
+                if (sendPrio)
+                {
+                    OSCtransmitter.FloatTrigger(Name, Priority);
+                }
 
                 if (destroy)
                 {

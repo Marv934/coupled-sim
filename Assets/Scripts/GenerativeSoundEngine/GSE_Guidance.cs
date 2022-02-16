@@ -77,7 +77,7 @@ namespace GenerativeSoundEngine
                 yield return new WaitForSeconds(UpdateTime);
             }
 
-            OSCtransmitter.BoolTrigger("SWUpdateConfirm", true);
+            OSCtransmitter.BoolTrigger("Confirm", true);
 
             Dashboard.DisplayServiceInfo(false);
 
@@ -163,7 +163,7 @@ namespace GenerativeSoundEngine
 
             yield return new WaitForSeconds(WaitTime);
 
-            OSCtransmitter.BoolTrigger("TextMessageConfirmation", true);
+            OSCtransmitter.BoolTrigger("Confirm", true);
             Dashboard.DisplaySMSInfo(false);
             TextMessageConfirmationObject.SetActive(true);
 
@@ -208,6 +208,8 @@ namespace GenerativeSoundEngine
                     // Get Vehicle
                 }
             }
+
+            OSCtransmitter.BoolTrigger("AmbientOn", true);
         }
 
         // Update is called once per frame
