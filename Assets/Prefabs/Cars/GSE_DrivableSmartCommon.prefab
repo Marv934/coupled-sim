@@ -1397,7 +1397,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Transmitter: {fileID: 0}
   RemoteHost: 192.168.0.3
-  RemotePort: 7711
+  RemotePort: 7710
   RootAddress: /GSE
   SendRate: 5
 --- !u!114 &2964490818359184327
