@@ -41,7 +41,16 @@ namespace GenerativeSoundEngine
             if (InputManager != null)
             {
                 Guidance.Skript = NextSkript;
+            }
+        }
 
+        void OnTriggerExit(Collider other)
+        {
+            // Get InputManager
+            GSE_InputManager InputManager = other.gameObject.GetComponent<GSE_InputManager>();
+
+            if (InputManager != null)
+            { 
                 if (destroy)
                 {
                     Destroy(this.gameObject);

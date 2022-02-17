@@ -114,7 +114,7 @@ namespace GenerativeSoundEngine
 
                 if (updateCounter == updateStep)
                 {
-                    OSCtransmitter.FloatTrigger("CollisionDistance", Collision.Item1/CollisionAssistantMaxDistance);
+                    OSCtransmitter.FloatTrigger("CollisionDistance", Collision.Item1);
                     OSCtransmitter.FloatTrigger("CollisionAngle", Collision.Item2);
                 }
             }
@@ -162,7 +162,7 @@ namespace GenerativeSoundEngine
 
                 if (updateCounter == updateStep)
                 {
-                    OSCtransmitter.FloatTrigger("CollisionDistance", Parking.Item1/ParkingAssistentMaxDistance);
+                    OSCtransmitter.FloatTrigger("CollisionDistance", Parking.Item1);
                     OSCtransmitter.FloatTrigger("CollisionAngle", Parking.Item2);
                 }
             }

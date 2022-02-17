@@ -421,11 +421,11 @@ namespace VehicleBehaviour {
                 // Added for GSE - End
 
                 // Turn
-                Debug.Log("turnInput: " + GetInput(turnInput));
+                //Debug.Log("turnInput: " + GetInput(turnInput));
 
                 steering = turnInputCurve.Evaluate(GetInput(turnInput)) * steerAngle;
 
-                Debug.Log("Steering: " + steering);
+                //Debug.Log("Steering: " + steering);
 
             // Added for GSE - AI-Test - Start
             } else if (!isPlayer)

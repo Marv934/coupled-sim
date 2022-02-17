@@ -1375,7 +1375,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ParkingAssistentMaxSpeed: 10
-  ParkingAssistentMaxDistance: 3
+  ParkingAssistentMaxDistance: 2
   CollisionAssistantMaxDistance: 30
   CollisionAssistantMinSpeed: 10
   BlindSpotAssistantMaxDistance: 10
@@ -1396,7 +1396,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Transmitter: {fileID: 0}
-  RemoteHost: 192.168.0.2
+  RemoteHost: 192.168.0.3
   RemotePort: 7711
   RootAddress: /GSE
   SendRate: 5
@@ -1416,7 +1416,7 @@ MonoBehaviour:
   StressLevel: 0.2
   TelephoneActive: 0
   MusicActive: 0
-  ConversationActive: 0
+  ConversationActive: 1
   AutoDrive: 0
 --- !u!1 &1819827312411906
 GameObject:
@@ -7023,7 +7023,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 1d96026f0c6d0fd45a2192fec77c470c, type: 2}
+  - {fileID: 2100000, guid: ea31835bdb9d6984a9ecf07c05a41615, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
