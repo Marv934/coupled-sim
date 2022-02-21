@@ -65,6 +65,22 @@ namespace GenerativeSoundEngine
         [SerializeField]
         private GameObject TirePressureWarningConfirmationObject;
 
+        [Header("Einparken")]
+        [SerializeField]
+        private GameObject EinparkenObject;
+
+        [Header("Parkluecke")]
+        [SerializeField]
+        private GameObject ParklueckeObject;
+
+        [Header("EngineStopMessage")]
+        [SerializeField]
+        private GameObject EngineStopObject;
+
+        [Header("EndMessage")]
+        [SerializeField]
+        private GameObject EndObject;
+
         // Init Input Manager
         GSE_InputManager InputManager;
 
@@ -139,26 +155,16 @@ namespace GenerativeSoundEngine
             Waiting = false;
         }
 
-        IEnumerator WaitForParkingConfirmation()
+        IEnumerator Parking()
         {
 
             yield return new WaitForSeconds(WaitTime);
 
             AusparkenObject.SetActive(true);
 
-            bool state = true;
-            while (state)
-            {
-                if (Input.GetKey(KeyCode.L))
-                {
-                    AusparkenObject.SetActive(false);
+            yield return new WaitForSeconds(DisplayTime);
 
-                    InputManager.StartParking();
-
-                    state = false;
-                }
-                yield return new WaitForSeconds(UpdateTime);
-            }
+            AusparkenObject.SetActive(false);
 
         }
 
@@ -362,6 +368,53 @@ namespace GenerativeSoundEngine
             Waiting = false;
         }
 
+        IEnumerator Einparken()
+        {
+            Waiting = true;
+
+            EinparkenObject.SetActive(true);
+
+            bool state = true;
+            while (state)
+            {
+                if (Input.GetKey(KeyCode.L))
+                {
+                    EinparkenObject.SetActive(false);
+
+                    state = false;
+                }
+                yield return new WaitForSeconds(UpdateTime);
+            }
+
+            Waiting = false;
+        }
+
+        IEnumerator WaitForEngineStop()
+        {
+            Waiting = true;
+
+            EngineStopObject.SetActive(true);
+
+            bool state = true;
+            while (state)
+            {
+                if (Input.GetKey(KeyCode.L))
+                {
+                    EngineStopObject.SetActive(false);
+
+                    InputManager.StopEngine();
+
+                    state = false;
+                }
+                yield return new WaitForSeconds(UpdateTime);
+            }
+
+            yield return new WaitForSeconds(WaitTime);
+            EndObject.SetActive(true);
+
+            Waiting = false;
+        }
+
         // Start is called before the first frame update
         void Start()
         {
@@ -413,13 +466,15 @@ namespace GenerativeSoundEngine
                 else if (Skript == 2)
                 {   // Event Ausparken
                     Debug.Log("Skript 2");
-                    StartCoroutine(WaitForParkingConfirmation());
+                    InputManager.StartParking();
+                    StartCoroutine(Parking());
                     Skript = 3;
                 }
                 else if (Skript == 4)
                 {   // Event End Ausparken
                     Debug.Log("Skript 4");
                     InputManager.StopParking();
+                    ParklueckeObject.SetActive(true);
                     Skript = 5;
                 }
                 else if (Skript == 6)
@@ -483,6 +538,19 @@ namespace GenerativeSoundEngine
                     Debug.Log("Skript 27");
                     StartCoroutine(WaitForTirePressureWarningConfirmation());
                     Skript = 28;
+                }
+                else if (Skript == 30)
+                {   // Start Einparken
+                    Debug.Log("Skript 30");
+                    StartCoroutine(Einparken());
+                    InputManager.StartParking();
+                    Skript = 31;
+                }
+                else if (Skript == 31)
+                {   // Motor Aus
+                    Debug.Log("Skript 31");
+                    StartCoroutine(WaitForEngineStop());
+                    Skript = 32;
                 }
             }
         }

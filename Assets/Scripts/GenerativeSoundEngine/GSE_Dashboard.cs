@@ -31,6 +31,16 @@ namespace GenerativeSoundEngine
         [SerializeField]
         private float maxPower = 1.0f;
 
+        [Header("Drive")]
+        private bool DriveState = true;
+        [SerializeField]
+        private GameObject Drive;
+
+        [Header("Reverse")]
+        private bool ReverseState = false;
+        [SerializeField]
+        private GameObject Reverse;
+
         [Header("Collision Warning")]
         private bool CollisionWarningState = false;
         [SerializeField]
@@ -113,7 +123,7 @@ namespace GenerativeSoundEngine
             }
 
             // Power
-            var anglePower = Mathf.Lerp(pivotMinPowerAngle, pivotMaxPowerAngle, Vehicle.Throttle / maxPower);
+            var anglePower = Mathf.Lerp(pivotMinPowerAngle, pivotMaxPowerAngle, Mathf.Abs( Vehicle.Throttle ) / maxPower);
             if (pivotPower != null)
             {
                 pivotPower.localRotation = Quaternion.AngleAxis(anglePower, Vector3.forward);
@@ -345,6 +355,15 @@ namespace GenerativeSoundEngine
             ShutdownInfoState = false;
             ShutdownInfo.SetActive(false);
 
+            if (DriveState)
+            {
+                Drive.SetActive(true);
+            }
+            else if (ReverseState)
+            {
+                Reverse.SetActive(true);
+            }
+
             OverwriteWarning();
             OverwriteInfo();
         }
@@ -354,6 +373,10 @@ namespace GenerativeSoundEngine
             // Shutdown Engine
             ShutdownInfoState = true;
             ShutdownInfo.SetActive(true);
+
+            // Set Drive false
+            Drive.SetActive(false);
+            Reverse.SetActive(false);
         }
 
         public void DisplayCollisionWarning(bool State)
@@ -437,6 +460,28 @@ namespace GenerativeSoundEngine
                     ParkingWarning.SetActive(false);
                 }
             }
+        }
+
+        public void DisplayDrive()
+        {
+            // Set Reverse false
+            ReverseState = false;
+            Reverse.SetActive(false);
+
+            // Set Drive true
+            DriveState = true;
+            Drive.SetActive(true);
+        }
+
+        public void DisplayReverse()
+        {
+            // Set Reverse true
+            ReverseState = true;
+            Reverse.SetActive(true);
+
+            // Set Drive false
+            DriveState = false;
+            Drive.SetActive(false);
         }
     }
 }

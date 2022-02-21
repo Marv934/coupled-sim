@@ -18,6 +18,15 @@ namespace GenerativeSoundEngine
         // Init Collision
         GSE_Collision Collision;
 
+        // Get CarBlinkers
+        [Header("Car Blinkers")]
+        [SerializeField] CarBlinkers blinkers;
+        bool BlinkerStateLeft = false;
+        bool BlinkerStateRight = false;
+
+        //private IEnumerator unsetBlinkerLeft;
+        //private IEnumerator unsetBlinkerRight;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -33,6 +42,9 @@ namespace GenerativeSoundEngine
             // Get Collision
             Collision = GetComponentInChildren<GSE_Collision>();
 
+            //unsetBlinkerLeft = UnsetBlinkerLeft();
+            //unsetBlinkerRight = UnsetBlinkerRight();
+
         }
 
         // Update is called once per frame
@@ -45,7 +57,7 @@ namespace GenerativeSoundEngine
                 {
                     StartEngine();
                 }
-                else if (Vehicle.Engine)
+                else
                 {
                     StopEngine();
                 }
@@ -58,7 +70,7 @@ namespace GenerativeSoundEngine
                 {
                     StartParking();
                 }
-                else if (Collision.ParkingAssistantState)
+                else
                 {
                     StopParking();
                 }
@@ -71,9 +83,47 @@ namespace GenerativeSoundEngine
                 {
                     StartCollision();
                 }
-                else if (Collision.CollisionAssistantState)
+                else
                 {
                     StopCollision();
+                }
+            }
+
+            // Drive/Reverse
+            if (Input.GetKeyDown(KeyCode.G))
+            {
+                if (!Vehicle.Reverse)
+                {
+                    SetReverse();
+                }
+                else
+                {
+                    SetDrive();
+                }
+            }
+
+            // Blinker Set Left/Right
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                if (!BlinkerStateLeft)
+                {
+                    SetBlinkerLeft();
+                }
+                else
+                {
+                    SetBlinkerStop();
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                if (!BlinkerStateRight)
+                {
+                    SetBlinkerRight();
+                }
+                else
+                {
+                    SetBlinkerStop();
                 }
             }
         }
@@ -128,6 +178,140 @@ namespace GenerativeSoundEngine
         public void StopCollision()
         {
             Collision.CollisionAssistantState = false;
+        }
+
+        private void SetReverse()
+        {
+            // Send OSCMessage
+            OSCtransmitter.BoolTrigger("Reverse", true);
+
+            // Set Dashboard
+            Dashboard.DisplayReverse();
+
+            // Set vehicle
+            Vehicle.Reverse = true;
+        }
+
+        private void SetDrive()
+        {
+            // Send OSCMessage
+            OSCtransmitter.BoolTrigger("Reverse", false);
+
+            // Set Dashboard
+            Dashboard.DisplayDrive();
+
+            // Set vehicle
+            Vehicle.Reverse = false;
+        }
+
+        private void SetBlinkerLeft()
+        {
+            // Set Car Blinkers
+            blinkers.StartLeftBlinkers();
+
+            // Set State
+            BlinkerStateLeft = true;
+            BlinkerStateRight = false;
+
+            // Send OSC Message
+            OSCtransmitter.BoolTrigger("BlinkerOn", true);
+
+            StopAllCoroutines();
+            StartCoroutine(UnsetBlinkerLeft());
+        }
+
+        IEnumerator UnsetBlinkerLeft()
+        {
+            // wait for Steering
+            bool waiting = true;
+
+            while (waiting)
+            {
+                yield return new WaitForSeconds(0.1f);
+                
+                if (Vehicle.Steering < -0.33f)
+                {
+                    waiting = false;
+                }
+            }
+
+            // Wait for end Steering
+            waiting = true;
+
+            while (waiting)
+            {
+                yield return new WaitForSeconds(0.1f);
+
+                if (Vehicle.Steering > -0.1f)
+                {
+                    waiting = false;
+                }
+            }
+
+            SetBlinkerStop();
+        }
+
+        private void SetBlinkerRight()
+        {
+            // Set Car Blinker
+            blinkers.StartRightBlinkers();
+
+            // Set State
+            BlinkerStateLeft = false;
+            BlinkerStateRight = true;
+
+            // Send OSC Message
+            OSCtransmitter.BoolTrigger("BlinkerOn", true);
+            
+            StopAllCoroutines();
+            StartCoroutine(UnsetBlinkerRight());
+        }
+
+        IEnumerator UnsetBlinkerRight()
+        {
+            // wait for Steering
+            bool waiting = true;
+
+            while (waiting)
+            {
+                yield return new WaitForSeconds(0.1f);
+
+                if (Vehicle.Steering > 0.33f)
+                {
+                    waiting = false;
+                }
+            }
+
+            // Wait for end Steering
+            waiting = true;
+
+            while (waiting)
+            {
+                yield return new WaitForSeconds(0.1f);
+
+                if (Vehicle.Steering < 0.1f)
+                {
+                    waiting = false;
+                }
+            }
+
+            SetBlinkerStop();
+        }
+
+        private void SetBlinkerStop()
+        {
+            // Set Car Blinker
+            blinkers.Stop();
+
+            // Set State
+            BlinkerStateLeft = false;
+            BlinkerStateRight = false;
+
+            // Stop Coroutines
+            StopAllCoroutines();
+
+            // Senr OSC Message
+            OSCtransmitter.BoolTrigger("BlinkerOff", true);
         }
     }
 }

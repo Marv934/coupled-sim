@@ -27,9 +27,9 @@ public interface GSEVehicle
     float Steering { get; }
     //float SteerAngle { get; }
     bool Reverse { get; }
-    float Indicator { get; }
+    //float Indicator { get; }
     bool Engine { get; }
-    bool ParkAssistant { get; }
+    //bool ParkAssistant { get; }
     float MaxSpeed { get; }
     float Throttle { get; }
 }
@@ -37,14 +37,14 @@ public interface GSEVehicle
 namespace VehicleBehaviour {
     [RequireComponent(typeof(Rigidbody))]
     public class WheelVehicle : MonoBehaviour, IVehicle, GSEVehicle {
-        
+
         [Header("Inputs")]
-    #if MULTIOSCONTROLS
+#if MULTIOSCONTROLS
         [SerializeField] PlayerNumber playerId;
-    #endif
+#endif
         // If isPlayer is false inputs are ignored
         [SerializeField] bool isPlayer = true;
-        public bool IsPlayer { get{ return isPlayer; } set{ isPlayer = value; } } 
+        public bool IsPlayer { get { return isPlayer; } set { isPlayer = value; } }
 
         // Input names to read using GetAxis
         [SerializeField] string throttleInput = "Throttle";
@@ -52,14 +52,17 @@ namespace VehicleBehaviour {
         [SerializeField] string turnInput = "Horizontal";
         [SerializeField] string jumpInput = "Jump";
         [SerializeField] string driftInput = "Fire1";
-	    [SerializeField] string boostInput = "Fire2";
+        [SerializeField] string boostInput = "Fire2";
         [SerializeField] string blinkersLeftInput = "blinker_left";
         [SerializeField] string blinkersRightInput = "blinker_right";
         [SerializeField] string blinkersClearInput = "blinker_clear";
-        
+
         // Start/Stop Button added for GSE - Start
-        [SerializeField] string EngineStartStop = "engine_start_stop";
-        [SerializeField] string ParkAssistantStartStop = "park_assistant_start_stop";
+
+        //[SerializeField] string EngineStartStop = "engine_start_stop";
+
+        //[SerializeField] string ParkAssistantStartStop = "park_assistant_start_stop";
+
         // Start/Stop Button added for GSE - Stop
 
         /* 
@@ -79,18 +82,18 @@ namespace VehicleBehaviour {
         bool isGrounded = false;
         int lastGroundCheck = 0;
         public bool IsGrounded { get {
-            if (lastGroundCheck == Time.frameCount)
-                return isGrounded;
+                if (lastGroundCheck == Time.frameCount)
+                    return isGrounded;
 
-            lastGroundCheck = Time.frameCount;
-            isGrounded = true;
-            foreach (WheelCollider wheel in wheels)
-            {
-                if (!wheel.gameObject.activeSelf || !wheel.isGrounded)
-                    isGrounded = false;
-            }
-            return isGrounded;
-        }}
+                lastGroundCheck = Time.frameCount;
+                isGrounded = true;
+                foreach (WheelCollider wheel in wheels)
+                {
+                    if (!wheel.gameObject.activeSelf || !wheel.isGrounded)
+                        isGrounded = false;
+                }
+                return isGrounded;
+            } }
 
         [Header("Behaviour")]
         /*
@@ -129,7 +132,7 @@ namespace VehicleBehaviour {
         // How hard do you want to drift?
         [Range(0.0f, 2f)]
         [SerializeField] float driftIntensity = 0.5f;
-        public float DriftIntensity { get { return driftIntensity; } set { driftIntensity = Mathf.Clamp(value, 0.0f, 2.0f); }}
+        public float DriftIntensity { get { return driftIntensity; } set { driftIntensity = Mathf.Clamp(value, 0.0f, 2.0f); } }
 
         // Reset Values
         Vector3 spawnPosition;
@@ -145,28 +148,28 @@ namespace VehicleBehaviour {
         // Force aplied downwards on the car, proportional to the car speed
         [Range(0.5f, 10f)]
         [SerializeField] float downforce = 1.0f;
-        public float Downforce { get{ return downforce; } set{ downforce = Mathf.Clamp(value, 0, 5); } }     
+        public float Downforce { get { return downforce; } set { downforce = Mathf.Clamp(value, 0, 5); } }
 
         // When IsPlayer is false you can use this to control the steering
         float steering;
-        public float Steering { get{ return steering; } set{ steering = Mathf.Clamp(value, -1f, 1f); } } 
+        public float Steering { get { return steering; } set { steering = Mathf.Clamp(value, -1f, 1f); } }
 
         // When IsPlayer is false you can use this to control the throttle
         float throttle;
-        public float Throttle { get{ return throttle; } set{ throttle = Mathf.Clamp(value, -1f, 1f); } } 
+        public float Throttle { get { return throttle; } set { throttle = Mathf.Clamp(value, -1f, 1f); } }
 
         // Like your own car handbrake, if it's true the car will not move
         [SerializeField] bool handbrake;
-        public bool Handbrake { get{ return handbrake; } set{ handbrake = value; } } 
-        
+        public bool Handbrake { get { return handbrake; } set { handbrake = value; } }
+
         // Use this to disable drifting
         [HideInInspector] public bool allowDrift = true;
         bool drift;
-        public bool Drift { get{ return drift; } set{ drift = value; } }         
+        public bool Drift { get { return drift; } set { drift = value; } }
 
         // Use this to read the current car speed (you'll need this to make a speedometer)
         [SerializeField] float speed = 0.0f;
-        public float Speed { get{ return speed; } }
+        public float Speed { get { return speed; } }
 
         // maxSpeed added for GSE - Start
 
@@ -185,7 +188,7 @@ namespace VehicleBehaviour {
 
         // Maximum boost available
         [SerializeField] float maxBoost = 10f;
-        public float MaxBoost { get { return maxBoost; } set {maxBoost = value;} }
+        public float MaxBoost { get { return maxBoost; } set { maxBoost = value; } }
 
         // Current boost available
         [SerializeField] float boost = 10f;
@@ -215,22 +218,23 @@ namespace VehicleBehaviour {
         [SerializeField] AudioClip boostClip;
         [SerializeField] AudioSource boostSource;
         [SerializeField] CarBlinkers blinkers;
-        
+
         // Private variables set at the start
         Rigidbody _rb;
         WheelCollider[] wheels;
 
         // Added for GSE - Start
         // Blinkers
-        float indicator = 0.0f;
-        public float Indicator { get { return indicator; } }
+        //float indicator = 0.0f;
+        //public float Indicator { get { return indicator; } }
 
         // Engine Start/Stop
+
         bool engine = false;
         public bool Engine { get { return engine; } set { engine = value; } }
 
-        bool parkassistant = false;
-        public bool ParkAssistant { get { return parkassistant; } }
+        //bool parkassistant = false;
+        //public bool ParkAssistant { get { return parkassistant; } }
 
         public GenerativeSoundEngine.GSE_AI_Test GSE_AI_Test = new GenerativeSoundEngine.GSE_AI_Test();
         public DateTime startDate;
@@ -248,7 +252,7 @@ namespace VehicleBehaviour {
                 boostSource.clip = boostClip;
             }
 
-		    boost = maxBoost;
+            boost = maxBoost;
 
             _rb = GetComponent<Rigidbody>();
             spawnPosition = transform.position;
@@ -278,7 +282,7 @@ namespace VehicleBehaviour {
 
         bool reverse = false;
         // Added for GSE - Start
-        public bool Reverse { get { return reverse; } }
+        public bool Reverse { get { return reverse; } set { reverse = value; } }
 
         // Added for GSE - End
 
@@ -298,92 +302,92 @@ namespace VehicleBehaviour {
             }
 
             // Get all the inputs!
-            if (isPlayer)
-            {
+            //if (isPlayer)
+            //{
                 // Added for GSE - Start
                 
                 // Park Assistant Start/Stop
-                if (Input.GetButtonDown("park_assistant_start_stop"))
-                {
-                    parkassistant = parkassistant != true;
-                }
+                //if (Input.GetButtonDown("park_assistant_start_stop"))
+                //{
+                //    parkassistant = parkassistant != true;
+                //}
 
                 // Added for GSE - End
 
-                if (Input.GetButtonDown("forward"))
-                {
-                    reverse = false;
-                    OSCtransmitter.Forward();
-                } else if (Input.GetButtonDown("reverse"))
-                {
-                    reverse = true;
-                    OSCtransmitter.Reverse();
-                }
+                //if (Input.GetButtonDown("forward"))
+                //{
+                //    reverse = false;
+                    //OSCtransmitter.Forward();
+                //} else if (Input.GetButtonDown("reverse"))
+                //{
+                //    reverse = true;
+                    //OSCtransmitter.Reverse();
+                //}
 
-                if (Input.GetButtonDown("blinker_left"))
-                {
-                    if (blinkers.State != BlinkerState.Left)
-                    {
-                        blinkers.StartLeftBlinkers();
-                        // Added for GSE - Start
-                        /// = -1.0f;
-                        OSCtransmitter.BoolTrigger("BlinkerOn", true);
-                        // Added for GSE - End
-                    }
-                    else
-                    {
-                        blinkers.Stop();
-                        // Added for GSE - Start
-                        indicator = 0.0f;
-                        OSCtransmitter.BoolTrigger("BlinkerOff", true);
-                        // Added for GSE - End
-                    }
-                }
-                else if (Input.GetButtonDown("blinker_right"))
-                {
-                    if (blinkers.State != BlinkerState.Right)
-                    {
-                        blinkers.StartRightBlinkers();
-                        // Added for GSE - Start
-                        indicator = 1.0f;
-                        OSCtransmitter.BoolTrigger("BlinkerOn", true);
-                        // Added for GSE - End
-                    }
-                    else
-                    {
-                        blinkers.Stop();
-                        // Added for GSE - Start
-                        indicator = 0.0f;
-                        OSCtransmitter.BoolTrigger("BlinkerOff", true);
-                        // Added for GSE - End
-                    }
-                }
-                else if (Input.GetButtonDown("blinker_clear"))
-                {
-                    blinkers.Stop();
-                    // Added for GSE - Start
-                    indicator = 0.0f;
-                    OSCtransmitter.BoolTrigger("BlinkerOff", true);
-                    // Added for GSE - End
-                }
+                //if (Input.GetButtonDown("blinker_left"))
+                //{
+                //    if (blinkers.State != BlinkerState.Left)
+                //    {
+                //        blinkers.StartLeftBlinkers();
+                //        // Added for GSE - Start
+                //        /// = -1.0f;
+                //        OSCtransmitter.BoolTrigger("BlinkerOn", true);
+                //        // Added for GSE - End
+                //    }
+                //    else
+                //    {
+                //        blinkers.Stop();
+                //        // Added for GSE - Start
+                //        indicator = 0.0f;
+                //        OSCtransmitter.BoolTrigger("BlinkerOff", true);
+                //        // Added for GSE - End
+                //    }
+                //}
+                //else if (Input.GetButtonDown("blinker_right"))
+                //{
+                //    if (blinkers.State != BlinkerState.Right)
+                //    {
+                //        blinkers.StartRightBlinkers();
+                //        // Added for GSE - Start
+                //        indicator = 1.0f;
+                //        OSCtransmitter.BoolTrigger("BlinkerOn", true);
+                //        // Added for GSE - End
+                //    }
+                //    else
+                //    {
+                //        blinkers.Stop();
+                //        // Added for GSE - Start
+                //        indicator = 0.0f;
+                //        OSCtransmitter.BoolTrigger("BlinkerOff", true);
+                //        // Added for GSE - End
+                //    }
+                //}
+                //else if (Input.GetButtonDown("blinker_clear"))
+                //{
+                //    blinkers.Stop();
+                //    // Added for GSE - Start
+                //    indicator = 0.0f;
+                //    OSCtransmitter.BoolTrigger("BlinkerOff", true);
+                //    // Added for GSE - End
+                //}
             // Added for GSE - AI-Test - Start
-            }
-            else if (!isPlayer)
-            {
-
-                GSE_AI_Test.Timer(startDate, DateTime.Now);
-
-                // Engine Start/Stop
-                GSE_AI_Test.CheckEngine(out engine, out handbrake);
-
-                // Blinker Left
-                GSE_AI_Test.CheckBlinkers(blinkers, out indicator);
-
-                // Reverse
-                GSE_AI_Test.CheckReverse(out reverse);
-
-                // Added for GSE - AI-Test - End
-            }
+            //}
+            //else if (!isPlayer)
+            //{
+            //
+            //    GSE_AI_Test.Timer(startDate, DateTime.Now);
+            //    
+            //    // Engine Start/Stop
+            //    GSE_AI_Test.CheckEngine(out engine, out handbrake);
+            //
+            //    // Blinker Left
+            //    GSE_AI_Test.CheckBlinkers(blinkers, out indicator);
+            //
+            //    // Reverse
+            //    GSE_AI_Test.CheckReverse(out reverse);
+            //
+            //    // Added for GSE - AI-Test - End
+            //}
         }
 
         float steeringWheelAngle = 0;
