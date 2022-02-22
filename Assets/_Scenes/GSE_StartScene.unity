@@ -280,8 +280,9 @@ MonoBehaviour:
     CarsSpawnedSinceLastLog: 0
   Experiments:
   - {fileID: 8692043556341430772, guid: 0ab609159686dc64484a3f42e05d45a7, type: 3}
+  - {fileID: 8692043556341430772, guid: 4b0f25efec429114eb192e2583399348, type: 3}
   InstantStartParams:
-    SkipSelectionScreen: 1
+    SkipSelectionScreen: 0
     SelectedExperiment: 0
     SelectedRole: 0
     InputMode: 0

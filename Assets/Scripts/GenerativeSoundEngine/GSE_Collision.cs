@@ -3,9 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public interface CollisionCoolDown
+{
+    int Collision { get; }
+    int Parking { get; }
+}
+
 namespace GenerativeSoundEngine
 {
-    public class GSE_Collision : MonoBehaviour
+    public class GSE_Collision : MonoBehaviour, CollisionCoolDown
     {
         // Set Collision type Variants
         [Header("Parking Assistant, static")]
@@ -52,7 +58,9 @@ namespace GenerativeSoundEngine
         // CoolDown
         int CoolDownSteps = Convert.ToInt32(Mathf.Round(CoolDownTimer * 50 / updateStep));
         int CollisionCoolDown = 0;
+        public int Collision { get { return CollisionCoolDown; } set { CollisionCoolDown = value; } }
         int ParkingCoolDown = 0;
+        public int Parking { get { return ParkingCoolDown; } set { ParkingCoolDown = value; } }
 
         // Start is called before the first frame update
         void Start()
@@ -136,7 +144,7 @@ namespace GenerativeSoundEngine
                 {
                     if (ParkingCoolDown == 0)
                     {
-                        // trigger Collision Assistant On
+                        // trigger Parking Assistant On
 
                         OSCtransmitter.BoolTrigger("ParkingTriggerOn", true);
 
@@ -149,7 +157,7 @@ namespace GenerativeSoundEngine
                 }
                 else if (ParkingCoolDown == 1)
                 {
-                    // trigger Collision Assistant off
+                    // trigger Parkin Assistant off
 
                     OSCtransmitter.BoolTrigger("ParkingTriggerOff", true);
 

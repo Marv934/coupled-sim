@@ -95,10 +95,28 @@ namespace GenerativeSoundEngine
                 if (!Vehicle.Reverse)
                 {
                     SetReverse();
+                    
+                    if ( Collision.Collision > 0 )
+                    {
+                        Collision.Collision = 1;
+                    }
+                    if ( Collision.Parking > 0 )
+                    {
+                        Collision.Parking = 1;
+                    }
                 }
                 else
                 {
                     SetDrive();
+
+                    if ( Collision.Collision > 0 )
+                    {
+                        Collision.Collision = 1;
+                    }
+                    if ( Collision.Parking > 0 )
+                    {
+                        Collision.Parking = 1;
+                    }
                 }
             }
 

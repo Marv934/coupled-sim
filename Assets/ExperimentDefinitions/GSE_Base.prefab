@@ -494,7 +494,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.79607844, b: 0.17254902, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1415,7 +1415,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.79607844, b: 0.17254902, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1434,8 +1434,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Das Fahrzeug-Service ist f\xE4llig,\nbitte fahren Sie zur n\xE4chsten
-    Werkstatt."
+  m_Text: "Das Fahrzeug-Service ist f\xE4llig.\n\nFahren Sie zur n\xE4chsten Werkstatt."
 --- !u!1 &1558743795885208288
 GameObject:
   m_ObjectHideFlags: 0
@@ -3137,7 +3136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.79607844, b: 0.17254902, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -3156,7 +3155,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Der Batteriestand des Fahrzeugs ist gering.\nBitte fahren Sie zur n\xE4chsten
+  m_Text: "Der Batteriestand des Fahrzeugs ist gering.\n\nBitte fahren Sie zur n\xE4chsten
     Ladestation."
 --- !u!1 &4472999889785453393
 GameObject:
@@ -3409,7 +3408,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.79607844, b: 0.17254902, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -3428,7 +3427,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Schalten Sie den Motor aus\nindem Sie eine beliebige Taste best\xE4tigen."
+  m_Text: "Schalten Sie den Motor aus.\n\nDr\xFCcken Sie eine beliebige Taste."
 --- !u!1 &4747254161141064284
 GameObject:
   m_ObjectHideFlags: 0
@@ -3487,7 +3486,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.79607844, b: 0.17254902, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -3506,7 +3505,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Parken Sie in die Parkl\xFCcke ein\n\nWenn sie eingeparkt haben\nbest\xE4tigen
+  m_Text: "Parken Sie in die Parkl\xFCcke ein.\n\nWenn sie eingeparkt haben\nbest\xE4tigen
     Sie mit einer beliebigen Taste"
 --- !u!1 &4767596842034303834
 GameObject:
@@ -3702,7 +3701,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.79607844, b: 0.17254902, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -4113,7 +4112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.79607844, b: 0.17254902, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -4132,7 +4131,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Bitte best\xE4tigen Sie den Ladevorgang\ndurch dr\xFCcken einer Taste."
+  m_Text: "Bitte best\xE4tigen Sie den Ladevorgang.\n\nDr\xFCcken Sie eine beliebige
+    Taste."
 --- !u!1 &5490418566465577159
 GameObject:
   m_ObjectHideFlags: 0
@@ -5350,7 +5350,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.79607844, b: 0.17254902, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -5369,7 +5369,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Bitte starten Sie den Motor\ndurch dr\xFCcken einer Taste"
+  m_Text: "Bitte starten Sie den Motor.\n\nDr\xFCcken Sie eine beliebige Taste."
 --- !u!1 &7217476532889169919
 GameObject:
   m_ObjectHideFlags: 0
@@ -5428,7 +5428,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.79607844, b: 0.17254902, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -5447,7 +5447,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Bitte best\xE4tigen Sie das Software-Update\ndurch dr\xFCcken einer Taste"
+  m_Text: "Bitte best\xE4tigen Sie das Software-Update.\n\nDr\xFCcken Sie eine beliebige
+    Taste."
 --- !u!1 &7479506319261541690
 GameObject:
   m_ObjectHideFlags: 0
@@ -5668,7 +5669,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.79607844, b: 0.17254902, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -5687,7 +5688,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Bitte parken Sie aus der Parkl\xFCcke aus\nund folgen Sie den gelben Pfeilen."
+  m_Text: "Bitte parken Sie aus der Parkl\xFCcke aus.\n\nFolgen Sie danach den gelben
+    Pfeilen."
 --- !u!1 &7712760459697136264
 GameObject:
   m_ObjectHideFlags: 0
@@ -5746,7 +5748,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.79607844, b: 0.17254902, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -5765,7 +5767,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Bitte best\xE4tigen die den Werkstattbesuch\ndurch dr\xFCcken einer Taste."
+  m_Text: "Bitte best\xE4tigen die den Werkstattbesuch.\n\nDr\xFCcken Sie eine beliebige
+    Taste."
 --- !u!1 &7957616733620472976
 GameObject:
   m_ObjectHideFlags: 0
@@ -5883,7 +5886,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.79607844, b: 0.17254902, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -5902,7 +5905,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Bitte halten Sie am n\xE4chsten Parkplatz\num die erhaltene Nachricht
+  m_Text: "Bitte halten Sie am n\xE4chsten Parkplatz,\num die erhaltene Nachricht
     zu lesen."
 --- !u!1 &8092843821190537079
 GameObject:
@@ -6632,7 +6635,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.79607844, b: 0.17254902, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -6651,7 +6654,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Bitte best\xE4tigen Sie, \ndass Sie die Nachricht gelesen haben."
+  m_Text: "Bitte best\xE4tigen Sie, dass Sie die Nachricht gelesen haben.\n\nDr\xFCcken
+    Sie eine beliebige Taste."
 --- !u!1 &9105856416536042664
 GameObject:
   m_ObjectHideFlags: 0
@@ -6710,7 +6714,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.79607844, b: 0.17254902, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -6729,8 +6733,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Best\xE4tigen Sie den Kontrolle des Reifendrucks\ndurch dr\xFCcken einer
-    Taste."
+  m_Text: "Best\xE4tigen Sie die Kontrolle des Reifendrucks.\n\nDr\xFCcken Sie eine
+    beliebige Taste."
 --- !u!1 &9175859124861606391
 GameObject:
   m_ObjectHideFlags: 0
