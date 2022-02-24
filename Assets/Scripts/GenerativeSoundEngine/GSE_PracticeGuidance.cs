@@ -43,6 +43,9 @@ namespace GenerativeSoundEngine
         public int Skript = 0;
         bool Waiting = false;
 
+        // Init Canvas
+        Canvas ScreenCanvas;
+
         IEnumerator WaitForStartConfirmation()
         {
             Waiting = true;
@@ -140,6 +143,11 @@ namespace GenerativeSoundEngine
                     Vehicle = comp.GetComponent<VehicleBehaviour.WheelVehicle>();
                 }
             }
+
+            ScreenCanvas = GetComponent<Canvas>();
+
+            ScreenCanvas.worldCamera = Camera.main;
+            ScreenCanvas.planeDistance = 1;
         }
 
         // Update is called once per frame

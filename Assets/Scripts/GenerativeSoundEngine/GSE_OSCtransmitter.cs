@@ -28,6 +28,10 @@ namespace GenerativeSoundEngine
         [Header("Every <SendRate> Fixed Update Sends OSC Message")]
         [SerializeField] public int SendRate = 5;
 
+        // Set Max Speed for Normilization
+        [Header("Max Speed")]
+        [SerializeField] float MaxSpeed = 60.0f;
+
 
         // Init Dashboard
         GSE_Dashboard Dashboard;
@@ -72,7 +76,8 @@ namespace GenerativeSoundEngine
         public void Speed(float speed)
         {
             // Create Message
-            var Speed = new OSCMessage(RootAddress + "/Speed", OSCValue.Float(speed));
+            float AbsSpeed = Math.Abs(speed);
+            var Speed = new OSCMessage(RootAddress + "/Speed", OSCValue.Float( AbsSpeed / MaxSpeed ) );
             Transmitter.Send(Speed);
         }
 

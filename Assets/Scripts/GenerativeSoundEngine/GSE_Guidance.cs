@@ -97,6 +97,9 @@ namespace GenerativeSoundEngine
         public int Skript = 0;
         bool Waiting = false;
 
+        // Init Canvas
+        Canvas ScreenCanvas;
+
         IEnumerator WaitForSWUpdateConfirmation()
         {
             Waiting = true;
@@ -199,7 +202,6 @@ namespace GenerativeSoundEngine
 
             yield return new WaitForSeconds(WaitTime);
 
-            OSCtransmitter.BoolTrigger("Confirm", true);
             Dashboard.DisplaySMSInfo(false);
             TextMessageConfirmationObject.SetActive(true);
 
@@ -214,6 +216,8 @@ namespace GenerativeSoundEngine
                 }
                 yield return new WaitForSeconds(UpdateTime);
             }
+
+            OSCtransmitter.BoolTrigger("Confirm", true);
 
             Waiting = false;
         }
@@ -249,7 +253,6 @@ namespace GenerativeSoundEngine
 
             yield return new WaitForSeconds(WaitTime);
 
-            OSCtransmitter.BoolTrigger("Confirm", true);
             Dashboard.DisplayBatteryWarning(false);
             BatteryWarningConfirmationObject.SetActive(true);
 
@@ -264,6 +267,8 @@ namespace GenerativeSoundEngine
                 }
                 yield return new WaitForSeconds(UpdateTime);
             }
+
+            OSCtransmitter.BoolTrigger("Confirm", true);
 
             Waiting = false;
         }
@@ -299,7 +304,7 @@ namespace GenerativeSoundEngine
 
             yield return new WaitForSeconds(WaitTime);
 
-            OSCtransmitter.BoolTrigger("Confirm", true);
+
             Dashboard.DisplayServiceInfo(false);
             ServiceInfoConfirmationObject.SetActive(true);
 
@@ -314,6 +319,8 @@ namespace GenerativeSoundEngine
                 }
                 yield return new WaitForSeconds(UpdateTime);
             }
+
+            OSCtransmitter.BoolTrigger("Confirm", true);
 
             Waiting = false;
         }
@@ -349,7 +356,7 @@ namespace GenerativeSoundEngine
 
             yield return new WaitForSeconds(WaitTime);
 
-            OSCtransmitter.BoolTrigger("Confirm", true);
+
             Dashboard.DisplayTirePressureWarning(false);
             TirePressureWarningConfirmationObject.SetActive(true);
 
@@ -364,6 +371,8 @@ namespace GenerativeSoundEngine
                 }
                 yield return new WaitForSeconds(UpdateTime);
             }
+
+            OSCtransmitter.BoolTrigger("Confirm", true);
 
             Waiting = false;
         }
@@ -439,6 +448,11 @@ namespace GenerativeSoundEngine
                     Vehicle = comp.GetComponent<VehicleBehaviour.WheelVehicle>();
                 }
             }
+
+            ScreenCanvas = GetComponent<Canvas>();
+
+            ScreenCanvas.worldCamera = Camera.main;
+            ScreenCanvas.planeDistance = 1;
 
             //_AIPedestrian = CollisionPedestrian.GetComponent<Animator>();
             CollisionPedestrian.SetActive(false);

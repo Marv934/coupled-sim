@@ -14,7 +14,7 @@ namespace GenerativeSoundEngine
         // Start is called before the first frame update
         void Start()
         {
-            
+            // transform.position = new Vector3(-0.3000003f, 1.22f, -0.2659975f);
         }
 
         // Update is called once per frame

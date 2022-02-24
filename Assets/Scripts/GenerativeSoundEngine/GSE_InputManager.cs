@@ -232,7 +232,7 @@ namespace GenerativeSoundEngine
             BlinkerStateRight = false;
 
             // Send OSC Message
-            OSCtransmitter.BoolTrigger("BlinkerOn", true);
+            OSCtransmitter.BoolTrigger("IndicatorOn", true);
 
             StopAllCoroutines();
             StartCoroutine(UnsetBlinkerLeft());
@@ -260,7 +260,7 @@ namespace GenerativeSoundEngine
             {
                 yield return new WaitForSeconds(0.1f);
 
-                if (Vehicle.Steering > -0.1f)
+                if (Vehicle.Steering > -0.3f)
                 {
                     waiting = false;
                 }
@@ -279,7 +279,7 @@ namespace GenerativeSoundEngine
             BlinkerStateRight = true;
 
             // Send OSC Message
-            OSCtransmitter.BoolTrigger("BlinkerOn", true);
+            OSCtransmitter.BoolTrigger("IndicatorOn", true);
             
             StopAllCoroutines();
             StartCoroutine(UnsetBlinkerRight());
@@ -307,7 +307,7 @@ namespace GenerativeSoundEngine
             {
                 yield return new WaitForSeconds(0.1f);
 
-                if (Vehicle.Steering < 0.1f)
+                if (Vehicle.Steering < 0.3f)
                 {
                     waiting = false;
                 }
@@ -329,7 +329,7 @@ namespace GenerativeSoundEngine
             StopAllCoroutines();
 
             // Senr OSC Message
-            OSCtransmitter.BoolTrigger("BlinkerOff", true);
+            OSCtransmitter.BoolTrigger("IndicatorOff", true);
         }
     }
 }

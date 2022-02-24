@@ -122,8 +122,9 @@ namespace GenerativeSoundEngine
 
                 if (updateCounter == updateStep)
                 {
-                    OSCtransmitter.FloatTrigger("CollisionDistance", Collision.Item1);
-                    OSCtransmitter.FloatTrigger("CollisionAngle", Collision.Item2);
+                    OSCtransmitter.FloatTrigger("CollisionDistance", Collision.Item1 / CollisionAssistantMaxDistance);
+                    float Angle = ((Collision.Item2) + 180) / 360;
+                    OSCtransmitter.FloatTrigger("CollisionAngle", Angle);
                 }
             }
             else if (CollisionCoolDown > 0)
@@ -170,8 +171,9 @@ namespace GenerativeSoundEngine
 
                 if (updateCounter == updateStep)
                 {
-                    OSCtransmitter.FloatTrigger("CollisionDistance", Parking.Item1);
-                    OSCtransmitter.FloatTrigger("CollisionAngle", Parking.Item2);
+                    OSCtransmitter.FloatTrigger("CollisionDistance", Parking.Item1 / ParkingAssistentMaxDistance);
+                    float Angle = ((Parking.Item2) + 180) / 360;
+                    OSCtransmitter.FloatTrigger("CollisionAngle", Angle);
                 }
             }
             else if (ParkingCoolDown > 0)
