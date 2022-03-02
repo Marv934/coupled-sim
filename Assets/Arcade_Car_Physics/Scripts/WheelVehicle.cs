@@ -173,7 +173,7 @@ namespace VehicleBehaviour {
 
         // maxSpeed added for GSE - Start
 
-        [SerializeField] float maxSpeed = 60.0f;
+        [SerializeField] float maxSpeed = 30.0f;
         public float MaxSpeed { get { return maxSpeed; } }
 
         // maxSpeed added for GSE - End

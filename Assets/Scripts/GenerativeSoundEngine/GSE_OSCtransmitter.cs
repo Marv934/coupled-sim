@@ -28,10 +28,8 @@ namespace GenerativeSoundEngine
         [Header("Every <SendRate> Fixed Update Sends OSC Message")]
         [SerializeField] public int SendRate = 5;
 
-        // Set Max Speed for Normilization
-        [Header("Max Speed")]
-        [SerializeField] float MaxSpeed = 60.0f;
-
+        // Init WheelVehicle
+        VehicleBehaviour.WheelVehicle Vehicle;
 
         // Init Dashboard
         GSE_Dashboard Dashboard;
@@ -48,6 +46,9 @@ namespace GenerativeSoundEngine
             // Set remote host and port
             Transmitter.RemoteHost = RemoteHost;
             Transmitter.RemotePort = RemotePort;
+
+            // Get Vehicle
+            Vehicle = GetComponent<VehicleBehaviour.WheelVehicle>();
 
             // Get Dashboard
             Dashboard = GetComponentInChildren<GSE_Dashboard>();
@@ -77,7 +78,7 @@ namespace GenerativeSoundEngine
         {
             // Create Message
             float AbsSpeed = Math.Abs(speed);
-            var Speed = new OSCMessage(RootAddress + "/Speed", OSCValue.Float( AbsSpeed / MaxSpeed ) );
+            var Speed = new OSCMessage(RootAddress + "/Speed", OSCValue.Float( AbsSpeed / Vehicle.MaxSpeed ) );
             Transmitter.Send(Speed);
         }
 
