@@ -12,8 +12,6 @@ namespace GenerativeSoundEngine
         private float UpdateTime = 0.1f;
         [SerializeField]
         private float WaitTime = 1.0f;
-        [SerializeField]
-        private float DisplayTime = 5.0f;
 
         // Init Pedestrian
         [Header("CollisionPedestrian")]
@@ -21,65 +19,10 @@ namespace GenerativeSoundEngine
         private GameObject CollisionPedestrian;
         Animator _AIPedestrian;
 
-        [Header("EngineStartMessage")]
-        [SerializeField]
-        private GameObject EngineStartObject;
-
-        [Header("SWUpdateMessage")]
-        [SerializeField]
-        private GameObject SWUpdateObject;
-
-        [Header("AusparkenMessage")]
-        [SerializeField]
-        private GameObject AusparkenObject;
-
-        [Header("TextMessageMessage")]
-        [SerializeField]
-        private GameObject TextMessageObject;
-
-        [Header("TextMessageConfirmationMessage")]
-        [SerializeField]
-        private GameObject TextMessageConfirmationObject;
-
-        [Header("BatteryWarningMessage")]
-        [SerializeField]
-        private GameObject BatteryWarningObject;
-
-        [Header("BatteryWarningConfirmationMessage")]
-        [SerializeField]
-        private GameObject BatteryWarningConfirmationObject;
-
-        [Header("ServiceInfoMessage")]
-        [SerializeField]
-        private GameObject ServiceInfoObject;
-
-        [Header("ServiceInfoConfirmationMessage")]
-        [SerializeField]
-        private GameObject ServiceInfoConfirmationObject;
-
-        [Header("TirePressureWarningMessage")]
-        [SerializeField]
-        private GameObject TirePressureWarningObject;
-
-        [Header("TirePressureWarningConfirmationMessage")]
-        [SerializeField]
-        private GameObject TirePressureWarningConfirmationObject;
-
-        [Header("Einparken")]
-        [SerializeField]
-        private GameObject EinparkenObject;
-
+        // Init Parkluecke
         [Header("Parkluecke")]
         [SerializeField]
         private GameObject ParklueckeObject;
-
-        [Header("EngineStopMessage")]
-        [SerializeField]
-        private GameObject EngineStopObject;
-
-        [Header("EndMessage")]
-        [SerializeField]
-        private GameObject EndObject;
 
         // Init Input Manager
         GSE_InputManager InputManager;
@@ -97,9 +40,6 @@ namespace GenerativeSoundEngine
         public int Skript = 0;
         bool Waiting = false;
 
-        // Init Canvas
-        Canvas ScreenCanvas;
-
         IEnumerator WaitForSWUpdateConfirmation()
         {
             Waiting = true;
@@ -110,17 +50,11 @@ namespace GenerativeSoundEngine
 
             Dashboard.DisplayServiceInfo(true);
 
-            yield return new WaitForSeconds(WaitTime);
-
-            SWUpdateObject.SetActive(true);
-
             bool state = true;
             while (state)
             {
                 if (Input.GetKey(KeyCode.L))
                 {
-                    SWUpdateObject.SetActive(false);
-
                     state = false;
                 }
                 yield return new WaitForSeconds(UpdateTime);
@@ -137,17 +71,11 @@ namespace GenerativeSoundEngine
         {
             Waiting = true;
 
-            yield return new WaitForSeconds(WaitTime);
-
-            EngineStartObject.SetActive(true);
-
             bool state = true;
             while (state)
             {
                 if (Input.GetKey(KeyCode.L))
                 {
-                    EngineStartObject.SetActive(false);
-
                     InputManager.StartEngine();
 
                     state = false;
@@ -156,34 +84,6 @@ namespace GenerativeSoundEngine
             }
 
             Waiting = false;
-        }
-
-        IEnumerator Parking()
-        {
-
-            yield return new WaitForSeconds(WaitTime);
-
-            AusparkenObject.SetActive(true);
-
-            yield return new WaitForSeconds(DisplayTime);
-
-            AusparkenObject.SetActive(false);
-
-        }
-
-        IEnumerator TextMessage()
-        {
-            OSCtransmitter.BoolTrigger("TextMessage", true);
-
-            Dashboard.DisplaySMSInfo(true);
-
-            yield return new WaitForSeconds(WaitTime);
-
-            TextMessageObject.SetActive(true);
-
-            yield return new WaitForSeconds(DisplayTime);
-
-            TextMessageObject.SetActive(false);
         }
 
         IEnumerator WaitForTextMessageConfirmation()
@@ -200,41 +100,22 @@ namespace GenerativeSoundEngine
                 yield return new WaitForSeconds(UpdateTime);
             }
 
-            yield return new WaitForSeconds(WaitTime);
-
-            Dashboard.DisplaySMSInfo(false);
-            TextMessageConfirmationObject.SetActive(true);
-
             state = true;
             while (state)
             {
                 if (Input.GetKey(KeyCode.L))
                 {
-                    TextMessageConfirmationObject.SetActive(false);
-
                     state = false;
+
                 }
                 yield return new WaitForSeconds(UpdateTime);
             }
 
+            Dashboard.DisplaySMSInfo(false);
+
             OSCtransmitter.BoolTrigger("Confirm", true);
 
             Waiting = false;
-        }
-
-        IEnumerator BatteryWarning()
-        {
-            OSCtransmitter.BoolTrigger("Battery", true);
-
-            Dashboard.DisplayBatteryWarning(true);
-
-            yield return new WaitForSeconds(WaitTime);
-
-            BatteryWarningObject.SetActive(true);
-
-            yield return new WaitForSeconds(DisplayTime);
-
-            BatteryWarningObject.SetActive(false);
         }
 
         IEnumerator WaitForBatteryWarningConfirmation()
@@ -251,41 +132,21 @@ namespace GenerativeSoundEngine
                 yield return new WaitForSeconds(UpdateTime);
             }
 
-            yield return new WaitForSeconds(WaitTime);
-
-            Dashboard.DisplayBatteryWarning(false);
-            BatteryWarningConfirmationObject.SetActive(true);
-
             state = true;
             while (state)
             {
                 if (Input.GetKey(KeyCode.L))
                 {
-                    BatteryWarningConfirmationObject.SetActive(false);
-
                     state = false;
                 }
                 yield return new WaitForSeconds(UpdateTime);
             }
 
+            Dashboard.DisplayBatteryWarning(false);
+
             OSCtransmitter.BoolTrigger("Confirm", true);
 
             Waiting = false;
-        }
-
-        IEnumerator ServiceInfo()
-        {
-            OSCtransmitter.BoolTrigger("Service", true);
-
-            Dashboard.DisplayServiceInfo(true);
-
-            yield return new WaitForSeconds(WaitTime);
-
-            ServiceInfoObject.SetActive(true);
-
-            yield return new WaitForSeconds(DisplayTime);
-
-            ServiceInfoObject.SetActive(false);
         }
 
         IEnumerator WaitForServiceInfoConfirmation()
@@ -302,42 +163,20 @@ namespace GenerativeSoundEngine
                 yield return new WaitForSeconds(UpdateTime);
             }
 
-            yield return new WaitForSeconds(WaitTime);
-
-
-            Dashboard.DisplayServiceInfo(false);
-            ServiceInfoConfirmationObject.SetActive(true);
-
             state = true;
             while (state)
             {
                 if (Input.GetKey(KeyCode.L))
                 {
-                    ServiceInfoConfirmationObject.SetActive(false);
-
                     state = false;
                 }
                 yield return new WaitForSeconds(UpdateTime);
             }
+            Dashboard.DisplayServiceInfo(false);
 
             OSCtransmitter.BoolTrigger("Confirm", true);
 
             Waiting = false;
-        }
-
-        IEnumerator TirePressureWarning()
-        {
-            OSCtransmitter.BoolTrigger("TirePressure", true);
-
-            Dashboard.DisplayTirePressureWarning(true);
-
-            yield return new WaitForSeconds(WaitTime);
-
-            TirePressureWarningObject.SetActive(true);
-
-            yield return new WaitForSeconds(DisplayTime);
-
-            TirePressureWarningObject.SetActive(false);
         }
 
         IEnumerator WaitForTirePressureWarningConfirmation()
@@ -354,23 +193,16 @@ namespace GenerativeSoundEngine
                 yield return new WaitForSeconds(UpdateTime);
             }
 
-            yield return new WaitForSeconds(WaitTime);
-
-
-            Dashboard.DisplayTirePressureWarning(false);
-            TirePressureWarningConfirmationObject.SetActive(true);
-
             state = true;
             while (state)
             {
                 if (Input.GetKey(KeyCode.L))
                 {
-                    TirePressureWarningConfirmationObject.SetActive(false);
-
                     state = false;
                 }
                 yield return new WaitForSeconds(UpdateTime);
             }
+            Dashboard.DisplayTirePressureWarning(false);
 
             OSCtransmitter.BoolTrigger("Confirm", true);
 
@@ -381,15 +213,11 @@ namespace GenerativeSoundEngine
         {
             Waiting = true;
 
-            EinparkenObject.SetActive(true);
-
             bool state = true;
             while (state)
             {
                 if (Input.GetKey(KeyCode.L))
-                {
-                    EinparkenObject.SetActive(false);
-
+                { 
                     state = false;
                 }
                 yield return new WaitForSeconds(UpdateTime);
@@ -402,14 +230,11 @@ namespace GenerativeSoundEngine
         {
             Waiting = true;
 
-            EngineStopObject.SetActive(true);
-
             bool state = true;
             while (state)
             {
                 if (Input.GetKey(KeyCode.L))
                 {
-                    EngineStopObject.SetActive(false);
 
                     InputManager.StopEngine();
 
@@ -417,9 +242,6 @@ namespace GenerativeSoundEngine
                 }
                 yield return new WaitForSeconds(UpdateTime);
             }
-
-            yield return new WaitForSeconds(WaitTime);
-            EndObject.SetActive(true);
 
             Waiting = false;
         }
@@ -449,11 +271,6 @@ namespace GenerativeSoundEngine
                 }
             }
 
-            ScreenCanvas = GetComponent<Canvas>();
-
-            ScreenCanvas.worldCamera = Camera.main;
-            ScreenCanvas.planeDistance = 1;
-
             //_AIPedestrian = CollisionPedestrian.GetComponent<Animator>();
             CollisionPedestrian.SetActive(false);
         }
@@ -481,7 +298,6 @@ namespace GenerativeSoundEngine
                 {   // Event Ausparken
                     Debug.Log("Skript 2");
                     InputManager.StartParking();
-                    StartCoroutine(Parking());
                     Skript = 3;
                 }
                 else if (Skript == 4)
@@ -494,7 +310,8 @@ namespace GenerativeSoundEngine
                 else if (Skript == 6)
                 {   // Event Text Message
                     Debug.Log("Skript 6");
-                    StartCoroutine(TextMessage());
+                    OSCtransmitter.BoolTrigger("TextMessage", true);
+                    Dashboard.DisplaySMSInfo(true);
                     Skript = 7;
                 }
                 else if (Skript == 8)
@@ -520,7 +337,8 @@ namespace GenerativeSoundEngine
                 else if (Skript == 15)
                 {   // Event Battery Warning
                     Debug.Log("Skript 15");
-                    StartCoroutine(BatteryWarning());
+                    OSCtransmitter.BoolTrigger("Battery", true);
+                    Dashboard.DisplayBatteryWarning(true);
                     Skript = 16;
                 }
                 else if (Skript == 17)
@@ -532,7 +350,8 @@ namespace GenerativeSoundEngine
                 else if (Skript == 20)
                 {   // Event Battery Warning
                     Debug.Log("Skript 21");
-                    StartCoroutine(ServiceInfo());
+                    OSCtransmitter.BoolTrigger("Service", true);
+                    Dashboard.DisplayServiceInfo(true);
                     Skript = 21;
                 }
                 else if (Skript == 22)
@@ -544,7 +363,8 @@ namespace GenerativeSoundEngine
                 else if (Skript == 25)
                 {   // Event Battery Warning
                     Debug.Log("Skript 25");
-                    StartCoroutine(TirePressureWarning());
+                    OSCtransmitter.BoolTrigger("TirePressure", true);
+                    Dashboard.DisplayTirePressureWarning(true);
                     Skript = 26;
                 }
                 else if (Skript == 27)
