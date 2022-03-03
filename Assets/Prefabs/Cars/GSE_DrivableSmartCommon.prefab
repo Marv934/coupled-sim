@@ -1207,7 +1207,7 @@ MonoBehaviour:
   handbrake: 0
   allowDrift: 1
   speed: 0
-  maxSpeed: 60
+  maxSpeed: 30
   gasParticles: []
   allowBoost: 1
   maxBoost: 10
@@ -1403,7 +1403,6 @@ MonoBehaviour:
   RemotePort: 7711
   RootAddress: /GSE
   SendRate: 5
-  MaxSpeed: 60
 --- !u!114 &2964490818359184327
 MonoBehaviour:
   m_ObjectHideFlags: 0

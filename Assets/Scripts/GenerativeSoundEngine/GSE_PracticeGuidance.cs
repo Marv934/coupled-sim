@@ -10,22 +10,6 @@ namespace GenerativeSoundEngine
         [Header("Times in seconds")]
         [SerializeField]
         private float UpdateTime = 0.1f;
-        [SerializeField]
-        private float WaitTime = 1.0f;
-        [SerializeField]
-        private float DisplayTime = 5.0f;
-
-        [Header("StartMessage")]
-        [SerializeField]
-        private GameObject StartObject;
-
-        [Header("ParkMessage")]
-        [SerializeField]
-        private GameObject ParkObject;
-
-        [Header("EndMessage")]
-        [SerializeField]
-        private GameObject EndObject;
 
         // Init Input Manager
         GSE_InputManager InputManager;
@@ -43,45 +27,21 @@ namespace GenerativeSoundEngine
         public int Skript = 0;
         bool Waiting = false;
 
-        // Init Canvas
-        Canvas ScreenCanvas;
-
         IEnumerator WaitForStartConfirmation()
         {
             Waiting = true;
-
-            yield return new WaitForSeconds(WaitTime);
-
-            StartObject.SetActive(true);
 
             bool state = true;
             while (state)
             {
                 if (Input.GetKey(KeyCode.L))
                 {
-                    StartObject.SetActive(false);
+                    InputManager.StartEngine();
 
                     state = false;
                 }
                 yield return new WaitForSeconds(UpdateTime);
             }
-
-            Vehicle.Engine = true;
-            Dashboard.DisplayEngineStart();
-            Vehicle.Handbrake = false;
-
-            Waiting = false;
-        }
-
-        IEnumerator ParkMessage()
-        {
-            Waiting = true;
-
-            ParkObject.SetActive(true);
-
-            yield return new WaitForSeconds(DisplayTime);
-
-            ParkObject.SetActive(false);
 
             Waiting = false;
         }
@@ -100,16 +60,12 @@ namespace GenerativeSoundEngine
                 yield return new WaitForSeconds(UpdateTime);
             }
 
-            yield return new WaitForSeconds(WaitTime);
-
-            EndObject.SetActive(true);
-
             state = true;
             while (state)
             {
                 if (Input.GetKey(KeyCode.L))
                 {
-                    EndObject.SetActive(false);
+                    InputManager.StopEngine();
 
                     state = false;
                 }
@@ -143,11 +99,6 @@ namespace GenerativeSoundEngine
                     Vehicle = comp.GetComponent<VehicleBehaviour.WheelVehicle>();
                 }
             }
-
-            ScreenCanvas = GetComponent<Canvas>();
-
-            ScreenCanvas.worldCamera = Camera.main;
-            ScreenCanvas.planeDistance = 1;
         }
 
         // Update is called once per frame
@@ -162,12 +113,6 @@ namespace GenerativeSoundEngine
                     Debug.Log("Skript 0");
                     StartCoroutine(WaitForStartConfirmation());
                     Skript = 1;
-                }
-                else if (Skript == 2)
-                {   // Event SWUpdate
-                    Debug.Log("Skript 2");
-                    StartCoroutine(ParkMessage());
-                    Skript = 3;
                 }
                 else if (Skript == 4)
                 {   // Event Ausparken
