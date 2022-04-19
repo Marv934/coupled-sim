@@ -68,8 +68,6 @@ namespace RealTimeAuralizationEngine
         RAE_ParkingAssistant ParkingAssistant;
         // Init Collision Assistant
         RAE_CollisionAssistant CollisionAssistant;
-        // Init Blind Spot Assistant
-        RAE_BlindSpotAssistant BlindSpotAssistant;
 
         // Init OSC Transmitter
         RAE_OSCtransmitter OSCtransmitter;

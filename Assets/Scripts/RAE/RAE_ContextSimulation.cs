@@ -5,28 +5,29 @@
  * This is distributed under the MIT Licence (see LICENSE.md for details)
  */
 
- /* 
-  * This script collects and gernerates context information and sends it via OSCtransmitter
-  * 
-  * Context infromation from the Simulation:
-  *     - Speed
-  *     - Steering
-  * Context information faked by the Script:
-  *     - TirenessLevel
-  *     - StessLevel
-  * Context information triggered via Method:
-  *     - TelephoneActive
-  *     - MusicActive
-  *     - ConversationActive
-  *     - AutoDrive
-  *
-  * Added public Methods:
-  *     - UpdateTelephoneActive(bool)
-  *     - UpdateMusicActive(bool)
-  *     - UpdateConversationActive(bool)
-  *     - UpdateAutoDrive(bool)
-  */
+/* 
+ * This script collects and gernerates context information and sends it via OSCtransmitter
+ * 
+ * Context infromation from the Simulation:
+ *     - Speed
+ *     - Steering
+ * Context information faked by the Script:
+ *     - TirenessLevel
+ *     - StessLevel
+ * Context information triggered via Method:
+ *     - TelephoneActive
+ *     - MusicActive
+ *     - ConversationActive
+ *     - AutoDrive
+ *
+ * Added public Methods:
+ *     - UpdateTelephoneActive(bool)
+ *     - UpdateMusicActive(bool)
+ *     - UpdateConversationActive(bool)
+ *     - UpdateAutoDrive(bool)
+ */
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -102,7 +103,7 @@ namespace RealTimeAuralizationEngine
         {
             // fake the Tireness by random for testing
             float maxStep = 0.01f;
-            float change  = Random.Range(-maxStep, maxStep);
+            float change  = UnityEngine.Random.Range(-maxStep, maxStep);
             float tmpTirenessLevel = change + TirenessLevel;
             if (tmpTirenessLevel > 1.0f)
             {
@@ -120,7 +121,7 @@ namespace RealTimeAuralizationEngine
         {
             // fake the StressLevel by random for testing
             float maxStep = 0.01f;
-            float change = Random.Range(-maxStep, maxStep);
+            float change = UnityEngine.Random.Range(-maxStep, maxStep);
             float tmpStressLevel = change + StressLevel;
             if (tmpStressLevel > 1.0f)
             {
@@ -139,26 +140,26 @@ namespace RealTimeAuralizationEngine
         public void UpdateTelephoneActive(bool active)
         {
             TelephoneActive = active;
-            OSCtransmitter.Telephone(TelephoneActive);
+            OSCtransmitter.BoolTrigger("Telephone", TelephoneActive);
         }
 
         public void UpdateMusicActive(bool active)
         {
             MusicActive = active;
-            OSCtransmitter.Music(MusicActive);
+            OSCtransmitter.BoolTrigger("Music", MusicActive);
 
         }
 
         public void UpdateConversationActive(bool active)
         {
             ConversationActive = active;
-            OSCtransmitter.Conversation(ConversationActive);
+            OSCtransmitter.BoolTrigger("Conversation", ConversationActive);
         }
 
         public void UpdateAutoDrive(bool active)
         {
             AutoDrive = active;
-            OSCtransmitter.AutoDrive(AutoDrive);
+            OSCtransmitter.BoolTrigger("AutoDrive", AutoDrive);
         }
     }
 }

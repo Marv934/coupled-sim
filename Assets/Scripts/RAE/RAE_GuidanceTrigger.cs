@@ -47,12 +47,12 @@ namespace RealTimeAuralizationEngine
             // Get GameObject
             foreach (GameObject obj in root)
             {
-                if (obj.TryGetComponent(typeof(ExperimentDefinition), out Component comp))
-                {
+                obj.TryGetComponent(typeof(ExperimentDefinition), out Component ExperimentDefinition);
+                //{
                     // Try Get Guidance
-                    if (TryGetComponent( out RAE_EvaluationGuidance Guidance ));
-                    if (TryGetComponent( out RAE_PracticeGuidance Guidance ));
-                }
+                    //if (TryGetComponent( out RAE_EvaluationGuidance Guidance ));
+                    //if (TryGetComponent( out RAE_PracticeGuidance Guidance ));
+                //}
             }
         }
 
@@ -64,7 +64,14 @@ namespace RealTimeAuralizationEngine
             if (InputManager != null)
             {
                 // Trigger next Skript Step
-                Guidance.Skript = NextSkript;
+                if (ExperimentDefinition.TryGetComponent(out RAE_EvaluationGuidance EvaluationGuidance))
+                {
+                    EvaluationGuidance.Skript = NextSkript;
+                }
+                else if (ExperimentDefinition.TryGetComponent(out RAE_PracticeGuidance PracticeGuidance))
+                {
+                    PracticeGuidance.Skript = NextSkript;
+                }
             }
         }
 

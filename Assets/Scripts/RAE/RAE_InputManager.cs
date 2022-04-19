@@ -203,7 +203,6 @@ namespace RealTimeAuralizationEngine
         {
             Collision.ParkingAssistantState = true;
             Collision.CollisionAssistantState = false;
-            Collision.BlindSpotAssistantState = false;
         }
 
         public void StopParking()
@@ -215,7 +214,6 @@ namespace RealTimeAuralizationEngine
         {
             Collision.ParkingAssistantState = false;
             Collision.CollisionAssistantState = true;
-            Collision.BlindSpotAssistantState = false;
         }
 
         public void StopCollision()

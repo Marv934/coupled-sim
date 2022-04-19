@@ -64,7 +64,7 @@ namespace RealTimeAuralizationEngine
 
             // Get Direction
             Vector3 CarDirect;
-            if ( !.Reverse )
+            if ( !RAEVehicle.Reverse )
             {
                 CarDirect = Vector3.forward;
             } else
