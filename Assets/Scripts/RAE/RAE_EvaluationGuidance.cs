@@ -36,13 +36,13 @@ namespace RealTimeAuralizationEngine
         // Init Pedestrian
         [Header("CollisionPedestrian")]
         [SerializeField]
-        private GameObject CollisionPedestrian;
+        private GameObject CollisionPedestrian = null;
         Animator _AIPedestrian;
 
         // Init Parkluecke
         [Header("Parkluecke")]
         [SerializeField]
-        private GameObject ParklueckeObject;
+        private GameObject ParklueckeObject = null;
 
         [Header("Input")]
         // Confirm Key

@@ -42,7 +42,7 @@ namespace RealTimeAuralizationEngine
 
         // Get CarBlinkers
         [Header("Car Blinkers")]
-        [SerializeField] CarBlinkers blinkers;
+        [SerializeField] CarBlinkers blinkers = null;
         bool BlinkerStateLeft = false;
         bool BlinkerStateRight = false;
 

@@ -31,19 +31,19 @@ namespace RealTimeAuralizationEngine
     public class RAE_Dashboard : MonoBehaviour
     {
         [SerializeField]
-        private Rigidbody carBody;
+        private Rigidbody carBody = null;
 
         // Init Speed and Power Indicator Transforms
         [Header("Speed")]
         [SerializeField]
-        private Transform pivotSpeed; //arrow pivot
+        private Transform pivotSpeed = null; //arrow pivot
         private float pivotMinSpeedAngle = 120f; //arrow inclination when speed = 0
         private float pivotMaxSpeedAngle = -120f; //arrow inclination when speed = maxSpeed 
         private float maxSpeed = 160f;
 
         [Header("Power")]
         [SerializeField]
-        private Transform pivotPower; //arrow pivot
+        private Transform pivotPower = null; //arrow pivot
         private float pivotMinPowerAngle = 120f; //arrow inclination when Power = 0
         private float pivotMaxPowerAngle = -120f; //arrow inclination when sPower = maxPower
         private float maxPower = 1.0f;
@@ -52,67 +52,63 @@ namespace RealTimeAuralizationEngine
         [Header("Drive")]
         private bool DriveState = true;
         [SerializeField]
-        private GameObject Drive;
+        private GameObject Drive = null;
 
         [Header("Reverse")]
         private bool ReverseState = false;
         [SerializeField]
-        private GameObject Reverse;
+        private GameObject Reverse = null;
 
         [Header("Collision Warning")]
         private bool CollisionWarningState = false;
         [SerializeField]
-        private GameObject CollisionWarning;
+        private GameObject CollisionWarning = null;
 
         [Header("Parking Warning")]
         private bool ParkingWarningState = false;
         [SerializeField]
-        private GameObject ParkingWarning;
+        private GameObject ParkingWarning = null;
 
         [Header("Battery Warning")]
         private bool BatteryWarningState = false;
         [SerializeField]
-        private GameObject BatteryWarning;
+        private GameObject BatteryWarning = null;
         [SerializeField]
-        private GameObject BatteryWarningIcon;
+        private GameObject BatteryWarningIcon = null;
 
         [Header("Tire Pressure Warning")]
         private bool TirePressureWarningState = false;
         [SerializeField]
-        private GameObject TirePressureWarning;
+        private GameObject TirePressureWarning = null;
         [SerializeField]
-        private GameObject TirePressureWarningIcon;
+        private GameObject TirePressureWarningIcon = null;
 
         [Header("SMS Info")]
-        private bool SMSInfoState = false;
         [SerializeField]
-        private GameObject SMSInfo;
+        private GameObject SMSInfo = null;
         [SerializeField]
-        private GameObject SMSInfoIcon;
+        private GameObject SMSInfoIcon = null;
 
         [Header("SW Update Info")]
-        private bool SWUpdateInfoState = false;
         [SerializeField]
-        private GameObject SWUpdateInfo;
+        private GameObject SWUpdateInfo = null;
         [SerializeField]
-        private GameObject SWUpdateInfoIcon;
+        private GameObject SWUpdateInfoIcon = null;
 
         [Header("ServiceInfo")]
-        private bool ServiceInfoState = false;
         [SerializeField]
-        private GameObject ServiceInfo;
+        private GameObject ServiceInfo = null;
         [SerializeField]
-        private GameObject ServiceInfoIcon;
+        private GameObject ServiceInfoIcon = null;
 
         [Header("Shutdown Info")]
         private bool ShutdownInfoState = true;
         [SerializeField]
-        private GameObject ShutdownInfo;
+        private GameObject ShutdownInfo = null;
 
         // Init Display Priority states
         private bool CollisionState = false;
         private bool WarningState = false;
-        private bool InfoState = false;
 
         // Init Vehicle
         RAEVehicle Vehicle;
@@ -160,29 +156,16 @@ namespace RealTimeAuralizationEngine
                 WarningState = false;
             }
 
-            if ( SMSInfoState || SWUpdateInfoState || ServiceInfoState )
-            {
-                InfoState = true;
-            }
-            else
-            {
-                InfoState = false;
-            }
-
         }
 
         IEnumerator SetSMSActiveFor(float Seconds)
         {
             // Set Active
             SMSInfo.SetActive(true);
-            // Set State
-            SMSInfoState = true;
             // Wait for Seconds
             yield return new WaitForSeconds(Seconds);
             // Unset Active
             SMSInfo.SetActive(false);
-            // Unset State
-            SMSInfoState = false;
         }
 
         public void DisplaySMSInfo(bool State)
@@ -204,14 +187,10 @@ namespace RealTimeAuralizationEngine
         {
             // Set Active
             SWUpdateInfo.SetActive(true);
-            // Set State
-            SWUpdateInfoState = true;
             // Wait for Seconds
             yield return new WaitForSeconds(Seconds);
             // Unset Active
             SWUpdateInfo.SetActive(false);
-            // Unset State
-            SWUpdateInfoState = false;
         }
 
         public void DisplaySWUpdateInfo(bool State)
@@ -233,14 +212,10 @@ namespace RealTimeAuralizationEngine
         {
             // Set Active
             ServiceInfo.SetActive(true);
-            // Set State
-            ServiceInfoState = true;
             // Wait for Seconds
             yield return new WaitForSeconds(Seconds);
             // Unset Active
             ServiceInfo.SetActive(false);
-            // Unset State
-            ServiceInfoState = false;
         }
 
         public void DisplayServiceInfo(bool State)

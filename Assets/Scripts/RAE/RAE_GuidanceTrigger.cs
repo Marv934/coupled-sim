@@ -29,14 +29,14 @@ namespace RealTimeAuralizationEngine
     public class RAE_GuidanceTrigger : MonoBehaviour
     {
         // Set Next
-        [SerializeField] int NextSkript;
+        [SerializeField] int NextSkript = 0;
 
         // Set Destroyed
         [Header("Destroy on Trigger - true, Not destroy on Trigger - false")]
         [SerializeField] bool destroy = true;
 
         // Init ExperimentDefinition Component
-        Component ExperimentDefinition;
+        Component ExperimentDefinition = null;
 
         // Start is called before the first frame update
         void Start()
