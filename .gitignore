@@ -20,6 +20,7 @@ ExportedObj/
 *.svd
 /.vs/
 /.vscode/
+.vsconfig
 
 
 # Unity3D generated meta files
@@ -89,4 +90,3 @@ $RECYCLE.BIN/
 # sublime text project files
 *.sublime-project
 *.sublime-workspace
-*.csv
