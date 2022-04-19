@@ -1,11 +1,31 @@
-﻿using System.Collections;
+﻿/*
+ * This code is part of Generative Sound Engine for Coupled Sim in Unity by Marv934 (2022)
+ * Developped as part of the Sonic Interaction Design Seminar at Audiokomminikation Group, TU Berlin
+ * 
+ * This is distributed under the MIT Licence (see LICENSE.md for details)
+ */
+
+ /*
+  * Script to controll the Evaluation Scenario. It is hard coded!
+  *
+  * public variable:
+  *     - Skript
+  *
+  * Components needed in Scene:
+  *     - RAE_InputManager
+  *     - RAE_OSCtransmitter
+  *     - RAE_Dashboard
+  *     - WheelVehicle
+  */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace GenerativeSoundEngine
+namespace RealTimeAuralizationEngine
 {
-    public class GSE_Guidance : MonoBehaviour
+    public class RAE_EvaluationGuidance : MonoBehaviour
     {
         [Header("Times in seconds")]
         [SerializeField]
@@ -24,14 +44,19 @@ namespace GenerativeSoundEngine
         [SerializeField]
         private GameObject ParklueckeObject;
 
+        [Header("Input")]
+        // Confirm Key
+        [SerializeField]
+        private string ConfirmKeyCode = "KeyCode.L";
+
         // Init Input Manager
-        GSE_InputManager InputManager;
+        RAE_InputManager InputManager;
 
         // Init OSC Transmitter
-        GSE_OSCtransmitter OSCtransmitter;
+        RAE_OSCtransmitter OSCtransmitter;
 
         // Init Dashboard
-        GSE_Dashboard Dashboard;
+        RAE_Dashboard Dashboard;
 
         // Init Vehicle
         IVehicle Vehicle;
@@ -53,7 +78,7 @@ namespace GenerativeSoundEngine
             bool state = true;
             while (state)
             {
-                if (Input.GetKey(KeyCode.L))
+                if (Input.GetKey(ConfirmKeyCode))
                 {
                     state = false;
                 }
@@ -74,7 +99,7 @@ namespace GenerativeSoundEngine
             bool state = true;
             while (state)
             {
-                if (Input.GetKey(KeyCode.L))
+                if (Input.GetKey(ConfirmKeyCode))
                 {
                     InputManager.StartEngine();
 
@@ -103,7 +128,7 @@ namespace GenerativeSoundEngine
             state = true;
             while (state)
             {
-                if (Input.GetKey(KeyCode.L))
+                if (Input.GetKey(ConfirmKeyCode))
                 {
                     state = false;
 
@@ -135,7 +160,7 @@ namespace GenerativeSoundEngine
             state = true;
             while (state)
             {
-                if (Input.GetKey(KeyCode.L))
+                if (Input.GetKey(ConfirmKeyCode))
                 {
                     state = false;
                 }
@@ -166,7 +191,7 @@ namespace GenerativeSoundEngine
             state = true;
             while (state)
             {
-                if (Input.GetKey(KeyCode.L))
+                if (Input.GetKey(ConfirmKeyCode))
                 {
                     state = false;
                 }
@@ -196,7 +221,7 @@ namespace GenerativeSoundEngine
             state = true;
             while (state)
             {
-                if (Input.GetKey(KeyCode.L))
+                if (Input.GetKey(ConfirmKeyCode))
                 {
                     state = false;
                 }
@@ -216,7 +241,7 @@ namespace GenerativeSoundEngine
             bool state = true;
             while (state)
             {
-                if (Input.GetKey(KeyCode.L))
+                if (Input.GetKey(ConfirmKeyCode))
                 { 
                     state = false;
                 }
@@ -233,7 +258,7 @@ namespace GenerativeSoundEngine
             bool state = true;
             while (state)
             {
-                if (Input.GetKey(KeyCode.L))
+                if (Input.GetKey(ConfirmKeyCode))
                 {
 
                     InputManager.StopEngine();
@@ -255,23 +280,22 @@ namespace GenerativeSoundEngine
             // Get GameObject
             foreach (GameObject obj in root)
             {
-                if (obj.TryGetComponent(typeof(GSE_InputManager), out Component comp))
+                if (obj.TryGetComponent(typeof(RAE_InputManager), out Component comp))
                 {
                     // Get Input Manager
-                    InputManager = comp.GetComponent<GSE_InputManager>();
+                    InputManager = comp.GetComponent<RAE_InputManager>();
 
                     // Get OSC Transmitter
-                    OSCtransmitter = comp.GetComponent<GSE_OSCtransmitter>();
+                    OSCtransmitter = comp.GetComponent<RAE_OSCtransmitter>();
 
                     // Get Dashboard
-                    Dashboard = comp.GetComponentInChildren<GSE_Dashboard>();
+                    Dashboard = comp.GetComponentInChildren<RAE_Dashboard>();
 
                     // Get Vehicle
                     Vehicle = comp.GetComponent<VehicleBehaviour.WheelVehicle>();
                 }
             }
 
-            //_AIPedestrian = CollisionPedestrian.GetComponent<Animator>();
             CollisionPedestrian.SetActive(false);
         }
 
@@ -284,105 +308,89 @@ namespace GenerativeSoundEngine
                 {   // Event Fahrtbeginn
 
                     OSCtransmitter.BoolTrigger("AmbientOn", true);
-                    Debug.Log("Skript 0");
                     StartCoroutine(WaitForEngineStart());
                     Skript = 1;
                 }
                 else if (Skript == 1)
                 {   // Event SWUpdate
-                    Debug.Log("Skript 1");
                     StartCoroutine(WaitForSWUpdateConfirmation());
                     Skript = 2;
                 }
                 else if (Skript == 2)
                 {   // Event Ausparken
-                    Debug.Log("Skript 2");
                     InputManager.StartParking();
                     Skript = 3;
                 }
                 else if (Skript == 4)
                 {   // Event End Ausparken
-                    Debug.Log("Skript 4");
                     InputManager.StopParking();
                     ParklueckeObject.SetActive(true);
                     Skript = 5;
                 }
                 else if (Skript == 6)
                 {   // Event Text Message
-                    Debug.Log("Skript 6");
                     OSCtransmitter.BoolTrigger("TextMessage", true);
                     Dashboard.DisplaySMSInfo(true);
                     Skript = 7;
                 }
                 else if (Skript == 8)
                 {   // Wait for Confirmation
-                    Debug.Log("Skript 8");
                     StartCoroutine(WaitForTextMessageConfirmation());
                     Skript = 9;
                 }
                 else if (Skript == 11)
                 {   // Start Collision
-                    Debug.Log("Skript 11");
                     CollisionPedestrian.SetActive(true);
                     InputManager.StartCollision();
                     Skript = 12;
                 }
                 else if (Skript == 13)
                 {   // End Collision
-                    Debug.Log("Skript 13");
                     CollisionPedestrian.SetActive(false);
                     InputManager.StopCollision();
                     Skript = 14;
                 }
                 else if (Skript == 15)
                 {   // Event Battery Warning
-                    Debug.Log("Skript 15");
                     OSCtransmitter.BoolTrigger("Battery", true);
                     Dashboard.DisplayBatteryWarning(true);
                     Skript = 16;
                 }
                 else if (Skript == 17)
                 {   // Wait for Confirmation
-                    Debug.Log("Skript 17");
                     StartCoroutine(WaitForBatteryWarningConfirmation());
                     Skript = 18;
                 }
                 else if (Skript == 20)
                 {   // Event Battery Warning
-                    Debug.Log("Skript 21");
                     OSCtransmitter.BoolTrigger("Service", true);
                     Dashboard.DisplayServiceInfo(true);
                     Skript = 21;
                 }
                 else if (Skript == 22)
                 {   // Wait for Confirmation
-                    Debug.Log("Skript 22");
                     StartCoroutine(WaitForServiceInfoConfirmation());
                     Skript = 23;
                 }
                 else if (Skript == 25)
                 {   // Event Battery Warning
-                    Debug.Log("Skript 25");
                     OSCtransmitter.BoolTrigger("TirePressure", true);
                     Dashboard.DisplayTirePressureWarning(true);
                     Skript = 26;
                 }
                 else if (Skript == 27)
                 {   // Wait for Confirmation
-                    Debug.Log("Skript 27");
                     StartCoroutine(WaitForTirePressureWarningConfirmation());
                     Skript = 28;
                 }
                 else if (Skript == 30)
                 {   // Start Einparken
-                    Debug.Log("Skript 30");
                     StartCoroutine(Einparken());
                     InputManager.StartParking();
                     Skript = 31;
                 }
                 else if (Skript == 31)
                 {   // Motor Aus
-                    Debug.Log("Skript 31");
                     StartCoroutine(WaitForEngineStop());
                     Skript = 32;
                 }

@@ -1,37 +1,49 @@
-﻿/*
+/*
  * This code is part of Generative Sound Engine for Coupled Sim in Unity by Marv934 (2022)
  * Developped as part of the Sonic Interaction Design Seminar at Audiokomminikation Group, TU Berlin
  * 
  * This is distributed under the MIT Licence (see LICENSE.md for details)
  */
 
+ /*
+  * This Script can be added to a GameObject with a Collider to track Colliders Entering the Area
+  * and calculate Distance and Angle
+  *
+  * GameObject Components Requiered:
+  *     - Collider
+  * GameObject Parent (Name: "CollisionDetection") Components Requiered:
+  *     - Collider
+  * GameObject Parents Component Requiered:
+  *     - WheelVehicle
+  *
+  * Added public Method:
+  *     - CollisionUpdate()
+  */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GenerativeSoundEngine
+namespace RealTimeAuralizationEngine
 {
+    [RequireComponent(typeof(Collider))]
 
-    public class GSE_BlindSpotAssistant : MonoBehaviour
-    {
-
-        // Collider
+    public class RAE_CollisionAssistant : MonoBehaviour
+    { 
+        // Car HitBox
         Collider CarCollider;
 
         // Tracked Colliders
         List<Collider> Tracked = new List<Collider>();
 
-        [SerializeField] float proximity = float.MaxValue;
-
-        [SerializeField] float proximityAngle = 0.0f;
-
-        // GSE Collector
-        private GSEVehicle CarCollector;
+        // Init WheelVehicle
+        private IVehicle IVehicle;
+        private RAEVehicle RAEVehicle;
 
         // Start is called before the first frame update
         void Start()
         {
-            // BlindSpotAssistant = GetComponents<Collider>();
+            // Search for Car HitBox    
             foreach (Collider Element in GetComponentsInParent<Collider>())
             {
                 if (Element.gameObject.name == "CollisionDetection")
@@ -40,13 +52,13 @@ namespace GenerativeSoundEngine
                 }
             }
 
-            CarCollector = GetComponentInParent<VehicleBehaviour.WheelVehicle>();
+            IVehicle = GetComponentInParent<VehicleBehaviour.WheelVehicle>();
+            RAEVehicle = GetComponentInParent<VehicleBehaviour.WheelVehicle>();
         }
 
-        // public Method
-        public (float DistClosest, float AngleClosest) BlindSpotUpdate()
+        // Method Called for Collision Assistant to track nearest Collider
+        public (float DistClosest, float AngleClosest) CollisionUpdate()
         {
-
             // Get CarCenter
             Vector3 CarCenter = CarCollider.bounds.center;
             CarCenter.y = 0;
@@ -70,18 +82,15 @@ namespace GenerativeSoundEngine
                 float Distance = Vector3.Distance(ColliderHitPoint, CarHitPoint);
                 float Angle = Vector3.SignedAngle(transform.InverseTransformPoint(ColliderHitPoint), Vector3.forward, Vector3.up);
 
-                //if ( ( ( ( CarCollector.Indicator < -0.1f ) && ( Angle > 0 ) ) || ( ( CarCollector.Indicator > 0.1f ) && (Angle < 0 ) ) ) & (Distance < DistClosest) )
-                if ( (Angle > 0) || (Angle < 0) & (Distance < DistClosest))
+                if ( (!RAEVehicle.Reverse) && (Distance < (IVehicle.Speed) ) && (Distance < DistClosest) )              
                 {
-                        // Assign Values
+                    // Assign Values
                     DistClosest = Distance;
                     AnglClosest = Angle;
                 }
             }
             // Return Value
             return (DistClosest, AnglClosest);
-            //proximity = DistClosest;
-            //proximityAngle = AnglClosest;
         }
 
         void OnTriggerEnter(Collider other)
@@ -94,7 +103,7 @@ namespace GenerativeSoundEngine
         }
 
         void OnTriggerExit(Collider other)
-        {
+        {    
             // End tracking Colliders
             Tracked.Remove(other);
         }

@@ -1,4 +1,26 @@
-﻿using System;
+﻿/*
+ * This code is part of REAL-TIME AURALIZATION ENGINE for Coupled Sim in Unity by Marv934 (2022)
+ * Developped as part of the Sonic Interaction Design Seminar at Audiokomminikation Group, TU Berlin
+ * 
+ * This is distributed under the MIT Licence (see LICENSE.md for details)
+ */
+
+ /*
+  * With this Script added to an GameObject the Collision Assistant Functionallities are added.
+  *
+  * GameObject Components Requiered:
+  *      - WheelVehicle
+  *      - RAE_OSCtransmitter
+  * GameObjects Childrens Components Requiered:
+  *      - RAE_ParkingAssistant
+  *      - RAE_CollisionAssistant
+  *      - RAE_Dashboard
+  *
+  * This Script Cchecks if a Collision is imminent and triggers the OSC Signal and Dashboard Display,
+  * as long as the Collision is still imminent and the cooldown time is not over.
+  */
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,24 +31,28 @@ public interface CollisionCoolDown
     int Parking { get; }
 }
 
-namespace GenerativeSoundEngine
+namespace RealTimeAuralizationEngine
 {
-    public class GSE_Collision : MonoBehaviour, CollisionCoolDown
+    [RequireComponent(typeof(VehicleBehaviour.WheelVehicle))]
+    [RequireComponent(typeof(RAE_OSCtransmitter))]
+
+
+    public class RAE_Collision : MonoBehaviour, CollisionCoolDown
     {
-        // Set Collision type Variants
-        [Header("Parking Assistant, static")]
+        [Header("Parking Assistant")]
+        // While Speed < this, Parking Assistant is On
         [SerializeField] float ParkingAssistentMaxSpeed = 5.0f;
+        // While Distance < this, Parking Assistant is triggered
         [SerializeField] float ParkingAssistentMaxDistance = 2.5f;
 
-        [Header("Collision Assistant, times maxSpeed")]
-        [SerializeField] float CollisionAssistantMaxDistance = 0.5f;
+        [Header("Collision Assistant")]
+        // While Speed > this, Collision Assistant is On
         [SerializeField] float CollisionAssistantMinSpeed = 5.0f;
-
-        [Header("Blind Spot Assistant, static")]
-        [SerializeField] float BlindSpotAssistantMaxDistance = 10.0f;
-        [SerializeField] float ExitMinimumSpeed = 0.2f;
+        // While Distance < this, Collision Assistant is triggered
+        [SerializeField] float CollisionAssistantMaxDistance = 0.5f;
 
         [Header("CoolDownTimer in Seconds")]
+        // Cool Down for Assistants, they turn off after this seconds
         [SerializeField] static float CoolDownTimer = 10.0f;
 
         [Header("Every <SendRate> Fixed Update Sends OSC Message")]
@@ -36,24 +62,23 @@ namespace GenerativeSoundEngine
 
         // Init WheelVehicle
         private IVehicle IVehicle;
-        private GSEVehicle GSEVehicle;
+        private RAEVehicle RAEVehicle;
 
         // Init Parking Assistant
-        GSE_ParkingAssistant ParkingAssistant;
+        RAE_ParkingAssistant ParkingAssistant;
         // Init Collision Assistant
-        GSE_CollisionAssistant CollisionAssistant;
+        RAE_CollisionAssistant CollisionAssistant;
         // Init Blind Spot Assistant
-        GSE_BlindSpotAssistant BlindSpotAssistant;
+        RAE_BlindSpotAssistant BlindSpotAssistant;
 
         // Init OSC Transmitter
-        GSE_OSCtransmitter OSCtransmitter;
+        RAE_OSCtransmitter OSCtransmitter;
         // Init Dashboard
-        GSE_Dashboard Dashboard;
+        RAE_Dashboard Dashboard;
 
         // States
         [SerializeField] public bool ParkingAssistantState = false;
         [SerializeField] public bool CollisionAssistantState = false;
-        [SerializeField] public bool BlindSpotAssistantState = false;
 
         // CoolDown
         int CoolDownSteps = Convert.ToInt32(Mathf.Round(CoolDownTimer * 50 / updateStep));
@@ -67,59 +92,55 @@ namespace GenerativeSoundEngine
         {
             // Get WheelVehicle Interface
             IVehicle = GetComponent<VehicleBehaviour.WheelVehicle>();
-            GSEVehicle = GetComponent<VehicleBehaviour.WheelVehicle>();
+            RAEVehicle = GetComponent<VehicleBehaviour.WheelVehicle>();
 
             // Get Parking Assistant
-            ParkingAssistant = GetComponentInChildren<GSE_ParkingAssistant>();
+            ParkingAssistant = GetComponentInChildren<RAE_ParkingAssistant>();
             // Get Collision Assistant
-            CollisionAssistant = GetComponentInChildren<GSE_CollisionAssistant>();
-            // Get Blind Spot Assistant
-            BlindSpotAssistant = GetComponentInChildren<GSE_BlindSpotAssistant>();
+            CollisionAssistant = GetComponentInChildren<RAE_CollisionAssistant>();
 
             // Get OSC Transmitter
-            OSCtransmitter = GetComponent<GSE_OSCtransmitter>();
+            OSCtransmitter = GetComponent<RAE_OSCtransmitter>();
 
             // Get Dashboard
-            Dashboard = GetComponentInChildren<GSE_Dashboard>();
+            Dashboard = GetComponentInChildren<RAE_Dashboard>();
         }
 
         // Update is called once per frame
         void FixedUpdate()
         {
-
+            // Collision Assistant
             if (CollisionAssistantState)
             {
-                // Collision Assistant
+                // Update CollisionAssistant
                 var Collision = CollisionAssistant.CollisionUpdate();
 
-                if (Mathf.Abs(IVehicle.Speed) > CollisionAssistantMinSpeed && Collision.Item1 < GSEVehicle.MaxSpeed * CollisionAssistantMaxDistance)
+                // Check if Collision is imminent
+                if (Mathf.Abs(IVehicle.Speed) > CollisionAssistantMinSpeed && Collision.Item1 < RAEVehicle.MaxSpeed * CollisionAssistantMaxDistance)
                 {
+                    // Check if first Update to trigger Assistant
                     if (CollisionCoolDown == 0)
                     {
-                        // trigger Collision Assistant On
-
+                        // trigger Collision Assistant on
                         OSCtransmitter.BoolTrigger("CollisionTriggerOn", true);
-
-                        CollisionCoolDown = CoolDownSteps;
-
                         Dashboard.DisplayCollisionWarning(true);
                     }
-
+                    // Set CollDown
                     CollisionCoolDown = CoolDownSteps;
                 }
+                // Check if CoolDown is over
                 else if (CollisionCoolDown == 1)
                 {
                     // trigger Collision Assistant off
-
                     OSCtransmitter.BoolTrigger("CollisionTriggerOff", true);
-
                     Dashboard.DisplayCollisionWarning(false);
                 }
+                // Reduce CoolDown
                 if (CollisionCoolDown > 0)
                 {
                     CollisionCoolDown = CollisionCoolDown - 1;
                 }
-
+                // Check if time to Send Angle and Distance
                 if (updateCounter == updateStep)
                 {
                     OSCtransmitter.FloatTrigger("CollisionDistance", Collision.Item1 / CollisionAssistantMaxDistance);
@@ -127,48 +148,47 @@ namespace GenerativeSoundEngine
                     OSCtransmitter.FloatTrigger("CollisionAngle", Angle);
                 }
             }
+            // If Collision Assistant is turned off but still triggered
             else if (CollisionCoolDown > 0)
             {
+                // Reset
                 OSCtransmitter.BoolTrigger("CollisionTriggerOff", true);
-
                 Dashboard.DisplayCollisionWarning(false);
-
                 CollisionCoolDown = 0;
             }
 
+            // Parking Assistant
             if (ParkingAssistantState)
             {
-                // Parking Assistant
+                // Update ParkingAssistant
                 var Parking = ParkingAssistant.ParkingUpdate();
 
+                // Check if Collision is imminent
                 if (Mathf.Abs(IVehicle.Speed) < ParkingAssistentMaxSpeed && Mathf.Abs(IVehicle.Speed) > 0.01f && Parking.Item1 < ParkingAssistentMaxDistance)
                 {
+                    // Check if first update to trigger Assistant
                     if (ParkingCoolDown == 0)
                     {
                         // trigger Parking Assistant On
-
                         OSCtransmitter.BoolTrigger("ParkingTriggerOn", true);
-
-                        ParkingCoolDown = CoolDownSteps;
-
                         Dashboard.DisplayParkingWarning(true);
                     }
-
+                    // Set CoolDown
                     ParkingCoolDown = CoolDownSteps;
                 }
+                // Check if CoolDown is over
                 else if (ParkingCoolDown == 1)
                 {
                     // trigger Parkin Assistant off
-
                     OSCtransmitter.BoolTrigger("ParkingTriggerOff", true);
-
                     Dashboard.DisplayParkingWarning(false);
                 }
+                // Reduce CoolDown
                 if (ParkingCoolDown > 0)
                 {
                     ParkingCoolDown = ParkingCoolDown - 1;
                 }
-
+                // Check if time to send Angle and Distance
                 if (updateCounter == updateStep)
                 {
                     OSCtransmitter.FloatTrigger("CollisionDistance", Parking.Item1 / ParkingAssistentMaxDistance);
@@ -176,14 +196,15 @@ namespace GenerativeSoundEngine
                     OSCtransmitter.FloatTrigger("CollisionAngle", Angle);
                 }
             }
+            // if Parking Assistant is turned off but still triggered
             else if (ParkingCoolDown > 0)
             {
+                // Reset
                 OSCtransmitter.BoolTrigger("ParkingTriggerOff", true);
-
                 Dashboard.DisplayParkingWarning(false);
-
                 ParkingCoolDown = 0;
             }
+            // Set and Reset UpdateCounter
             if (updateCounter == updateStep)
             {
                 updateCounter = 0;

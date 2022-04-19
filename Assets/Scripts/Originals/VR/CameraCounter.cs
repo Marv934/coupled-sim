@@ -14,8 +14,10 @@ public class CameraCounter : MonoBehaviour {
 
     private void Update()
     {
-        // Reset Camera changed from "R" to "M"
+        // Added for RAE - START
+        // Reset Camera changed from "R" to "F1"
         if (Input.GetKeyDown(KeyCode.F1))
+        // Added for RAE - END
         {
             UnityEngine.XR.InputTracking.Recenter();
         }

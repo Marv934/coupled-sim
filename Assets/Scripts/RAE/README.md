@@ -24,7 +24,7 @@ Inheritated from Coupled Sim and changed to fit the Generative Sound Engine
 
 Property | Description
 -|-
-float Steering | Steering Wheel Angle; Default between -30° and 30° or according to *[SerializeField] steerAngle*
+float Steering | Steering Wheel Angle; Default between -30ï¿½ and 30ï¿½ or according to *[SerializeField] steerAngle*
 bool Reverse | Reverse Gear [True, False]
 float Indicator | Indicator [-1 &rarr; Left, 0 &rarr; off, 1 &rarr; Right]
 bool Engine | Engine [True &rarr; On, False &rarr; Off]
@@ -60,9 +60,9 @@ When Steering Angle and Direction fits the Collider Angle it stores Distance and
 #### Public Methods
 
 **public (float DistClosest, float AngleClosest) ParkingUpdate()**: Returns Angle and Distance of nearest Object in Steering Direction. Tracked Angles are:
-- Steered to Left (SteeringAngle < -5°): Tracked between -30° and 150°
-- Steered to Right (SteeringAngle > 5°): Tracked between -150° and 30°
-- Not Steered (-5° <= SteeringAngle <= 5°): Tracked between -30° and 30°
+- Steered to Left (SteeringAngle < -5ï¿½): Tracked between -30ï¿½ and 150ï¿½
+- Steered to Right (SteeringAngle > 5ï¿½): Tracked between -150ï¿½ and 30ï¿½
+- Not Steered (-5ï¿½ <= SteeringAngle <= 5ï¿½): Tracked between -30ï¿½ and 30ï¿½
 
 ### <a id="GSE_Collision">GSE_Collision</a>
 

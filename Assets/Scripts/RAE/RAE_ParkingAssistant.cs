@@ -5,33 +5,45 @@
  * This is distributed under the MIT Licence (see LICENSE.md for details)
  */
 
+ /*
+  * This Script can be added to a GameObject with a Collider to track Colliders Entering the Area
+  * and calculate Distance and Angle
+  *
+  * GameObject Components Requiered:
+  *     - Collider
+  * GameObject Parent (Name: "CollisionDetection") Components Requiered:
+  *     - Collider
+  * GameObject Parents Component Requiered:
+  *     - WheelVehicle
+  *
+  * Added public Method:
+  *     - ParkingUpdate()
+  */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GenerativeSoundEngine
+namespace RealTimeAuralizationEngine
 {
+    [RequireComponent(typeof(Collider))]
 
-    public class GSE_ParkingAssistant : MonoBehaviour //, GSE_ParkingProximity
+    public class RAE_ParkingAssistant : MonoBehaviour
     {
 
-        // Collider
+        // Car HitBox
         Collider CarCollider;
 
         // Tracked Colliders
         List<Collider> Tracked = new List<Collider>();
 
-        [SerializeField] float proximity = float.MaxValue;
-
-        [SerializeField] float proximityAngle = 0.0f;
-
-        // GSE Collector
-        private GSEVehicle CarCollector;
+        // Init WheelVehicle
+        private RAEVehicle RAEVehicle;
 
         // Start is called before the first frame update
         void Start()
         {
-            // BlindSpotAssistant = GetComponents<Collider>();
+            // Search for Car HitBox    
             foreach (Collider Element in GetComponentsInParent<Collider>())
             {
                 if (Element.gameObject.name == "CollisionDetection")
@@ -39,22 +51,20 @@ namespace GenerativeSoundEngine
                     CarCollider = Element;
                 }
             }
-            
 
-            CarCollector = GetComponentInParent<VehicleBehaviour.WheelVehicle>();
+            RAEVehicle = GetComponentInParent<VehicleBehaviour.WheelVehicle>();
         }
 
-        // Method Called for Parking Assistant
+        // Method Called for Parking Assistant to track nearest collider
         public (float DistClosest, float AngleClosest) ParkingUpdate()
         {
-
             // Get CarCenter
             Vector3 CarCenter = CarCollider.bounds.center;
             CarCenter.y = 0;
 
             // Get Direction
             Vector3 CarDirect;
-            if ( !CarCollector.Reverse )
+            if ( !.Reverse )
             {
                 CarDirect = Vector3.forward;
             } else
@@ -68,11 +78,11 @@ namespace GenerativeSoundEngine
             float trackedAngleStop;
             
             // Get Tracking Angle
-            if (CarCollector.Steering < -5.0)
+            if (RAEVehicle.Steering < -5.0)
             { // steered to Left
                 trackedAngleStart = -30.0f;
                 trackedAngleStop = 150.0f;
-            } else if (CarCollector.Steering > 5.0f)
+            } else if (RAEVehicle.Steering > 5.0f)
             { // steered to right
                 trackedAngleStart = -150.0f;
                 trackedAngleStop = 30.0f;
@@ -89,7 +99,6 @@ namespace GenerativeSoundEngine
             // Check all tracked Colliders
             foreach (Collider Element in Tracked)
             {
-
                 // Calculate Closest Point on Element to CarCenter
                 Vector3 ColliderHitPoint = Element.ClosestPointOnBounds(CarCenter);
                 ColliderHitPoint.y = 0;
@@ -111,8 +120,6 @@ namespace GenerativeSoundEngine
 
             // Return Value
             return (DistClosest, AnglClosest);
-            //proximity = DistClosest;
-            //proximityAngle = AnglClosest;
         }
 
         void OnTriggerEnter(Collider other)

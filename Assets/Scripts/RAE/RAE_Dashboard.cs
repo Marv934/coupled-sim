@@ -1,36 +1,54 @@
-﻿using System.Collections;
+﻿/*
+ * This code is part of Generative Sound Engine for Coupled Sim in Unity by Marv934 (2022)
+ * Developped as part of the Sonic Interaction Design Seminar at Audiokomminikation Group, TU Berlin
+ * 
+ * This is distributed under the MIT Licence (see LICENSE.md for details)
+ */
+
+/*
+ * This script controlls the Dashboard via callable Methods
+ *
+ * Added public Methods:
+ *      - DisplaySMSInfo(bool state)
+ *      - DisplaySWUpdateInfo(bool state)
+ *      - DisplayServiceInfo(bool state)
+ *      - DisplayBatteryWarning(bool state)
+ *      - DisplayTirePressureWarning(bool state)
+ *      - DisplayEngineStart()
+ *      - DisplayEngineStop()
+ *      - DisplayCollisionWarning(bool state)
+ *      - DisplayParkingWarning(bool state)
+ *      - DisplayDrive()
+ *      - DisplayReverse()
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GenerativeSoundEngine
+namespace RealTimeAuralizationEngine
 {
-    public class GSE_Dashboard : MonoBehaviour
+    public class RAE_Dashboard : MonoBehaviour
     {
         [SerializeField]
         private Rigidbody carBody;
 
-        [Header("Analog")]
-
+        // Init Speed and Power Indicator Transforms
         [Header("Speed")]
         [SerializeField]
         private Transform pivotSpeed; //arrow pivot
-        [SerializeField]
         private float pivotMinSpeedAngle = 120f; //arrow inclination when speed = 0
-        [SerializeField]
-        private float pivotMaxSpeedAngle = -120f; //arrow inclination when speed = maxSpeed
-        [SerializeField]
+        private float pivotMaxSpeedAngle = -120f; //arrow inclination when speed = maxSpeed 
         private float maxSpeed = 160f;
 
         [Header("Power")]
         [SerializeField]
         private Transform pivotPower; //arrow pivot
-        [SerializeField]
-        private float pivotMinPowerAngle = 120f; //arrow inclination when speed = 0
-        [SerializeField]
-        private float pivotMaxPowerAngle = -120f; //arrow inclination when speed = maxSpeed
-        [SerializeField]
+        private float pivotMinPowerAngle = 120f; //arrow inclination when Power = 0
+        private float pivotMaxPowerAngle = -120f; //arrow inclination when sPower = maxPower
         private float maxPower = 1.0f;
 
+        // Init Display GameObjects
         [Header("Drive")]
         private bool DriveState = true;
         [SerializeField]
@@ -46,12 +64,10 @@ namespace GenerativeSoundEngine
         [SerializeField]
         private GameObject CollisionWarning;
 
-        [Header("Blind Spot Warning")]
-        private bool BlindSpotWarningState = false;
+        [Header("Parking Warning")]
+        private bool ParkingWarningState = false;
         [SerializeField]
-        private GameObject BlindSpotWarningLeft;
-        [SerializeField]
-        private GameObject BlindSpotWarningRight;
+        private GameObject ParkingWarning;
 
         [Header("Battery Warning")]
         private bool BatteryWarningState = false;
@@ -93,16 +109,13 @@ namespace GenerativeSoundEngine
         [SerializeField]
         private GameObject ShutdownInfo;
 
-        [Header("Parking Warning")]
-        private bool ParkingWarningState = false;
-        [SerializeField]
-        private GameObject ParkingWarning;
-
+        // Init Display Priority states
         private bool CollisionState = false;
         private bool WarningState = false;
         private bool InfoState = false;
 
-        GSEVehicle Vehicle;
+        // Init Vehicle
+        RAEVehicle Vehicle;
 
         // Start is called before the first frame update
         void Start()
@@ -120,7 +133,7 @@ namespace GenerativeSoundEngine
             if (pivotSpeed != null)
             {
                 pivotSpeed.localRotation = Quaternion.AngleAxis(angleSpeed, Vector3.forward);
-            }
+            }   
 
             // Power
             var anglePower = Mathf.Lerp(pivotMinPowerAngle, pivotMaxPowerAngle, Mathf.Abs( Vehicle.Throttle ) / maxPower);
@@ -130,7 +143,7 @@ namespace GenerativeSoundEngine
             }
 
             // Set States
-            if ( CollisionWarningState || BlindSpotWarningState || ParkingWarningState )
+            if ( CollisionWarningState || ParkingWarningState )
             {
                 CollisionState = true;
             } else
@@ -332,16 +345,12 @@ namespace GenerativeSoundEngine
 
         private void OverwriteShutdown()
         {
-            // Called by BlindSpot
-
             // Overwrite Shutdown
             ShutdownInfo.SetActive(false);
         }
 
         private void ResetShutdown()
         {
-            // Called by BlindSpot
-
             // Reset Shutdown
             if (ShutdownInfoState)
             {
@@ -397,44 +406,6 @@ namespace GenerativeSoundEngine
                     // Turn off CollisionWarning
                     CollisionWarningState = State;
                     CollisionWarning.SetActive(false);
-                }
-            }
-        }
-
-        public void DisplayBlindSpotWarning(bool State, float Direction)
-        {
-            if (State != BlindSpotWarningState)
-            {
-                if (State)
-                {
-                    // Turn on CollisionWarning
-                    BlindSpotWarningState = State;
-
-                    if (Direction > 0)
-                    {
-                        BlindSpotWarningLeft.SetActive(true);
-                        BlindSpotWarningRight.SetActive(false);
-                    }
-                    else
-                    {
-                        BlindSpotWarningLeft.SetActive(false);
-                        BlindSpotWarningRight.SetActive(true);
-                    }
-
-                    // Ovewrite Other Displays
-                    OverwriteWarning();
-                    OverwriteInfo();
-                    OverwriteShutdown();
-                }
-                else
-                {
-                    // Turn off CollisionWarning
-                    BlindSpotWarningState = State;
-                    BlindSpotWarningLeft.SetActive(false);
-                    BlindSpotWarningRight.SetActive(false);
-
-                    // Reset other Displays
-                    ResetShutdown();
                 }
             }
         }

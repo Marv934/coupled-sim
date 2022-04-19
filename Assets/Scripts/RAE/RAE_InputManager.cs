@@ -1,22 +1,44 @@
-﻿using System.Collections;
+﻿/*
+ * This code is part of Generative Sound Engine for Coupled Sim in Unity by Marv934 (2022)
+ * Developped as part of the Sonic Interaction Design Seminar at Audiokomminikation Group, TU Berlin
+ * 
+ * This is distributed under the MIT Licence (see LICENSE.md for details)
+ */
+
+/*
+ * This Skript handles additional Inputs
+ *
+ * Components needed in GameObject:
+ *      - WheelVehicle
+ *      - RAE_OSCtranmitter
+ *
+ * Components needed in Childer:
+ *      - RAE_Dashboard
+ *      - RAE_Collision
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GenerativeSoundEngine
+namespace RealTimeAuralizationEngine
 {
-    public class GSE_InputManager : MonoBehaviour
+    [RequireComponent(typeof(VehicleBehaviour.WheelVehicle))]
+    [RequireComponent(typeof(RAE_OSCtransmitter))]
+
+    public class RAE_InputManager : MonoBehaviour
     {
         // Init Vehivle
         VehicleBehaviour.WheelVehicle Vehicle;
 
         // Init OSCtransmitter;
-        GSE_OSCtransmitter OSCtransmitter;
+        RAE_OSCtransmitter OSCtransmitter;
 
         // Init Dashboard
-        GSE_Dashboard Dashboard;
+        RAE_Dashboard Dashboard;
 
         // Init Collision
-        GSE_Collision Collision;
+        RAE_Collision Collision;
 
         // Get CarBlinkers
         [Header("Car Blinkers")]
@@ -24,34 +46,36 @@ namespace GenerativeSoundEngine
         bool BlinkerStateLeft = false;
         bool BlinkerStateRight = false;
 
-        //private IEnumerator unsetBlinkerLeft;
-        //private IEnumerator unsetBlinkerRight;
+        // Inputs
+        [Header("Inputs")]
+        [SerializeField] string EngineStartStop = "KeyCode.P";
+        [SerializeField] string ParkingAssistantOnOff = "KeyCode.B";
+        [SerializeField] string CollisionAssistantOnOff = "KeyCode.C";
+        [SerializeField] string DriveReverse = "KeyCode.G";
+        [SerializeField] string BlinkerRight = "KeyCode.Q";
+        [SerializeField] string BlinkerLeft = "KeyCode.E";
 
         // Start is called before the first frame update
         void Start()
         {
             // Get Vehicle
-            Vehicle = GetComponentInParent<VehicleBehaviour.WheelVehicle>();
+            Vehicle = GetComponent<VehicleBehaviour.WheelVehicle>();
 
             // Get OSC Transmitter
-            OSCtransmitter = GetComponent<GSE_OSCtransmitter>();
+            OSCtransmitter = GetComponent<RAE_OSCtransmitter>();
             
             // Get Dashboard
-            Dashboard = GetComponentInChildren<GSE_Dashboard>();
+            Dashboard = GetComponentInChildren<RAE_Dashboard>();
 
             // Get Collision
-            Collision = GetComponentInChildren<GSE_Collision>();
-
-            //unsetBlinkerLeft = UnsetBlinkerLeft();
-            //unsetBlinkerRight = UnsetBlinkerRight();
-
+            Collision = GetComponentInChildren<RAE_Collision>();
         }
 
         // Update is called once per frame
         void Update()
         {
             // Engine Start/Stop
-            if (Input.GetKeyDown(KeyCode.P))
+            if (Input.GetKeyDown(EngineStartStop))
             {
                 if (!Vehicle.Engine)
                 {
@@ -63,8 +87,8 @@ namespace GenerativeSoundEngine
                 }
             }
 
-            // Parking Assistant Start/Stop
-            if (Input.GetKeyDown(KeyCode.B))
+            // Parking Assistant On/Off
+            if (Input.GetKeyDown(ParkingAssistantOnOff))
             {
                 if(!Collision.ParkingAssistantState)
                 {
@@ -77,7 +101,7 @@ namespace GenerativeSoundEngine
             }
 
             // Collision Assistant Start/Stop
-            if (Input.GetKeyDown(KeyCode.C))
+            if (Input.GetKeyDown(CollisionAssistantOnOff))
             {
                 if (!Collision.CollisionAssistantState)
                 {
@@ -90,7 +114,7 @@ namespace GenerativeSoundEngine
             }
 
             // Drive/Reverse
-            if (Input.GetKeyDown(KeyCode.G))
+            if (Input.GetKeyDown(DriveReverse))
             {
                 if (!Vehicle.Reverse)
                 {
@@ -120,8 +144,8 @@ namespace GenerativeSoundEngine
                 }
             }
 
-            // Blinker Set Left/Right
-            if (Input.GetKeyDown(KeyCode.Q))
+            // Blinker Set Left
+            if (Input.GetKeyDown(BlinkerLeft))
             {
                 if (!BlinkerStateLeft)
                 {
@@ -133,7 +157,8 @@ namespace GenerativeSoundEngine
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.E))
+            // Blinker Set Right
+            if (Input.GetKeyDown(BlinkerRight))
             {
                 if (!BlinkerStateRight)
                 {

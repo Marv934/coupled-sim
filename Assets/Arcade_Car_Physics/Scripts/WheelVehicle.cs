@@ -3,6 +3,10 @@
  * 
  * This Version is Changed by Marv924 (2022) as part of Generative Sound Engine for Coupled Sim in Unity
  * Developped as part of the Sonic Interaction Design Seminar at Audiokomminikation Group, TU Berlin
+ * Changes had been marked by Comments:
+ *      // Added for RAE - START
+ *          <Content>
+ *      // Added for RAE - END       
  * 
  * This is distributed under the MIT Licence (see LICENSE.md for details)
  */
@@ -21,49 +25,38 @@ public interface IVehicle
     float Speed { get; }
 }
 
-// Added for GSE
-public interface GSEVehicle
+// Added for RAE - START
+public interface RAEVehicle
 {
     float Steering { get; }
-    //float SteerAngle { get; }
     bool Reverse { get; }
-    //float Indicator { get; }
     bool Engine { get; }
-    //bool ParkAssistant { get; }
     float MaxSpeed { get; }
     float Throttle { get; }
 }
 
 namespace VehicleBehaviour {
     [RequireComponent(typeof(Rigidbody))]
-    public class WheelVehicle : MonoBehaviour, IVehicle, GSEVehicle {
+    public class WheelVehicle : MonoBehaviour, IVehicle, RAEVehicle {
 
         [Header("Inputs")]
-#if MULTIOSCONTROLS
+    #if MULTIOSCONTROLS
         [SerializeField] PlayerNumber playerId;
-#endif
+    #endif
         // If isPlayer is false inputs are ignored
         [SerializeField] bool isPlayer = true;
-        public bool IsPlayer { get { return isPlayer; } set { isPlayer = value; } }
+        public bool IsPlayer { get{ return isPlayer; } set{ isPlayer = value; } }
 
         // Input names to read using GetAxis
         [SerializeField] string throttleInput = "Throttle";
-        [SerializeField] string brakeInput = "Break";
+        [SerializeField] string brakeInput = "Brake";
         [SerializeField] string turnInput = "Horizontal";
         [SerializeField] string jumpInput = "Jump";
-        [SerializeField] string driftInput = "Fire1";
-        [SerializeField] string boostInput = "Fire2";
+        [SerializeField] string driftInput = "Drift";
+        [SerializeField] string boostInput = "Boost";
         [SerializeField] string blinkersLeftInput = "blinker_left";
         [SerializeField] string blinkersRightInput = "blinker_right";
         [SerializeField] string blinkersClearInput = "blinker_clear";
-
-        // Start/Stop Button added for GSE - Start
-
-        //[SerializeField] string EngineStartStop = "engine_start_stop";
-
-        //[SerializeField] string ParkAssistantStartStop = "park_assistant_start_stop";
-
-        // Start/Stop Button added for GSE - Stop
 
         /* 
          *  Turn input curve: x real input, y value used
@@ -82,18 +75,18 @@ namespace VehicleBehaviour {
         bool isGrounded = false;
         int lastGroundCheck = 0;
         public bool IsGrounded { get {
-                if (lastGroundCheck == Time.frameCount)
-                    return isGrounded;
-
-                lastGroundCheck = Time.frameCount;
-                isGrounded = true;
-                foreach (WheelCollider wheel in wheels)
-                {
-                    if (!wheel.gameObject.activeSelf || !wheel.isGrounded)
-                        isGrounded = false;
-                }
+            if (lastGroundCheck == Time.frameCount)
                 return isGrounded;
-            } }
+
+            lastGroundCheck = Time.frameCount;
+            isGrounded = true;
+            foreach (WheelCollider wheel in wheels)
+            {
+                if (!wheel.gameObject.activeSelf || !wheel.isGrounded)
+                    isGrounded = false;
+            }
+            return isGrounded;
+        }}
 
         [Header("Behaviour")]
         /*
@@ -111,7 +104,7 @@ namespace VehicleBehaviour {
         public float DiffGearing { get { return diffGearing; } set { diffGearing = value; } }
 
         // Basicaly how hard it brakes
-        [SerializeField] float brakeForce = 1250.0f;
+        [SerializeField] float brakeForce = 1500.0f;
         public float BrakeForce { get { return brakeForce; } set { brakeForce = value; } }
 
         // Max steering hangle, usualy higher for drift car
@@ -131,8 +124,8 @@ namespace VehicleBehaviour {
 
         // How hard do you want to drift?
         [Range(0.0f, 2f)]
-        [SerializeField] float driftIntensity = 0.5f;
-        public float DriftIntensity { get { return driftIntensity; } set { driftIntensity = Mathf.Clamp(value, 0.0f, 2.0f); } }
+        [SerializeField] float driftIntensity = 1f;
+        public float DriftIntensity { get { return driftIntensity; } set { driftIntensity = Mathf.Clamp(value, 0.0f, 2.0f); }}
 
         // Reset Values
         Vector3 spawnPosition;
@@ -148,35 +141,33 @@ namespace VehicleBehaviour {
         // Force aplied downwards on the car, proportional to the car speed
         [Range(0.5f, 10f)]
         [SerializeField] float downforce = 1.0f;
-        public float Downforce { get { return downforce; } set { downforce = Mathf.Clamp(value, 0, 5); } }
+        public float Downforce { get{ return downforce; } set{ downforce = Mathf.Clamp(value, 0, 5); } }
 
         // When IsPlayer is false you can use this to control the steering
         float steering;
-        public float Steering { get { return steering; } set { steering = Mathf.Clamp(value, -1f, 1f); } }
+        public float Steering { get{ return steering; } set{ steering = Mathf.Clamp(value, -1f, 1f); } }
 
         // When IsPlayer is false you can use this to control the throttle
         float throttle;
-        public float Throttle { get { return throttle; } set { throttle = Mathf.Clamp(value, -1f, 1f); } }
+        public float Throttle { get{ return throttle; } set{ throttle = Mathf.Clamp(value, -1f, 1f); } }
 
         // Like your own car handbrake, if it's true the car will not move
         [SerializeField] bool handbrake;
-        public bool Handbrake { get { return handbrake; } set { handbrake = value; } }
+        public bool Handbrake { get{ return handbrake; } set{ handbrake = value; } }
 
         // Use this to disable drifting
         [HideInInspector] public bool allowDrift = true;
         bool drift;
-        public bool Drift { get { return drift; } set { drift = value; } }
+        public bool Drift { get{ return drift; } set{ drift = value; } }
 
         // Use this to read the current car speed (you'll need this to make a speedometer)
         [SerializeField] float speed = 0.0f;
-        public float Speed { get { return speed; } }
+        public float Speed { get{ return speed; } }
 
-        // maxSpeed added for GSE - Start
-
+        // Added for RAE - START
         [SerializeField] float maxSpeed = 30.0f;
         public float MaxSpeed { get { return maxSpeed; } }
-
-        // maxSpeed added for GSE - End
+        // Added for RAE - END
 
         [Header("Particles")]
         // Exhaust fumes
@@ -188,7 +179,7 @@ namespace VehicleBehaviour {
 
         // Maximum boost available
         [SerializeField] float maxBoost = 10f;
-        public float MaxBoost { get { return maxBoost; } set { maxBoost = value; } }
+        public float MaxBoost { get { return maxBoost; } set {maxBoost = value;} }
 
         // Current boost available
         [SerializeField] float boost = 10f;
@@ -223,25 +214,11 @@ namespace VehicleBehaviour {
         Rigidbody _rb;
         WheelCollider[] wheels;
 
-        // Added for GSE - Start
-        // Blinkers
-        //float indicator = 0.0f;
-        //public float Indicator { get { return indicator; } }
-
+        // Added for RAE - START
         // Engine Start/Stop
-
         bool engine = false;
         public bool Engine { get { return engine; } set { engine = value; } }
-
-        //bool parkassistant = false;
-        //public bool ParkAssistant { get { return parkassistant; } }
-
-        public GenerativeSoundEngine.GSE_AI_Test GSE_AI_Test = new GenerativeSoundEngine.GSE_AI_Test();
-        public DateTime startDate;
-
-        GenerativeSoundEngine.GSE_OSCtransmitter OSCtransmitter;
-        GenerativeSoundEngine.GSE_Dashboard Dashboard;
-        // Added for GSE - End
+        // Added for RAE - END
 
         // Init rigidbody, center of mass, wheels and more
         void Start() {
@@ -271,20 +248,12 @@ namespace VehicleBehaviour {
                 wheel.motorTorque = 0.0001f;
             }
 
-            // Added for GSE - Start
-            startDate = DateTime.Now;
-
-            OSCtransmitter = GetComponent<GenerativeSoundEngine.GSE_OSCtransmitter>();
-            Dashboard = GetComponentInChildren<GenerativeSoundEngine.GSE_Dashboard>();
-            // Added for GSE - End
-
         }
 
         bool reverse = false;
-        // Added for GSE - Start
+        // Added for RAE - START
         public bool Reverse { get { return reverse; } set { reverse = value; } }
-
-        // Added for GSE - End
+        // Added for RAE - END
 
         // Visual feedbacks and boost regen
         void Update()
@@ -304,24 +273,12 @@ namespace VehicleBehaviour {
             // Get all the inputs!
             //if (isPlayer)
             //{
-                // Added for GSE - Start
-                
-                // Park Assistant Start/Stop
-                //if (Input.GetButtonDown("park_assistant_start_stop"))
-                //{
-                //    parkassistant = parkassistant != true;
-                //}
-
-                // Added for GSE - End
-
                 //if (Input.GetButtonDown("forward"))
                 //{
                 //    reverse = false;
-                    //OSCtransmitter.Forward();
                 //} else if (Input.GetButtonDown("reverse"))
                 //{
                 //    reverse = true;
-                    //OSCtransmitter.Reverse();
                 //}
 
                 //if (Input.GetButtonDown("blinker_left"))
@@ -329,18 +286,10 @@ namespace VehicleBehaviour {
                 //    if (blinkers.State != BlinkerState.Left)
                 //    {
                 //        blinkers.StartLeftBlinkers();
-                //        // Added for GSE - Start
-                //        /// = -1.0f;
-                //        OSCtransmitter.BoolTrigger("BlinkerOn", true);
-                //        // Added for GSE - End
                 //    }
                 //    else
                 //    {
                 //        blinkers.Stop();
-                //        // Added for GSE - Start
-                //        indicator = 0.0f;
-                //        OSCtransmitter.BoolTrigger("BlinkerOff", true);
-                //        // Added for GSE - End
                 //    }
                 //}
                 //else if (Input.GetButtonDown("blinker_right"))
@@ -348,45 +297,16 @@ namespace VehicleBehaviour {
                 //    if (blinkers.State != BlinkerState.Right)
                 //    {
                 //        blinkers.StartRightBlinkers();
-                //        // Added for GSE - Start
-                //        indicator = 1.0f;
-                //        OSCtransmitter.BoolTrigger("BlinkerOn", true);
-                //        // Added for GSE - End
                 //    }
                 //    else
                 //    {
                 //        blinkers.Stop();
-                //        // Added for GSE - Start
-                //        indicator = 0.0f;
-                //        OSCtransmitter.BoolTrigger("BlinkerOff", true);
-                //        // Added for GSE - End
                 //    }
                 //}
                 //else if (Input.GetButtonDown("blinker_clear"))
                 //{
                 //    blinkers.Stop();
-                //    // Added for GSE - Start
-                //    indicator = 0.0f;
-                //    OSCtransmitter.BoolTrigger("BlinkerOff", true);
-                //    // Added for GSE - End
                 //}
-            // Added for GSE - AI-Test - Start
-            //}
-            //else if (!isPlayer)
-            //{
-            //
-            //    GSE_AI_Test.Timer(startDate, DateTime.Now);
-            //    
-            //    // Engine Start/Stop
-            //    GSE_AI_Test.CheckEngine(out engine, out handbrake);
-            //
-            //    // Blinker Left
-            //    GSE_AI_Test.CheckBlinkers(blinkers, out indicator);
-            //
-            //    // Reverse
-            //    GSE_AI_Test.CheckReverse(out reverse);
-            //
-            //    // Added for GSE - AI-Test - End
             //}
         }
 
@@ -395,12 +315,10 @@ namespace VehicleBehaviour {
         public float steeringWheelMul = -2;
         // Update everything
         void FixedUpdate () {
-            // Added for GSE - Start
-
+            // Added for RAE - START
             // max out velocity
             _rb.velocity = Vector3.ClampMagnitude(_rb.velocity, maxSpeed / 3.6f);
-
-            // Added for GSE - End
+            // Added for RAE - END
             // Mesure current speed
 
             speed = transform.InverseTransformDirection(_rb.velocity).z * 3.6f;
@@ -410,11 +328,10 @@ namespace VehicleBehaviour {
                 // Accelerate & brake
                 if (throttleInput != "" && throttleInput != null)
                 {
-                    throttle = GetInput(throttleInput) * (reverse ? -1f : 1);
+                    throttle = GetInput(throttleInput) * (reverse?-1f:1);
                 }
-                //breaking = Mathf.Clamp01(GetInput(brakeInput));
                 
-                // Added for GSE - Start
+                // Added for RAE - START
                 if (engine)
                 {
                     breaking = Mathf.Clamp01(GetInput(brakeInput));
@@ -422,32 +339,12 @@ namespace VehicleBehaviour {
                 {
                     breaking = 1.0f;
                 }
-                // Added for GSE - End
+                // Before:
+                // breaking = Mathf.Clamp01(GetInput(brakeInput));
+                // Added for RAE - END
 
                 // Turn
-                //Debug.Log("turnInput: " + GetInput(turnInput));
-
                 steering = turnInputCurve.Evaluate(GetInput(turnInput)) * steerAngle;
-
-                //Debug.Log("Steering: " + steering);
-
-            // Added for GSE - AI-Test - Start
-            } else if (!isPlayer)
-            {
-                // Accelerate & brake
-                // - throttle
-                GSE_AI_Test.CheckThrottle(out throttle);
-
-                // - breaking
-                GSE_AI_Test.CheckBreaking(out breaking);
-
-                // Steering
-                GSE_AI_Test.CheckSteering(out steering);
-
-                // Speed
-                GSE_AI_Test.CheckSpeed(out speed, _rb);
-
-                // Added for GSE - AI-Test - End
             }
 
             steeringWheelAngle = Mathf.Lerp(steeringWheelAngle, steering * steeringWheelMul, steerSpeed);

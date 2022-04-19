@@ -1,24 +1,44 @@
-﻿using System.Collections;
+﻿/*
+ * This code is part of Generative Sound Engine for Coupled Sim in Unity by Marv934 and zeyuyang42 (2022)
+ * Developped as part of the Sonic Interaction Design Seminar at Audiokomminikation Group, TU Berlin
+ * 
+ * This is distributed under the MIT Licence (see LICENSE.md for details)
+ */
+
+ /*
+  * Script to controll the Practice Scenario. It is hard coded!
+  *
+  * public variable:
+  *     - Skript
+  *
+  * Components needed in Scene:
+  *     - RAE_InputManager
+  *     - RAE_OSCtransmitter
+  *     - RAE_Dashboard
+  *     - WheelVehicle
+  */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace GenerativeSoundEngine
+namespace RealTimeAuralizationEngine
 {
-    public class GSE_PracticeGuidance : MonoBehaviour
+    public class RAE_PracticeGuidance : MonoBehaviour
     {
         [Header("Times in seconds")]
         [SerializeField]
         private float UpdateTime = 0.1f;
 
         // Init Input Manager
-        GSE_InputManager InputManager;
+        RAE_InputManager InputManager;
 
         // Init OSC Transmitter
-        GSE_OSCtransmitter OSCtransmitter;
+        RAE_OSCtransmitter OSCtransmitter;
 
         // Init Dashboard
-        GSE_Dashboard Dashboard;
+        RAE_Dashboard Dashboard;
 
         // Init Vehicle
         VehicleBehaviour.WheelVehicle Vehicle;
@@ -27,6 +47,11 @@ namespace GenerativeSoundEngine
         public int Skript = 0;
         bool Waiting = false;
 
+        [Header("Input")]
+        // Confirm Key
+        [SerializeField]
+        private string ConfirmKeyCode = "KeyCode.L";
+
         IEnumerator WaitForStartConfirmation()
         {
             Waiting = true;
@@ -34,7 +59,7 @@ namespace GenerativeSoundEngine
             bool state = true;
             while (state)
             {
-                if (Input.GetKey(KeyCode.L))
+                if (Input.GetKey(ConfirmKeyCode))
                 {
                     InputManager.StartEngine();
 
@@ -63,7 +88,7 @@ namespace GenerativeSoundEngine
             state = true;
             while (state)
             {
-                if (Input.GetKey(KeyCode.L))
+                if (Input.GetKey(ConfirmKeyCode))
                 {
                     InputManager.StopEngine();
 
@@ -84,16 +109,16 @@ namespace GenerativeSoundEngine
             // Get GameObject
             foreach (GameObject obj in root)
             {
-                if (obj.TryGetComponent(typeof(GSE_InputManager), out Component comp))
+                if (obj.TryGetComponent(typeof(RAE_InputManager), out Component comp))
                 {
                     // Get Input Manager
-                    InputManager = comp.GetComponent<GSE_InputManager>();
+                    InputManager = comp.GetComponent<RAE_InputManager>();
 
                     // Get OSC Transmitter
-                    OSCtransmitter = comp.GetComponent<GSE_OSCtransmitter>();
+                    OSCtransmitter = comp.GetComponent<RAE_OSCtransmitter>();
 
                     // Get Dashboard
-                    Dashboard = comp.GetComponentInChildren<GSE_Dashboard>();
+                    Dashboard = comp.GetComponentInChildren<RAE_Dashboard>();
 
                     // Get Vehicle
                     Vehicle = comp.GetComponent<VehicleBehaviour.WheelVehicle>();

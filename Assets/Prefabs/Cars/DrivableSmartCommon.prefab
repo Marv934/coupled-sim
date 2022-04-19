@@ -1251,7 +1251,6 @@ MonoBehaviour:
   blinkersLeftInput: blinker_left
   blinkersRightInput: blinker_right
   blinkersClearInput: blinker_clear
-  EngineStartStop: engine_start_stop
   turnInputCurve:
     serializedVersion: 2
     m_Curve:
@@ -1359,7 +1358,6 @@ MonoBehaviour:
   handbrake: 0
   allowDrift: 1
   speed: 0
-  maxSpeed: 60
   gasParticles: []
   allowBoost: 1
   maxBoost: 10
@@ -7385,7 +7383,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2744670210629147659
 RectTransform:
   m_ObjectHideFlags: 0

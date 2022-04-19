@@ -1,24 +1,57 @@
-﻿using System.Collections;
+﻿/*
+ * This code is part of Generative Sound Engine for Coupled Sim in Unity by Marv934 (2022)
+ * Developped as part of the Sonic Interaction Design Seminar at Audiokomminikation Group, TU Berlin
+ * 
+ * This is distributed under the MIT Licence (see LICENSE.md for details)
+ */
+
+ /* 
+  * This script collects and gernerates context information and sends it via OSCtransmitter
+  * 
+  * Context infromation from the Simulation:
+  *     - Speed
+  *     - Steering
+  * Context information faked by the Script:
+  *     - TirenessLevel
+  *     - StessLevel
+  * Context information triggered via Method:
+  *     - TelephoneActive
+  *     - MusicActive
+  *     - ConversationActive
+  *     - AutoDrive
+  *
+  * Added public Methods:
+  *     - UpdateTelephoneActive(bool)
+  *     - UpdateMusicActive(bool)
+  *     - UpdateConversationActive(bool)
+  *     - UpdateAutoDrive(bool)
+  */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-namespace GenerativeSoundEngine
+
+namespace RealTimeAuralizationEngine
 {
     [RequireComponent(typeof(VehicleBehaviour.WheelVehicle))]
+    [RequireComponent(typeof(RAE_OSCtransmitter))]
 
-    public class GSE_ContextSimulation : MonoBehaviour
+    public class RAE_ContextSimulation : MonoBehaviour
     {
-        // Driver statues or Driving
+        // Driver status
         [Header("Driver statues")]
         [SerializeField] float TirenessLevel = 0.2f;
         [SerializeField] float StressLevel = 0.2f;
-        [Header("Atomsphore")]
+
+        // Atmosphere status
+        [Header("Atomsphere")]
         [SerializeField] bool TelephoneActive = false;
         [SerializeField] bool MusicActive = false;
         [SerializeField] bool ConversationActive = false;
         [SerializeField] bool AutoDrive = false;
 
         // Init WheelVehicle
-        private GSEVehicle GSEVehicle;
+        private RAEVehicle RAEVehicle;
         private IVehicle IVehicle;
 
         // update Counter
@@ -26,21 +59,23 @@ namespace GenerativeSoundEngine
         private int updateStep = 5;
 
         // Init OSC Transmitter
-        GSE_OSCtransmitter OSCtransmitter;
+        RAE_OSCtransmitter OSCtransmitter;
 
         // Start is called before the first frame update
         void Start()
         {
             // Get WheelVehicle Interface
-            GSEVehicle = GetComponent<VehicleBehaviour.WheelVehicle>();
+            RAEVehicle = GetComponent<VehicleBehaviour.WheelVehicle>();
             IVehicle = GetComponent<VehicleBehaviour.WheelVehicle>();
+
             // Get OSC Transmitter
-            OSCtransmitter = GetComponent<GSE_OSCtransmitter>();
+            OSCtransmitter = GetComponent<RAE_OSCtransmitter>();
+
             // set initial contexts
-            OSCtransmitter.Telephone(TelephoneActive);
-            OSCtransmitter.Music(MusicActive);
-            OSCtransmitter.Conversation(ConversationActive);
-            OSCtransmitter.AutoDrive(AutoDrive);
+            OSCtransmitter.BoolTrigger("Telephone", TelephoneActive);
+            OSCtransmitter.BoolTrigger("Music",  MusicActive);
+            OSCtransmitter.BoolTrigger("Conversation", ConversationActive);
+            OSCtransmitter.BoolTrigger("AutoDrive", AutoDrive);
         }
 
         // Update is called once per frame
@@ -50,14 +85,14 @@ namespace GenerativeSoundEngine
             if (updateCounter == updateStep)
             {
                 // Vehicle values
-                OSCtransmitter.Speed(IVehicle.Speed);
-                OSCtransmitter.Steering(GSEVehicle.Steering);
+                OSCtransmitter.FloatTrigger("Speed", Math.Abs(IVehicle.Speed) / RAEVehicle.MaxSpeed);
+                OSCtransmitter.FloatTrigger("Steering", RAEVehicle.Steering);
 
                 // Driver values
                 UpdateTireness();
                 UpdateStressLevel();
-                OSCtransmitter.TirenessLevel(TirenessLevel);
-                OSCtransmitter.StressLevel(StressLevel);
+                OSCtransmitter.FloatTrigger("TirenessLevel", TirenessLevel);
+                OSCtransmitter.FloatTrigger("StressLevel", StressLevel);
 
                 updateCounter = 0;
             }
@@ -65,7 +100,7 @@ namespace GenerativeSoundEngine
 
         public void UpdateTireness()
         {
-            // fake the Tireness by random walking for testing
+            // fake the Tireness by random for testing
             float maxStep = 0.01f;
             float change  = Random.Range(-maxStep, maxStep);
             float tmpTirenessLevel = change + TirenessLevel;
@@ -83,7 +118,7 @@ namespace GenerativeSoundEngine
 
         public void UpdateStressLevel()
         {
-            // fake the StressLevel by random walking for testing
+            // fake the StressLevel by random for testing
             float maxStep = 0.01f;
             float change = Random.Range(-maxStep, maxStep);
             float tmpStressLevel = change + StressLevel;
