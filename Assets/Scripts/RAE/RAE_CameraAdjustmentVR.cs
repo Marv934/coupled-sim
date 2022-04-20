@@ -21,14 +21,19 @@ namespace RealTimeAuralizationEngine
 {
     public class RAE_CameraAdjustmentVR : MonoBehaviour
     {
+        // Inputs
+        [Header("Inputs")]
+        [SerializeField] string Up = "KeyCode.Keypad2";
+        [SerializeField] string Down = "KeyCode.Keypad8";
+
         // Update is called once per frame
         void Update()
         {
-            if (Input.GetKey(KeyCode.Keypad2))
+            if (Input.GetKey(Up))
             {
                 transform.position = transform.position - new Vector3(0.0f, 0.001f, 0.0f);
             } 
-            if (Input.GetKey(KeyCode.Keypad8))
+            if (Input.GetKey(Down))
             {
                 transform.position = transform.position + new Vector3(0.0f, 0.001f, 0.0f);
             }

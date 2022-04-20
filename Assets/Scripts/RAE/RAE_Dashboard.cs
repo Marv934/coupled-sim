@@ -49,35 +49,35 @@ namespace RealTimeAuralizationEngine
         private float maxPower = 1.0f;
 
         // Init Display GameObjects
-        [Header("Drive")]
         private bool DriveState = true;
+        [Header("Drive")]
         [SerializeField]
         private GameObject Drive = null;
 
-        [Header("Reverse")]
         private bool ReverseState = false;
+        [Header("Reverse")]
         [SerializeField]
         private GameObject Reverse = null;
 
-        [Header("Collision Warning")]
         private bool CollisionWarningState = false;
+        [Header("Collision Warning")]
         [SerializeField]
         private GameObject CollisionWarning = null;
 
-        [Header("Parking Warning")]
         private bool ParkingWarningState = false;
+        [Header("Parking Warning")]
         [SerializeField]
         private GameObject ParkingWarning = null;
 
-        [Header("Battery Warning")]
         private bool BatteryWarningState = false;
+        [Header("Battery Warning")]
         [SerializeField]
         private GameObject BatteryWarning = null;
         [SerializeField]
         private GameObject BatteryWarningIcon = null;
 
-        [Header("Tire Pressure Warning")]
         private bool TirePressureWarningState = false;
+        [Header("Tire Pressure Warning")]
         [SerializeField]
         private GameObject TirePressureWarning = null;
         [SerializeField]
@@ -101,8 +101,8 @@ namespace RealTimeAuralizationEngine
         [SerializeField]
         private GameObject ServiceInfoIcon = null;
 
-        [Header("Shutdown Info")]
         private bool ShutdownInfoState = true;
+        [Header("Shutdown Info")]
         [SerializeField]
         private GameObject ShutdownInfo = null;
 
