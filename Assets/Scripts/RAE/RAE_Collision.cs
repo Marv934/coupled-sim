@@ -25,19 +25,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface CollisionCoolDown
-{
-    int Collision { get; }
-    int Parking { get; }
-}
-
 namespace RealTimeAuralizationEngine
 {
     [RequireComponent(typeof(VehicleBehaviour.WheelVehicle))]
     [RequireComponent(typeof(RAE_OSCtransmitter))]
 
 
-    public class RAE_Collision : MonoBehaviour, CollisionCoolDown
+    public class RAE_Collision : MonoBehaviour
     {
         [Header("Parking Assistant")]
         // While Speed < this, Parking Assistant is On

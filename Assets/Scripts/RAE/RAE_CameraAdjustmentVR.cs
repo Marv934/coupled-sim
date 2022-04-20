@@ -23,17 +23,17 @@ namespace RealTimeAuralizationEngine
     {
         // Inputs
         [Header("Inputs")]
-        [SerializeField] string Up = "KeyCode.Keypad2";
-        [SerializeField] string Down = "KeyCode.Keypad8";
+        [SerializeField] string Up = "SeatUp";
+        [SerializeField] string Down = "SeatDown";
 
         // Update is called once per frame
         void Update()
         {
-            if (Input.GetKey(Up))
+            if (Input.GetButton(Down))
             {
                 transform.position = transform.position - new Vector3(0.0f, 0.001f, 0.0f);
             } 
-            if (Input.GetKey(Down))
+            if (Input.GetButton(Up))
             {
                 transform.position = transform.position + new Vector3(0.0f, 0.001f, 0.0f);
             }

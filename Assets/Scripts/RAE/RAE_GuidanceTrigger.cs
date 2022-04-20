@@ -28,6 +28,12 @@ namespace RealTimeAuralizationEngine
 {
     public class RAE_GuidanceTrigger : MonoBehaviour
     {
+
+        // Set ExperimentDefinition
+        [Header("Eyperiment")]
+        [SerializeField]
+        Component ExperimentDefinition = null;
+
         // Set Next
         [SerializeField] int NextSkript = 0;
 
@@ -35,25 +41,10 @@ namespace RealTimeAuralizationEngine
         [Header("Destroy on Trigger - true, Not destroy on Trigger - false")]
         [SerializeField] bool destroy = true;
 
-        // Init ExperimentDefinition Component
-        Component ExperimentDefinition = null;
-
         // Start is called before the first frame update
         void Start()
         {
-            // Get Scene
-            GameObject[] root = gameObject.scene.GetRootGameObjects();
 
-            // Get GameObject
-            foreach (GameObject obj in root)
-            {
-                obj.TryGetComponent(typeof(ExperimentDefinition), out Component ExperimentDefinition);
-                //{
-                    // Try Get Guidance
-                    //if (TryGetComponent( out RAE_EvaluationGuidance Guidance ));
-                    //if (TryGetComponent( out RAE_PracticeGuidance Guidance ));
-                //}
-            }
         }
 
         void OnTriggerEnter(Collider other)

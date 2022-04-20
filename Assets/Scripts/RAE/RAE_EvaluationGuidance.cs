@@ -29,7 +29,7 @@ namespace RealTimeAuralizationEngine
     {
         [Header("Times in seconds")]
         [SerializeField]
-        private float UpdateTime = 0.1f;
+        private float UpdateTime = 0.02f;
         [SerializeField]
         private float WaitTime = 1.0f;
 
@@ -47,7 +47,7 @@ namespace RealTimeAuralizationEngine
         [Header("Input")]
         // Confirm Key
         [SerializeField]
-        private string ConfirmKeyCode = "KeyCode.L";
+        private string ConfirmKeyCode = "Submit";
 
         // Init Input Manager
         RAE_InputManager InputManager;
@@ -73,12 +73,12 @@ namespace RealTimeAuralizationEngine
 
             OSCtransmitter.FloatTrigger("SWUpdate", 1.0f);
 
-            Dashboard.DisplayServiceInfo(true);
+            Dashboard.DisplaySWUpdateInfo(true);
 
             bool state = true;
             while (state)
             {
-                if (Input.GetKey(ConfirmKeyCode))
+                if (Input.GetButton(ConfirmKeyCode))
                 {
                     state = false;
                 }
@@ -87,7 +87,7 @@ namespace RealTimeAuralizationEngine
 
             OSCtransmitter.BoolTrigger("Confirm", true);
 
-            Dashboard.DisplayServiceInfo(false);
+            Dashboard.DisplaySWUpdateInfo(false);
 
             Waiting = false;
         }
@@ -99,7 +99,7 @@ namespace RealTimeAuralizationEngine
             bool state = true;
             while (state)
             {
-                if (Input.GetKey(ConfirmKeyCode))
+                if (Input.GetButton(ConfirmKeyCode))
                 {
                     InputManager.StartEngine();
 
@@ -128,7 +128,7 @@ namespace RealTimeAuralizationEngine
             state = true;
             while (state)
             {
-                if (Input.GetKey(ConfirmKeyCode))
+                if (Input.GetButton(ConfirmKeyCode))
                 {
                     state = false;
 
@@ -160,7 +160,7 @@ namespace RealTimeAuralizationEngine
             state = true;
             while (state)
             {
-                if (Input.GetKey(ConfirmKeyCode))
+                if (Input.GetButton(ConfirmKeyCode))
                 {
                     state = false;
                 }
@@ -191,7 +191,7 @@ namespace RealTimeAuralizationEngine
             state = true;
             while (state)
             {
-                if (Input.GetKey(ConfirmKeyCode))
+                if (Input.GetButton(ConfirmKeyCode))
                 {
                     state = false;
                 }
@@ -221,7 +221,7 @@ namespace RealTimeAuralizationEngine
             state = true;
             while (state)
             {
-                if (Input.GetKey(ConfirmKeyCode))
+                if (Input.GetButton(ConfirmKeyCode))
                 {
                     state = false;
                 }
@@ -241,7 +241,7 @@ namespace RealTimeAuralizationEngine
             bool state = true;
             while (state)
             {
-                if (Input.GetKey(ConfirmKeyCode))
+                if (Input.GetButton(ConfirmKeyCode))
                 { 
                     state = false;
                 }
@@ -258,7 +258,7 @@ namespace RealTimeAuralizationEngine
             bool state = true;
             while (state)
             {
-                if (Input.GetKey(ConfirmKeyCode))
+                if (Input.GetButton(ConfirmKeyCode))
                 {
 
                     InputManager.StopEngine();

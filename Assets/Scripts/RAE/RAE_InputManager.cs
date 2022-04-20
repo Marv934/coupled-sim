@@ -48,12 +48,12 @@ namespace RealTimeAuralizationEngine
 
         // Inputs
         [Header("Inputs")]
-        [SerializeField] string EngineStartStop = "KeyCode.P";
-        [SerializeField] string ParkingAssistantOnOff = "KeyCode.B";
-        [SerializeField] string CollisionAssistantOnOff = "KeyCode.C";
-        [SerializeField] string DriveReverse = "KeyCode.G";
-        [SerializeField] string BlinkerRight = "KeyCode.Q";
-        [SerializeField] string BlinkerLeft = "KeyCode.E";
+        [SerializeField] string EngineStartStop = "EngineStartStop";
+        [SerializeField] string ParkingAssistantOnOff = "ParkingAssistantOnOff";
+        [SerializeField] string CollisionAssistantOnOff = "CollisionAssistantOnOff";
+        [SerializeField] string DriveReverse = "reverse";
+        [SerializeField] string BlinkerRight = "blinker_right";
+        [SerializeField] string BlinkerLeft = "blinker_left";
 
         // Start is called before the first frame update
         void Start()
@@ -75,7 +75,7 @@ namespace RealTimeAuralizationEngine
         void Update()
         {
             // Engine Start/Stop
-            if (Input.GetKeyDown(EngineStartStop))
+            if (Input.GetButtonDown(EngineStartStop))
             {
                 if (!Vehicle.Engine)
                 {
@@ -88,7 +88,7 @@ namespace RealTimeAuralizationEngine
             }
 
             // Parking Assistant On/Off
-            if (Input.GetKeyDown(ParkingAssistantOnOff))
+            if (Input.GetButtonDown(ParkingAssistantOnOff))
             {
                 if(!Collision.ParkingAssistantState)
                 {
@@ -101,7 +101,7 @@ namespace RealTimeAuralizationEngine
             }
 
             // Collision Assistant Start/Stop
-            if (Input.GetKeyDown(CollisionAssistantOnOff))
+            if (Input.GetButtonDown(CollisionAssistantOnOff))
             {
                 if (!Collision.CollisionAssistantState)
                 {
@@ -114,7 +114,7 @@ namespace RealTimeAuralizationEngine
             }
 
             // Drive/Reverse
-            if (Input.GetKeyDown(DriveReverse))
+            if (Input.GetButtonDown(DriveReverse))
             {
                 if (!Vehicle.Reverse)
                 {
@@ -145,7 +145,7 @@ namespace RealTimeAuralizationEngine
             }
 
             // Blinker Set Left
-            if (Input.GetKeyDown(BlinkerLeft))
+            if (Input.GetButtonDown(BlinkerLeft))
             {
                 if (!BlinkerStateLeft)
                 {
@@ -158,7 +158,7 @@ namespace RealTimeAuralizationEngine
             }
 
             // Blinker Set Right
-            if (Input.GetKeyDown(BlinkerRight))
+            if (Input.GetButtonDown(BlinkerRight))
             {
                 if (!BlinkerStateRight)
                 {

@@ -1002,7 +1002,7 @@ MonoBehaviour:
   TirePressureWarning: {fileID: 974589062341484509}
   TirePressureWarningIcon: {fileID: 3077847820015878479}
   SMSInfo: {fileID: 4648687655954434375}
-  SMSInfoIcon: {fileID: 3433071119041247699}
+  SMSInfoIcon: {fileID: 24589865506761344}
   SWUpdateInfo: {fileID: 1549300129794488879}
   SWUpdateInfoIcon: {fileID: 7113106254679066659}
   ServiceInfo: {fileID: 2487283198190057812}
@@ -1294,7 +1294,7 @@ MonoBehaviour:
   - {fileID: 2465501146693673060}
   - {fileID: 2590204308891740255}
   - {fileID: 8414590981671948444}
-  _carBlinkers: {fileID: 0}
+  _carBlinkers: {fileID: 1641230251900669932}
 --- !u!114 &650018555379239884
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1372,13 +1372,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe4c299a576a7704ebdf92574247ed41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blinkers: {fileID: 0}
-  EngineStartStop: KeyCode.P
-  ParkingAssistantOnOff: KeyCode.B
-  CollisionAssistantOnOff: KeyCode.C
-  DriveReverse: KeyCode.G
-  BlinkerRight: KeyCode.Q
-  BlinkerLeft: KeyCode.E
+  blinkers: {fileID: 1641230251900669932}
+  EngineStartStop: EngineStartStop
+  ParkingAssistantOnOff: ParkingAssistantOnOff
+  CollisionAssistantOnOff: CollisionAssistantOnOff
+  DriveReverse: reverse
+  BlinkerRight: blinker_right
+  BlinkerLeft: blinker_left
 --- !u!114 &-7730390022515479814
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7636,8 +7636,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75d1dd2f4e46dac42b70eb4b97c30f77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Up: KeyCode.Keypad2
-  Down: KeyCode.Keypad8
+  Up: SeatUp
+  Down: SeatDown
 --- !u!1 &7961354977247051831
 GameObject:
   m_ObjectHideFlags: 0

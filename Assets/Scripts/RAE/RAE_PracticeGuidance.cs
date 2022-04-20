@@ -29,7 +29,7 @@ namespace RealTimeAuralizationEngine
     {
         [Header("Times in seconds")]
         [SerializeField]
-        private float UpdateTime = 0.1f;
+        private float UpdateTime = 0.02f;
 
         // Init Input Manager
         RAE_InputManager InputManager;
@@ -50,7 +50,7 @@ namespace RealTimeAuralizationEngine
         [Header("Input")]
         // Confirm Key
         [SerializeField]
-        private string ConfirmKeyCode = "KeyCode.L";
+        private string ConfirmKeyCode = "Submit";
 
         IEnumerator WaitForStartConfirmation()
         {
@@ -59,7 +59,7 @@ namespace RealTimeAuralizationEngine
             bool state = true;
             while (state)
             {
-                if (Input.GetKey(ConfirmKeyCode))
+                if (Input.GetButtonDown(ConfirmKeyCode))
                 {
                     InputManager.StartEngine();
 
@@ -88,7 +88,7 @@ namespace RealTimeAuralizationEngine
             state = true;
             while (state)
             {
-                if (Input.GetKey(ConfirmKeyCode))
+                if (Input.GetButtonDown(ConfirmKeyCode))
                 {
                     InputManager.StopEngine();
 
@@ -127,7 +127,7 @@ namespace RealTimeAuralizationEngine
         }
 
         // Update is called once per frame
-        void Update()
+        void FixedUpdate()
         {
             if (!Waiting)
             {
@@ -135,13 +135,11 @@ namespace RealTimeAuralizationEngine
                 {   // Event Fahrtbeginn
 
                     OSCtransmitter.BoolTrigger("AmbientOn", true);
-                    Debug.Log("Skript 0");
                     StartCoroutine(WaitForStartConfirmation());
                     Skript = 1;
                 }
                 else if (Skript == 4)
                 {   // Event Ausparken
-                    Debug.Log("Skript 4");
                     StartCoroutine(WaitForEndConfirmation());
                     Skript = 5;
                 }

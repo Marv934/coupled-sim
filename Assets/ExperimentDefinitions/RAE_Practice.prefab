@@ -1237,9 +1237,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7f9771bf4324fe47877875b8e85a6d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UpdateTime: 0.1
+  UpdateTime: 0.02
   Skript: 0
-  ConfirmKeyCode: KeyCode.L
+  ConfirmKeyCode: Submit
 --- !u!1 &7028175422479026571
 GameObject:
   m_ObjectHideFlags: 0
@@ -1379,6 +1379,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9664a6d2edf084a4f84032dc3ea8f213, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ExperimentDefinition: {fileID: 7609667120526454229}
   NextSkript: 4
   destroy: 1
 --- !u!1 &8151745590484887761
