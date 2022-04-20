@@ -99,7 +99,7 @@ namespace RealTimeAuralizationEngine
             }
         }
 
-        public void UpdateTireness()
+        void UpdateTireness()
         {
             // fake the Tireness by random for testing
             float maxStep = 0.01f;
@@ -117,7 +117,7 @@ namespace RealTimeAuralizationEngine
             }
         }
 
-        public void UpdateStressLevel()
+        void UpdateStressLevel()
         {
             // fake the StressLevel by random for testing
             float maxStep = 0.01f;
