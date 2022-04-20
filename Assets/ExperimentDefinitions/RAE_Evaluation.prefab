@@ -4013,7 +4013,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: Generative Sound Engine Base Scenario
-  Scene: GSE_MainScene
+  Scene: RAE_MainScene
   Roles:
   - Name: Driver
     TopHMI: {fileID: 0}

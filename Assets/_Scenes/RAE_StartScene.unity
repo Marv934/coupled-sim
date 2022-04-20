@@ -275,8 +275,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _aiCarSystem:
-    Prefabs:
-    - {fileID: 7713759469045616529, guid: 1baf460ab026f1247ab4696be569ffae, type: 3}
+    Prefabs: []
     CarsSpawnedSinceLastLog: 0
   Experiments:
   - {fileID: 8692043556341430772, guid: 127686a4081b691458ee801c1896a1dd, type: 3}
@@ -302,7 +301,7 @@ MonoBehaviour:
   _AvatarPrefab: {fileID: 114552724408261780, guid: 849e6abc46b6346d0b8b1d058d7ead46,
     type: 3}
   _AvatarPrefabDriver:
-  - {fileID: 8938021727904404209, guid: 531f8b770566dd84ca06ec2463f293f2, type: 3}
+  - {fileID: 8938021727904404209, guid: 9c63eaa8e3fbe7b41a558b38042454fe, type: 3}
 --- !u!114 &301934535
 MonoBehaviour:
   m_ObjectHideFlags: 0
