@@ -1357,7 +1357,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Transmitter: {fileID: 0}
-  RemoteHost: 127.0.0.1
+  RemoteHost: 192.168.0.2
   RemotePort: 7711
   RootAddress: /RAE
 --- !u!114 &4618407919549857774
