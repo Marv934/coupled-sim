@@ -132,7 +132,7 @@ namespace RealTimeAuralizationEngine
             }   
 
             // Power
-            var anglePower = Mathf.Lerp(pivotMinPowerAngle, pivotMaxPowerAngle, Mathf.Abs( Vehicle.Throttle ) / maxPower);
+            var anglePower = Mathf.Lerp(pivotMinPowerAngle, pivotMaxPowerAngle, Vehicle.Throttle / maxPower);
             if (pivotPower != null)
             {
                 pivotPower.localRotation = Quaternion.AngleAxis(anglePower, Vector3.forward);
