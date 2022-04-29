@@ -34,6 +34,7 @@ public interface RAEVehicle
     float MaxSpeed { get; }
     float Throttle { get; }
 }
+// Added for RAE - END
 
 namespace VehicleBehaviour {
     [RequireComponent(typeof(Rigidbody))]
@@ -269,45 +270,6 @@ namespace VehicleBehaviour {
                 boost += Time.deltaTime * boostRegen;
                 if (boost > maxBoost) { boost = maxBoost; }
             }
-
-            // Get all the inputs!
-            //if (isPlayer)
-            //{
-                //if (Input.GetButtonDown("forward"))
-                //{
-                //    reverse = false;
-                //} else if (Input.GetButtonDown("reverse"))
-                //{
-                //    reverse = true;
-                //}
-
-                //if (Input.GetButtonDown("blinker_left"))
-                //{
-                //    if (blinkers.State != BlinkerState.Left)
-                //    {
-                //        blinkers.StartLeftBlinkers();
-                //    }
-                //    else
-                //    {
-                //        blinkers.Stop();
-                //    }
-                //}
-                //else if (Input.GetButtonDown("blinker_right"))
-                //{
-                //    if (blinkers.State != BlinkerState.Right)
-                //    {
-                //        blinkers.StartRightBlinkers();
-                //    }
-                //    else
-                //    {
-                //        blinkers.Stop();
-                //    }
-                //}
-                //else if (Input.GetButtonDown("blinker_clear"))
-                //{
-                //    blinkers.Stop();
-                //}
-            //}
         }
 
         float steeringWheelAngle = 0;

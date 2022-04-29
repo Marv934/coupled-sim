@@ -1,29 +1,3 @@
-# Generative Sound Engine for Coupled simulator
-
-## Added Files:
-
-Assets/_Scenes/GSE_StartScene
-Assets/Prefabs/Cars/GSE_DrivableSmartCommon
-Assets/Scripts/GenerativeSoundEngine/*
-
-## Changed Files:
-
-Assets/Arcade_Car_Physics/Scripts/WheelVehicle
-Assets/Scripts/LevelManager/LevelNames
-
-## Addes Assets:
-extOSC
-
-## Inputs Added
-
-engine_start_stop - Button "p" - toggles Handbreake, sets breakforce to 1
-
-## Scenes Added
-
-_Scenes/GSE_MainScene
-_Scenes/GSE_StartScene
-
-
 # Coupled simulator for research on driver-pedestrian interactions made in Unity.
 ## Usage of the simualator
 The simulator is open-source and free to use. It is aimed for, but not limited to, academic research. We welcome forking of this repository, pull requests, and any contributions in the spirit of open science and open-source code :heart_eyes::smile: For enquiries about collaboration, you may contact p.bazilinskyy@tudelft.nl.
